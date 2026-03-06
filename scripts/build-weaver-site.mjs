@@ -90,6 +90,18 @@ const assetCopies = [
     source: "image_out/sempai-whitepaper-evaluation.png",
     destination: "weaver/assets/sempai/sempai-whitepaper-evaluation.png",
   },
+  {
+    source: "image_out/jacquard-whitepaper-card-slice.png",
+    destination: "weaver/assets/jacquard/jacquard-whitepaper-card-slice.png",
+  },
+  {
+    source: "image_out/jacquard-whitepaper-entity-interstitial.png",
+    destination: "weaver/assets/jacquard/jacquard-whitepaper-entity-interstitial.png",
+  },
+  {
+    source: "image_out/jacquard-whitepaper-history-matching.png",
+    destination: "weaver/assets/jacquard/jacquard-whitepaper-history-matching.png",
+  },
 ];
 
 await rm("weaver", { force: true, recursive: true });
