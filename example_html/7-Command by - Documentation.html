@@ -192,7 +192,7 @@
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-pen-ruler text-4xl text-weaver-indigo"></i>
                                 </div>
-                                <h3 class="font-bold text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-001: Semantic Fusion</h3>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-001: Semantic Fusion</h3>
                                 <p class="text-sm text-weaver-indigo/70 mb-4">Foundational architecture for the multi-modal fusion engine.</p>
                                 <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
                                     <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded mr-2">ACCEPTED</span>
@@ -203,7 +203,7 @@
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-shield-halved text-4xl text-weaver-indigo"></i>
                                 </div>
-                                <h3 class="font-bold text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-004: Double-Lock Sandbox</h3>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-004: Double-Lock Sandbox</h3>
                                 <p class="text-sm text-weaver-indigo/70 mb-4">Security model for executing untrusted agent code.</p>
                                 <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
                                     <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded mr-2">DRAFT</span>
@@ -305,20 +305,20 @@ allow_network = <span class="text-weaver-vermilion">false</span>
                         <div class="relative pl-8 border-l-2 border-dashed border-weaver-indigo/30 space-y-12">
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-indigo text-white flex items-center justify-center text-xs font-bold">1</div>
-                                <h3 class="font-bold text-weaver-indigo mb-2">Initialization (Boot)</h3>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Initialization (Boot)</h3>
                                 <p class="text-sm text-weaver-indigo/70 mb-3">Daemon reads `weaver.toml`, establishes the socket, and initializes the in-memory graph database.</p>
                                 <code class="bg-weaver-indigo/5 px-2 py-1 rounded text-xs font-mono text-weaver-indigo">systemd: weaver.service</code>
                             </div>
 
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-faded text-white flex items-center justify-center text-xs font-bold">2</div>
-                                <h3 class="font-bold text-weaver-indigo mb-2">Handshake</h3>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Handshake</h3>
                                 <p class="text-sm text-weaver-indigo/70 mb-3">Client connects via `connect(2)`. Daemon verifies protocol version compatibility.</p>
                             </div>
 
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-vermilion text-white flex items-center justify-center text-xs font-bold">3</div>
-                                <h3 class="font-bold text-weaver-indigo mb-2">Indexing Loop</h3>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Indexing Loop</h3>
                                 <p class="text-sm text-weaver-indigo/70 mb-3">Background threads watch filesystem events (inotify/FSEvents) and trigger incremental Tree-sitter re-parsing.</p>
                             </div>
                         </div>
