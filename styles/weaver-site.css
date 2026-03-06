@@ -124,11 +124,11 @@ pre code {
     box-shadow: 2px 2px 0 rgba(25, 60, 110, 1);
 }
 
-#sidebar nav :is(a[href="/install"], a[href="/weaver/install/"]):not(.bg-weaver-indigo) {
+#sidebar nav :is(a[href="/install"], a[href$="/install/"]):not(.bg-weaver-indigo) {
     color: var(--weaver-vermilion);
     font-family: "IBM Plex Mono", monospace;
 }
 
-#sidebar nav :is(a[href="/install"], a[href="/weaver/install/"]):not(.bg-weaver-indigo):hover {
+#sidebar nav :is(a[href="/install"], a[href$="/install/"]):not(.bg-weaver-indigo):hover {
     background: rgba(232, 80, 43, 0.05);
 }
