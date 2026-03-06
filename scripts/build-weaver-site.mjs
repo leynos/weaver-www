@@ -79,6 +79,10 @@ const routeMap = new Map([
 
 const assetCopies = [
   {
+    source: "styles/weaver-site.css",
+    destination: "weaver/assets/styles/weaver-site.css",
+  },
+  {
     source: "image_out/sempai-whitepaper-pipeline.png",
     destination: "weaver/assets/sempai/sempai-whitepaper-pipeline.png",
   },
@@ -118,10 +122,56 @@ function rewriteInternalHref(value) {
   return `${routeMap.get(pathname) ?? value}${suffix}`;
 }
 
+function injectSharedStylesheet(html) {
+  const stylesheetLink =
+    '<link rel="stylesheet" href="/weaver/assets/styles/weaver-site.css">';
+
+  if (html.includes(stylesheetLink)) {
+    return html;
+  }
+
+  return html.replace("</head>", `    ${stylesheetLink}\n</head>`);
+}
+
+const sharedSelectors = [
+  "::-webkit-scrollbar",
+  "::-webkit-scrollbar-track",
+  "::-webkit-scrollbar-thumb",
+  "body",
+  ".grid-bg",
+  ".stamp-rotate",
+  ".texture-overlay",
+  ".writing-vertical-rl",
+  ".paper-panel",
+  ".figure-frame",
+  ".spec-table td, .spec-table th",
+  "pre code",
+  "code",
+];
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function stripSharedInlineCss(html) {
+  let stripped = html;
+
+  for (const selector of [...sharedSelectors].sort((left, right) => right.length - left.length)) {
+    const pattern = new RegExp(`${escapeRegex(selector)}\\s*\\{[\\s\\S]*?\\}\\s*`, "g");
+    stripped = stripped.replace(pattern, "");
+  }
+
+  stripped = stripped.replace(/<style>(\s*)<\/style>/g, "");
+
+  return stripped;
+}
+
 function rewritePage(html) {
-  return html.replace(/href=(["'])([^"'<>]+)\1/g, (match, quote, href) => {
+  const rewrittenLinks = html.replace(/href=(["'])([^"'<>]+)\1/g, (match, quote, href) => {
     return `href=${quote}${rewriteInternalHref(href)}${quote}`;
   });
+
+  return injectSharedStylesheet(stripSharedInlineCss(rewrittenLinks));
 }
 
 for (const page of sourcePages) {
