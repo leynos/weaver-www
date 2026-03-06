@@ -256,59 +256,12 @@
                             <span class="font-mono text-[10px] text-weaver-indigo">FIG. 4.2 - ISOLATION BOUNDARY</span>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center relative py-12">
-                            
-                            <!-- Host Environment -->
-                            <div class="text-center relative z-10">
-                                <div class="bg-weaver-cream border border-weaver-indigo p-4 rounded-sm inline-block w-full max-w-xs relative">
-                                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-weaver-cream px-2 text-xs font-mono font-bold text-weaver-indigo">HOST SYSTEM</div>
-                                    <div class="space-y-3 mt-2">
-                                        <div class="flex items-center justify-between bg-white border border-weaver-indigo/20 p-2 text-xs font-mono">
-                                            <span>Daemon</span>
-                                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                        </div>
-                                        <div class="flex items-center justify-between bg-white border border-weaver-indigo/20 p-2 text-xs font-mono">
-                                            <span>Filesystem</span>
-                                            <i class="fa-solid fa-folder text-weaver-indigo/50"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Connection -->
-                            <div class="flex flex-col items-center justify-center relative h-32 md:h-auto">
-                                <div class="h-px w-full bg-weaver-indigo/30 absolute top-1/2 hidden md:block"></div>
-                                <div class="w-px h-full bg-weaver-indigo/30 absolute left-1/2 md:hidden"></div>
-                                
-                                <div class="bg-weaver-vermilion text-white px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase z-10 shadow-md">
-                                    Unix Socket
-                                </div>
-                                <div class="mt-2 bg-white border border-weaver-indigo px-2 py-1 text-[10px] font-mono text-weaver-indigo z-10">
-                                    Serialized JSONL
-                                </div>
-                            </div>
-
-                            <!-- Sandbox Environment -->
-                            <div class="text-center relative z-10">
-                                <div class="bg-weaver-dark border-2 border-weaver-vermilion p-4 rounded-sm inline-block w-full max-w-xs relative sandbox-active">
-                                    <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-weaver-dark px-2 text-xs font-mono font-bold text-weaver-vermilion">SANDBOX</div>
-                                    <div class="space-y-3 mt-2">
-                                        <div class="flex items-center justify-between bg-[#282A36] border border-white/10 p-2 text-xs font-mono text-gray-300">
-                                            <span>Runtime</span>
-                                            <span class="text-yellow-400">Restricted</span>
-                                        </div>
-                                        <div class="flex items-center justify-between bg-[#282A36] border border-white/10 p-2 text-xs font-mono text-gray-300">
-                                            <span>Network</span>
-                                            <span class="text-red-400">Blocked</span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Lock Icon -->
-                                    <div class="absolute -right-3 -bottom-3 w-8 h-8 bg-weaver-vermilion rounded-full flex items-center justify-center shadow-lg text-white">
-                                        <i class="fa-solid fa-lock text-xs"></i>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="relative py-8">
+                            <img
+                                src="/weaver/assets/act/act-birdcage-sandbox.png"
+                                alt="Illustration of the host environment, controlled socket, and isolated Birdcage sandbox boundary."
+                                class="block w-full h-auto rounded-[2px] border border-weaver-indigo/10 bg-weaver-cream"
+                            >
                         </div>
 
                         <!-- Safety Note Footer -->

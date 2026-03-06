@@ -114,6 +114,34 @@ const assetCopies = [
     source: "image_out/home-sempai-query-pipeline.png",
     destination: "weaver/assets/home/home-sempai-query-pipeline.png",
   },
+  {
+    source: "image_out/image_out/why-weaver-open-interfaces.png",
+    destination: "weaver/assets/why-weaver/why-weaver-open-interfaces.png",
+  },
+  {
+    source: "image_out/image_out/how-it-works-system-topology.png",
+    destination: "weaver/assets/how-it-works/how-it-works-system-topology.png",
+  },
+  {
+    source: "image_out/image_out/commands-end-to-end-pipeline.png",
+    destination: "weaver/assets/commands/commands-end-to-end-pipeline.png",
+  },
+  {
+    source: "image_out/image_out/observe-data-fusion.png",
+    destination: "weaver/assets/observe/observe-data-fusion.png",
+  },
+  {
+    source: "image_out/image_out/act-birdcage-sandbox.png",
+    destination: "weaver/assets/act/act-birdcage-sandbox.png",
+  },
+  {
+    source: "image_out/image_out/verify-verification-stack.png",
+    destination: "weaver/assets/verify/verify-verification-stack.png",
+  },
+  {
+    source: "image_out/image_out/safety-double-lock-architecture.png",
+    destination: "weaver/assets/safety/safety-double-lock-architecture.png",
+  },
 ];
 
 await rm("weaver", { force: true, recursive: true });

@@ -164,30 +164,13 @@
                         </div>
                         
                         <!-- ASCII / CSS Diagram -->
-                        <div class="bg-weaver-dark p-8 rounded-sm shadow-xl font-mono text-xs text-blue-200 overflow-x-auto border border-weaver-indigo/50 relative group">
+                        <div class="bg-weaver-dark p-4 rounded-sm shadow-xl overflow-hidden border border-weaver-indigo/50 relative group">
                             <div class="absolute top-2 right-2 text-[10px] text-weaver-vermilion opacity-50">FIG 3.0</div>
-<pre class="ascii-diagram">
-+------------------+       +----------------------+
-|   User Shell     |       |   Weaver Daemon      |
-|  $ weaver act    | ----> |  (Background Proc)   |
-+--------+---------+  IPC  +----------+-----------+
-         |                            |
-         | JSONL                      | AST Analysis
-         v                            v
-+------------------+       +----------------------+
-|  Output Stream   | <---- |   Semantic Fusion    |
-| (stdout/stderr)  |       |       Engine         |
-+------------------+       +----------+-----------+
-                                      |
-                                      | Queries
-                                      v
-                           +----------------------+
-                           |   LSP / Tree-sitter  |
-                           |   Language Servers   |
-                           +----------------------+
-</pre>
-                            <!-- Decorative glow behind -->
-                            <div class="absolute inset-0 bg-weaver-vermilion/5 blur-3xl -z-10 rounded-full pointer-events-none"></div>
+                            <img
+                                src="/weaver/assets/how-it-works/how-it-works-system-topology.png"
+                                alt="System-topology illustration showing the Weaver CLI shell, daemon, semantic fusion core, JSONL output, and analysis engines."
+                                class="block w-full h-auto rounded-[2px] border border-white/10 bg-white/95"
+                            >
                         </div>
                     </div>
                 </div>

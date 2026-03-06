@@ -353,69 +353,12 @@
                             <span class="font-mono text-[10px] text-weaver-indigo">FIG. 3.1 - DATA FUSION</span>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center relative">
-                            
-                            <!-- Input Sources -->
-                            <div class="space-y-4 relative z-10">
-                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
-                                    <i class="fa-regular fa-file-code text-weaver-indigo mb-2"></i>
-                                    <div class="font-mono text-xs font-bold text-weaver-indigo">Raw Text</div>
-                                </div>
-                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
-                                    <i class="fa-solid fa-tree text-weaver-indigo mb-2"></i>
-                                    <div class="font-mono text-xs font-bold text-weaver-indigo">Tree-sitter</div>
-                                </div>
-                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
-                                    <i class="fa-solid fa-server text-weaver-indigo mb-2"></i>
-                                    <div class="font-mono text-xs font-bold text-weaver-indigo">LSP Server</div>
-                                </div>
-                            </div>
-
-                            <!-- Processing Core -->
-                            <div class="md:col-span-2 flex justify-center relative py-8">
-                                <!-- Connecting Lines SVG -->
-                                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 0;">
-                                    <path d="M0,40 C50,40 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" stroke-dasharray="4,4" />
-                                    <path d="M0,150 C50,150 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" />
-                                    <path d="M0,260 C50,260 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" stroke-dasharray="4,4" />
-                                    <path d="M350,150 L450,150" stroke="#E8502B" stroke-width="2" fill="none" marker-end="url(#arrow)" />
-                                    <defs>
-                                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
-                                            <path d="M0,0 L0,6 L9,3 z" fill="#E8502B" />
-                                        </marker>
-                                    </defs>
-                                </svg>
-
-                                <div class="w-48 h-48 rounded-full border-4 border-weaver-indigo bg-white flex items-center justify-center relative z-10 shadow-lg">
-                                    <div class="text-center">
-                                        <i class="fa-solid fa-layer-group text-3xl text-weaver-vermilion mb-2"></i>
-                                        <div class="font-serif font-bold text-weaver-indigo">Fusion Engine</div>
-                                        <div class="font-mono text-[10px] text-weaver-indigo/60 mt-1">Provenance<br>Tagging</div>
-                                    </div>
-                                    <!-- Rotating ring decoration -->
-                                    <div class="absolute inset-0 rounded-full border border-dashed border-weaver-indigo/30 animate-[spin_10s_linear_infinite]"></div>
-                                </div>
-                            </div>
-
-                            <!-- Output -->
-                            <div class="relative z-10">
-                                <div class="bg-weaver-dark text-weaver-cream p-4 rounded-sm border-l-4 border-weaver-vermilion shadow-md">
-                                    <div class="font-mono text-xs text-weaver-vermilion mb-2 font-bold">OUTPUT</div>
-                                    <div class="font-serif text-lg mb-1">Structured Events</div>
-                                    <div class="text-xs text-weaver-cream/60 font-mono">
-                                        { type: "symbol", ... }<br>
-                                        { type: "diagnostic", ... }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Hanko Stamp -->
-                        <div class="absolute bottom-4 right-4 w-16 h-16 border-2 border-weaver-vermilion rounded-sm flex items-center justify-center stamp-rotate mix-blend-multiply bg-weaver-vermilion/5">
-                            <div class="text-center leading-none">
-                                <span class="text-weaver-vermilion font-serif font-bold text-xs block">SYSTEM</span>
-                                <span class="text-weaver-vermilion font-mono text-[8px] block mt-1">VALID</span>
-                            </div>
+                        <div class="relative">
+                            <img
+                                src="/weaver/assets/observe/observe-data-fusion.png"
+                                alt="Illustration of raw source text, syntax trees, and language server metadata fusing into a structured semantic stream."
+                                class="block w-full h-auto rounded-[2px] border border-weaver-indigo/10 bg-weaver-cream"
+                            >
                         </div>
                     </div>
                 </div>
