@@ -45,6 +45,7 @@
         .paper-panel { box-shadow: 8px 8px 0 rgba(25, 60, 110, 0.08); }
         .figure-frame { box-shadow: 10px 10px 0 rgba(25, 60, 110, 0.08); }
         .spec-table td, .spec-table th { border-bottom: 1px solid rgba(25, 60, 110, 0.12); }
+        code { font-family: 'IBM Plex Mono', monospace; font-size: 0.92em; background: rgba(25, 60, 110, 0.08); padding: 0.12rem 0.32rem; border-radius: 0.2rem; }
     </style>
 </head>
 <body class="bg-weaver-cream relative overflow-x-hidden selection:bg-weaver-vermilion selection:text-white">
@@ -129,9 +130,9 @@
                         <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-2">Design Facts</p>
                         <ul class="space-y-3 text-xs text-weaver-indigo/80 leading-relaxed">
                             <li>Supports Rust, Python, TypeScript, Go, plus optional HCL.</li>
-                            <li>Parses legacy `pattern*` and v2 `match` formulas.</li>
-                            <li>Executes `search` mode. Parses `extract`, `taint`, and `join` without pretending to run them.</li>
-                            <li>Returns machine-usable `span`, `captures`, and `focus` for downstream actuation.</li>
+                            <li>Parses legacy <code>pattern*</code> and v2 <code>match</code> formulas.</li>
+                            <li>Executes <code>search</code> mode. Parses <code>extract</code>, <code>taint</code>, and <code>join</code> without pretending to run them.</li>
+                            <li>Returns machine-usable <code>span</code>, <code>captures</code>, and <code>focus</code> for downstream actuation.</li>
                         </ul>
                     </div>
                 </div>
@@ -174,7 +175,7 @@
                             <div class="bg-white/70 border border-weaver-indigo/10 p-5 rounded-sm paper-panel">
                                 <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-2">Discipline</p>
                                 <p class="font-serif text-2xl text-weaver-indigo mb-2">No fake parity.</p>
-                                <p class="text-sm text-weaver-indigo/75">`extract`, `taint`, and `join` are parsed for compatibility, then reported as unsupported at execution time. Honest software. Rare sight.</p>
+                                <p class="text-sm text-weaver-indigo/75"><code>extract</code>, <code>taint</code>, and <code>join</code> are parsed for compatibility, then reported as unsupported at execution time. Honest software. Rare sight.</p>
                             </div>
                         </div>
                     </header>
@@ -185,10 +186,10 @@
                                 <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-4 block">01. Query Surface</span>
                                 <h2 class="font-serif text-4xl text-weaver-indigo mb-5">Compatibility matters. Theatre does not.</h2>
                                 <p class="text-lg text-weaver-indigo/80 leading-relaxed mb-5">
-                                    The design deliberately accepts both legacy Semgrep `pattern*` operators and v2 `match` formulas. That is the right move. People already have rule corpora. Asking them to throw that away because a new engine wants to feel special would be unserious.
+                                    The design deliberately accepts both legacy Semgrep <code>pattern*</code> operators and v2 <code>match</code> formulas. That is the right move. People already have rule corpora. Asking them to throw that away because a new engine wants to feel special would be unserious.
                                 </p>
                                 <p class="text-base text-weaver-indigo/75 leading-relaxed">
-                                    The supported surface is concrete: `pattern`, `pattern-regex`, `patterns`, `pattern-either`, v2 `pattern`, `regex`, `all`, `any`, `not`, `inside`, `anywhere`, plus `where`, `as`, and `fix`. The lexical tokens are equally explicit: `$X`, `$_`, `$...ARGS`, `...`, and deep ellipsis. The doc even nails down semantic failure cases such as `InvalidNotInOr` and `MissingPositiveTermInAnd`. Good. Vagueness is where bugs hide.
+                                    The supported surface is concrete: <code>pattern</code>, <code>pattern-regex</code>, <code>patterns</code>, <code>pattern-either</code>, v2 <code>pattern</code>, <code>regex</code>, <code>all</code>, <code>any</code>, <code>not</code>, <code>inside</code>, <code>anywhere</code>, plus <code>where</code>, <code>as</code>, and <code>fix</code>. The lexical tokens are equally explicit: <code>$X</code>, <code>$_</code>, <code>$...ARGS</code>, <code>...</code>, and deep ellipsis. The doc even nails down semantic failure cases such as <code>InvalidNotInOr</code> and <code>MissingPositiveTermInAnd</code>. Good. Vagueness is where bugs hide.
                                 </p>
                             </div>
                             <div class="xl:col-span-8">
@@ -239,18 +240,18 @@
                                 <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-4 block">02. Execution Model</span>
                                 <h2 class="font-serif text-4xl text-weaver-indigo mb-5">Compile once. Execute many. Bound the ugly parts.</h2>
                                 <p class="text-base text-weaver-indigo/80 leading-relaxed mb-5">
-                                    The engine design makes the right architectural split: compilation and execution are separate phases, `QueryPlan` is cacheable, and Tree-sitter parses are cacheable per file revision. That matters because query engines die from repeated work and accidental explosion, not from lack of cleverness.
+                                    The engine design makes the right architectural split: compilation and execution are separate phases, <code>QueryPlan</code> is cacheable, and Tree-sitter parses are cacheable per file revision. That matters because query engines die from repeated work and accidental explosion, not from lack of cleverness.
                                 </p>
                                 <p class="text-base text-weaver-indigo/75 leading-relaxed mb-5">
-                                    Snippet compilation is the hard part. Pattern fragments with `$X`, `...`, and deep ellipsis are not clean host code, so Sempai wraps them, rewrites tokens into parseable placeholders, and lowers the result into pattern IR. That is less glamorous than waving around “semantic search”. It is also how you get something real.
+                                    Snippet compilation is the hard part. Pattern fragments with <code>$X</code>, <code>...</code>, and deep ellipsis are not clean host code, so Sempai wraps them, rewrites tokens into parseable placeholders, and lowers the result into pattern IR. That is less glamorous than waving around “semantic search”. It is also how you get something real.
                                 </p>
                                 <div class="bg-white/70 border border-weaver-indigo/10 rounded-sm p-6">
                                     <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Performance Controls</p>
                                     <ul class="space-y-3 text-sm text-weaver-indigo/80 leading-relaxed">
-                                        <li>`QueryPlan` cache keyed by language and rule hash.</li>
+                                        <li><code>QueryPlan</code> cache keyed by language and rule hash.</li>
                                         <li>Tree-sitter parse cache keyed by file revision.</li>
-                                        <li>Candidate-kind pruning from `PatNode::Kind`.</li>
-                                        <li>Bounded deep matching via `max_deep_search_nodes`.</li>
+                                        <li>Candidate-kind pruning from <code>PatNode::Kind</code>.</li>
+                                        <li>Bounded deep matching via <code>max_deep_search_nodes</code>.</li>
                                         <li>Deterministic match and capture truncation.</li>
                                     </ul>
                                 </div>
@@ -264,10 +265,10 @@
                                 <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-4 block">03. Semantics</span>
                                 <h2 class="font-serif text-4xl text-weaver-indigo mb-5">Anchors produce matches. Constraints police them.</h2>
                                 <p class="text-base text-weaver-indigo/80 leading-relaxed mb-5">
-                                    This is the design choice that makes the rest of the system coherent. `inside` and `anywhere` are treated as constraints in conjunction contexts, not as free-standing match producers. Why does that matter? Because otherwise conjunctions become semantic mush and every “positive term” rule becomes a guess dressed as an operator table.
+                                    This is the design choice that makes the rest of the system coherent. <code>inside</code> and <code>anywhere</code> are treated as constraints in conjunction contexts, not as free-standing match producers. Why does that matter? Because otherwise conjunctions become semantic mush and every “positive term” rule becomes a guess dressed as an operator table.
                                 </p>
                                 <p class="text-base text-weaver-indigo/75 leading-relaxed">
-                                    The execution plan splits anchor-producing terms from constraint terms, then evaluates them in order: first anchor matches, then predicates such as `Inside`, `Not`, `Anywhere`, and `Where`, then compatible existential matches from additional anchors, then projection of `span`, `captures`, and `focus`. That is not just neat. It is debuggable.
+                                    The execution plan splits anchor-producing terms from constraint terms, then evaluates them in order: first anchor matches, then predicates such as <code>Inside</code>, <code>Not</code>, <code>Anywhere</code>, and <code>Where</code>, then compatible existential matches from additional anchors, then projection of <code>span</code>, <code>captures</code>, and <code>focus</code>. That is not just neat. It is debuggable.
                                 </p>
                             </div>
                             <div class="xl:col-span-7">
@@ -288,7 +289,7 @@
                             <div>
                                 <h2 class="font-serif text-4xl text-weaver-indigo mb-5">The interface is narrow. That is a feature.</h2>
                                 <p class="text-base text-weaver-indigo/80 leading-relaxed mb-5">
-                                    The stable facade crate exposes exactly what it should: compile YAML, compile DSL, execute plans. Not a sprawling bag of internal types. The daemon side gets a new `weaver observe query` surface with `--lang`, `--uri`, and one of `--rule-file`, `--rule`, or `--q`. Enough to be useful. Not enough to rot instantly.
+                                    The stable facade crate exposes exactly what it should: compile YAML, compile DSL, execute plans. Not a sprawling bag of internal types. The daemon side gets a new <code>weaver observe query</code> surface with <code>--lang</code>, <code>--uri</code>, and one of <code>--rule-file</code>, <code>--rule</code>, or <code>--q</code>. Enough to be useful. Not enough to rot instantly.
                                 </p>
                                 <div class="bg-white border border-weaver-indigo/10 rounded-sm p-5 paper-panel">
                                     <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">CLI Contract</p>
@@ -314,7 +315,7 @@
                                 <div class="bg-white/70 border border-weaver-indigo/10 rounded-sm p-6">
                                     <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Actuation Handoff</p>
                                     <p class="text-sm text-weaver-indigo/80 leading-relaxed">
-                                        Sempai does not edit code. It hands Weaver an address. `focus` is the primary target when present; `span` is the fallback. That keeps query execution and actuation separate, which is exactly where the blast radius should stop.
+                                        Sempai does not edit code. It hands Weaver an address. <code>focus</code> is the primary target when present; <code>span</code> is the fallback. That keeps query execution and actuation separate, which is exactly where the blast radius should stop.
                                     </p>
                                 </div>
                             </div>
@@ -328,7 +329,7 @@
                                 <h3 class="font-serif text-2xl text-weaver-indigo mb-4">What it refuses to fake</h3>
                                 <ul class="space-y-3 text-sm text-weaver-indigo/80 leading-relaxed">
                                     <li>Parsed modes are not silently “best-effort” executed.</li>
-                                    <li>`fix` is surfaced as metadata, not applied by wishful thinking.</li>
+                                    <li><code>fix</code> is surfaced as metadata, not applied by wishful thinking.</li>
                                     <li>Unsupported constraints return structured errors instead of undefined behavior with nicer branding.</li>
                                     <li>Diagnostics are first-class: code, message, primary span, notes.</li>
                                 </ul>
@@ -336,10 +337,10 @@
                             <div class="bg-weaver-indigo text-weaver-cream rounded-sm p-6 paper-panel">
                                 <h3 class="font-serif text-2xl mb-4">What it actively defends against</h3>
                                 <ul class="space-y-3 text-sm text-weaver-cream/85 leading-relaxed">
-                                    <li>Match explosions via `max_matches_per_rule`.</li>
-                                    <li>Capture bloat via `max_capture_text_bytes`.</li>
+                                    <li>Match explosions via <code>max_matches_per_rule</code>.</li>
+                                    <li>Capture bloat via <code>max_capture_text_bytes</code>.</li>
                                     <li>Deep-search blowups via bounded traversal and branch caps.</li>
-                                    <li>Repeated parse work via cache ownership in `weaverd`.</li>
+                                    <li>Repeated parse work via cache ownership in <code>weaverd</code>.</li>
                                 </ul>
                             </div>
                         </div>
@@ -351,7 +352,7 @@
                             <div class="xl:col-span-7">
                                 <h2 class="font-serif text-4xl text-weaver-indigo mb-5">The crate split is not decorative.</h2>
                                 <p class="text-base text-weaver-indigo/80 leading-relaxed mb-6">
-                                    The design proposes a facade crate (`sempai`) over focused internal crates for core model, YAML, DSL, Tree-sitter backend, and fixtures. That separation keeps the public API stable while letting the parser and backend evolve at a sane pace. One crate to consume. Several crates to argue with internally. Correct.
+                                    The design proposes a facade crate (<code>sempai</code>) over focused internal crates for core model, YAML, DSL, Tree-sitter backend, and fixtures. That separation keeps the public API stable while letting the parser and backend evolve at a sane pace. One crate to consume. Several crates to argue with internally. Correct.
                                 </p>
                                 <div class="overflow-x-auto bg-white/75 border border-weaver-indigo/10 rounded-sm paper-panel">
                                     <table class="min-w-full text-sm spec-table">
@@ -372,11 +373,11 @@
                                             </tr>
                                             <tr>
                                                 <td class="px-4 py-3 font-mono">sempai_yaml</td>
-                                                <td class="px-4 py-3">Rule-file parsing via `saphyr` and `serde-saphyr`.</td>
+                                                <td class="px-4 py-3">Rule-file parsing via <code>saphyr</code> and <code>serde-saphyr</code>.</td>
                                             </tr>
                                             <tr>
                                                 <td class="px-4 py-3 font-mono">sempai_dsl</td>
-                                                <td class="px-4 py-3">One-liner DSL parsing via `logos` and Chumsky.</td>
+                                                <td class="px-4 py-3">One-liner DSL parsing via <code>logos</code> and Chumsky.</td>
                                             </tr>
                                             <tr>
                                                 <td class="px-4 py-3 font-mono">sempai_ts</td>
