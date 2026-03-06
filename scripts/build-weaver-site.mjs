@@ -139,19 +139,19 @@ const assetCopies = [
     destination: "weaver/assets/verify/verify-verification-stack.png",
   },
   {
-    source: "image_out/image_out/safety-double-lock-architecture.png",
+    source: "image_out/imported/safety-double-lock-architecture.png",
     destination: "weaver/assets/safety/safety-double-lock-architecture.png",
   },
   {
-    source: "image_out/image_out/observe-hero-outline.png",
+    source: "image_out/imported/observe-hero-outline.png",
     destination: "weaver/assets/observe/observe-hero-outline.png",
   },
   {
-    source: "image_out/image_out/act-hero-outline.png",
+    source: "image_out/imported/act-hero-outline.png",
     destination: "weaver/assets/act/act-hero-outline.png",
   },
   {
-    source: "image_out/image_out/verify-hero-outline.png",
+    source: "image_out/imported/verify-hero-outline.png",
     destination: "weaver/assets/verify/verify-hero-outline.png",
   },
 ];
