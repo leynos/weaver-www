@@ -148,45 +148,12 @@
                             <div class="absolute top-2 left-2 text-[10px] font-mono text-weaver-indigo border border-weaver-indigo px-1">FIG 1.0: ARCHITECTURE</div>
                             
                             <!-- Central Visualization -->
-                            <div class="w-full h-full relative overflow-hidden bg-white/50 border border-weaver-indigo/20 flex items-center justify-center">
-                                <!-- Abstract "Threads" -->
-                                <div class="absolute inset-0 flex flex-col justify-between py-12 px-8 opacity-20">
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                    <div class="h-px w-full bg-weaver-indigo"></div>
-                                </div>
-
-                                <!-- Central Node -->
-                                <div class="relative z-10 w-32 h-32 border-2 border-weaver-indigo bg-weaver-cream rounded-full flex items-center justify-center shadow-lg">
-                                    <i class="fa-solid fa-network-wired text-4xl text-weaver-indigo"></i>
-                                    <!-- Orbiting elements -->
-                                    <div class="absolute -top-4 -right-4 bg-weaver-vermilion text-white text-xs font-mono px-2 py-1 transform rotate-12 shadow-md">DAEMON</div>
-                                </div>
-
-                                <!-- Connecting Lines -->
-                                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
-                                    <path d="M 100 100 Q 250 200 400 100" stroke="#193C6E" stroke-width="1" fill="none" stroke-dasharray="4 4"/>
-                                    <path d="M 100 300 Q 250 200 400 300" stroke="#193C6E" stroke-width="1" fill="none"/>
-                                    <circle cx="100" cy="100" r="4" fill="#E8502B" />
-                                    <circle cx="400" cy="300" r="4" fill="#193C6E" />
-                                </svg>
-
-                                <!-- Code Snippet Overlay -->
-                                <div class="absolute bottom-8 right-8 bg-weaver-dark p-4 rounded-sm shadow-xl border border-weaver-indigo max-w-xs transform rotate-2 hover:rotate-0 transition-transform duration-300 z-20">
-                                    <div class="flex items-center gap-1 mb-2 border-b border-gray-700 pb-1">
-                                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                        <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                    </div>
-                                    <code class="font-mono text-[10px] text-green-400 block">
-                                        > weaver verify --strict<br>
-                                        <span class="text-gray-400">Analyzing dependency graph...</span><br>
-                                        <span class="text-blue-300">✓ Integrity verified</span>
-                                    </code>
-                                </div>
+                            <div class="w-full h-full relative overflow-hidden bg-white/50 border border-weaver-indigo/20">
+                                <img
+                                    src="/weaver/assets/home/home-hero-loom-architecture.png"
+                                    alt="Illustrated loom fused with a software architecture diagram, showing indigo and vermilion threads moving through a daemon-like central hub with blueprint measurements and wave motifs."
+                                    class="w-full h-full object-cover"
+                                >
                             </div>
 
                             <!-- Technical Marks -->
@@ -346,26 +313,12 @@
                              <!-- Blueprint Illustration -->
                              <div class="border-2 border-weaver-indigo bg-weaver-cream p-6 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)]">
                                 <div class="absolute top-0 left-0 bg-weaver-indigo text-white px-2 py-1 font-mono text-xs">QUERY ENGINE</div>
-                                <div class="h-64 border border-weaver-indigo/20 bg-[url('https://www.transparenttextures.com/patterns/graphy.png')] relative overflow-hidden flex items-center justify-center">
-                                    
-                                    <!-- Diagram Nodes -->
-                                    <div class="absolute top-10 left-10 w-24 h-12 border border-weaver-indigo bg-white flex items-center justify-center font-mono text-xs text-weaver-indigo shadow-sm z-10">AST Node</div>
-                                    <div class="absolute bottom-10 right-10 w-24 h-12 border border-weaver-indigo bg-white flex items-center justify-center font-mono text-xs text-weaver-indigo shadow-sm z-10">Pattern</div>
-                                    
-                                    <!-- Central Processing -->
-                                    <div class="w-32 h-32 rounded-full border-dashed border-2 border-weaver-vermilion flex items-center justify-center animate-spin-slow" style="animation-duration: 20s;">
-                                        <div class="w-24 h-24 rounded-full border border-weaver-indigo flex items-center justify-center bg-weaver-indigo/5">
-                                            <i class="fa-solid fa-filter text-2xl text-weaver-indigo"></i>
-                                        </div>
-                                    </div>
-
-                                    <!-- Connecting Lines (Decorative) -->
-                                    <div class="absolute inset-0 pointer-events-none">
-                                        <svg width="100%" height="100%">
-                                            <line x1="80" y1="60" x2="50%" y2="50%" stroke="#193C6E" stroke-width="1" />
-                                            <line x1="calc(100% - 80px)" y1="calc(100% - 60px)" x2="50%" y2="50%" stroke="#193C6E" stroke-width="1" />
-                                        </svg>
-                                    </div>
+                                <div class="h-64 border border-weaver-indigo/20 relative overflow-hidden">
+                                    <img
+                                        src="/weaver/assets/home/home-sempai-query-pipeline.png"
+                                        alt="Illustrated left-to-right Sempai query pipeline showing code entering a circular parsing chamber and flowing as structured output toward an agent target."
+                                        class="w-full h-full object-cover"
+                                    >
                                 </div>
                                 <div class="mt-4 flex justify-between font-mono text-[10px] text-weaver-indigo/60">
                                     <span>INPUT: RAW SOURCE</span>

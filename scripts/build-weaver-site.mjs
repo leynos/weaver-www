@@ -106,6 +106,14 @@ const assetCopies = [
     source: "image_out/jacquard-whitepaper-history-matching.png",
     destination: "weaver/assets/jacquard/jacquard-whitepaper-history-matching.png",
   },
+  {
+    source: "image_out/home-hero-loom-architecture.png",
+    destination: "weaver/assets/home/home-hero-loom-architecture.png",
+  },
+  {
+    source: "image_out/home-sempai-query-pipeline.png",
+    destination: "weaver/assets/home/home-sempai-query-pipeline.png",
+  },
 ];
 
 await rm("weaver", { force: true, recursive: true });
