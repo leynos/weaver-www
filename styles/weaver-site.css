@@ -76,6 +76,17 @@ body {
     backdrop-filter: blur(4px);
 }
 
+.masthead-frame {
+    width: 100%;
+    max-width: 72rem;
+}
+
+@media (min-width: 1024px) {
+    .masthead-frame {
+        min-width: min(44rem, 100%);
+    }
+}
+
 .spec-table td,
 .spec-table th {
     border-bottom: 1px solid rgba(25, 60, 110, 0.12);
