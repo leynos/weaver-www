@@ -223,6 +223,62 @@
                                 </ul>
                             </div>
                         </div>
+
+                        <div class="mt-10 grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+                            <div class="xl:col-span-5 bg-white/75 border border-weaver-indigo/10 rounded-sm p-6 paper-panel">
+                                <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Why Semgrep Syntax</p>
+                                <h3 class="font-serif text-3xl text-weaver-indigo mb-4">Because the query language should speak code, not ceremony.</h3>
+                                <p class="text-base text-weaver-indigo/80 leading-relaxed mb-4">
+                                    Regexps are blind to structure. Raw Tree-sitter queries are married to grammar internals. <code>ast-grep</code> is serious work, but it is still its own ecosystem with its own pattern habits. Semgrep syntax lands in the useful middle: structural, recognisable, portable, and already familiar to people who write code instead of node-kind tax returns.
+                                </p>
+                                <p class="text-base text-weaver-indigo/75 leading-relaxed">
+                                    That matters more in Weaver than it does in a standalone matcher. Sempai is not just finding text. It is selecting code objects for downstream action. The front door has to be expressive enough for structure, readable enough for humans, and stable enough for agents to generate without turning every query into a grammar seminar.
+                                </p>
+                            </div>
+                            <div class="xl:col-span-7 overflow-x-auto bg-white/75 border border-weaver-indigo/10 rounded-sm paper-panel">
+                                <table class="min-w-full text-sm spec-table">
+                                    <thead>
+                                        <tr class="text-left bg-weaver-indigo text-weaver-cream">
+                                            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em]">Surface</th>
+                                            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em]">What it does well</th>
+                                            <th class="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.2em]">Why it is not the main interface</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-weaver-indigo/85">
+                                        <tr>
+                                            <td class="px-4 py-4 font-mono">Semgrep syntax</td>
+                                            <td class="px-4 py-4">Matches code-shaped patterns, carries metavariables, supports context operators such as <code>inside</code>, and comes with an existing rule culture.</td>
+                                            <td class="px-4 py-4">It is the main interface because it is the only option here that stays structural without becoming hostile.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-4 font-mono">Regexps</td>
+                                            <td class="px-4 py-4">Fast lexical filtering, line-oriented searches, and cheap text predicates. Useful enough that Sempai keeps <code>regex</code> as an atom.</td>
+                                            <td class="px-4 py-4">Regexps do not know what a function, decorator, argument list, or nested scope is. They match text. Sometimes that is enough. Usually it is a trap.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-4 font-mono">ast-grep</td>
+                                            <td class="px-4 py-4">Strong structural matching and a credible code-query workflow built around its own patterns and rewrite model.</td>
+                                            <td class="px-4 py-4">Good tool. Wrong center of gravity for this design. Sempai needs Semgrep compatibility, rule portability, and a surface aligned with the existing Semgrep operator vocabulary the design doc already commits to.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-4 font-mono">Tree-sitter queries</td>
+                                            <td class="px-4 py-4">Precise, low-level capture of grammar nodes. Excellent as an escape hatch when you need exact parser internals.</td>
+                                            <td class="px-4 py-4">They are too close to the metal for the main authoring path. Users should not have to memorise node kinds and field names just to say “find decorated classes”. That is what the engine is for.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 bg-weaver-dark text-weaver-cream rounded-sm p-6 paper-panel">
+                            <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Why the hierarchy matters</p>
+                            <p class="text-sm text-weaver-cream/90 leading-relaxed mb-3">
+                                The design gets this exactly right: keep <code>regex</code> as a supported atom, keep raw Tree-sitter queries as an explicit escape hatch, and make Semgrep syntax the primary surface. That is not compromise. That is layering.
+                            </p>
+                            <p class="text-sm text-weaver-cream/90 leading-relaxed">
+                                Use the high-level language for the common case. Use the sharp tools when you actually need them. Use the right abstraction until it runs out. Then go lower. Not before.
+                            </p>
+                        </div>
                     </section>
 
                     <section id="engine" class="mb-20 border-t border-weaver-indigo/15 pt-16">
