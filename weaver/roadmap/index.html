@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap - Weaver AI Codebase Tooling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'weaver-cream': '#F3EFD9',
+                        'weaver-indigo': '#193C6E',
+                        'weaver-vermilion': '#E8502B',
+                        'weaver-dark': '#0F2440',
+                        'weaver-faded': '#4A6FA5',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"IBM Plex Sans"', 'sans-serif'],
+                        'mono': ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.plot.ly/plotly-3.1.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F3EFD9; }
+        ::-webkit-scrollbar-thumb { background: #193C6E; border-radius: 4px; }
+        body { background-color: #F3EFD9; color: #193C6E; font-family: 'IBM Plex Sans', sans-serif; }
+        .grid-bg { background-image: linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .stamp-rotate { transform: rotate(-15deg); }
+        .texture-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); opacity: 0.6; pointer-events: none; z-index: 50; }
+        .writing-vertical-rl { writing-mode: vertical-rl; }
+        
+        /* Timeline Line */
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 2px;
+            background: #193C6E;
+            opacity: 0.2;
+        }
+
+        /* Roadmap Item Hover Effect */
+        .roadmap-item { transition: all 0.3s ease; }
+        .roadmap-item:hover { transform: translateX(5px); }
+    </style>
+</head>
+<body class="bg-weaver-cream relative overflow-x-hidden selection:bg-weaver-vermilion selection:text-white">
+    
+    <!-- Texture Overlay -->
+    <div class="texture-overlay"></div>
+
+    <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
+            <div>
+                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                    <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
+                    <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
+                </div>
+                <nav class="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    <a href="/weaver/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">00</span> Home
+                    </a>
+                    <a href="/weaver/why-weaver/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">01</span> Philosophy
+                    </a>
+                    <a href="/weaver/how-it-works/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">02</span> Architecture
+                    </a>
+                    <a href="/weaver/commands/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">03</span> Commands
+                    </a>
+                    
+                    <a href="/weaver/safety/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">04</span> Safety
+                    </a>
+
+                    <a href="/weaver/sempai/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">05</span> Sempai Engine
+                    </a>
+                    <a href="/weaver/jacquard/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo/50 hover:text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-40">06</span> Jacquard <span class="text-[10px] uppercase border border-weaver-indigo/30 px-1 ml-1 rounded">Soon</span>
+                    </a>
+                    <div class="pt-4 mt-4 border-t border-weaver-indigo/10">
+                        <a href="/weaver/install/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Install
+                        </a>
+                        
+                        <a href="/weaver/docs/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Docs Hub
+                        </a>
+                        
+                        <!-- Active State for Roadmap -->
+                        <a href="/weaver/roadmap/" class="block px-4 py-2 text-sm font-semibold bg-weaver-indigo text-weaver-cream rounded-sm border border-weaver-indigo shadow-[2px_2px_0px_0px_rgba(25,60,110,1)] font-mono">
+                            > Roadmap
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- Version/Status Footer in Sidebar -->
+            <div class="p-6 border-t border-weaver-indigo/10 hidden lg:block">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="font-mono text-xs text-weaver-indigo/60">System Operational</span>
+                </div>
+                <p class="font-mono text-[10px] text-weaver-indigo/40">v0.8.2-beta</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 grid-bg min-h-screen relative flex flex-col xl:flex-row">
+            
+            <!-- Content Area -->
+            <div class="flex-1 min-w-0">
+                <div class="p-8 lg:p-16 max-w-6xl mx-auto">
+                    
+                    <!-- Header -->
+                    <header class="mb-16 border-b border-weaver-indigo/20 pb-8 relative">
+                        <!-- Decorative Header Element -->
+                        <div class="absolute top-0 right-0 hidden md:block opacity-10 pointer-events-none">
+                             <i class="fa-solid fa-map-location-dot text-9xl text-weaver-indigo"></i>
+                        </div>
+
+                        <div class="inline-block border border-weaver-indigo px-3 py-1 mb-6 bg-white/50 backdrop-blur-sm">
+                            <span class="font-mono text-xs tracking-widest uppercase text-weaver-indigo">Future Trajectory</span>
+                        </div>
+                        <h1 class="font-serif text-5xl md:text-6xl text-weaver-indigo font-bold mb-6">Roadmap</h1>
+                        <p class="text-lg text-weaver-indigo/70 font-light max-w-2xl leading-relaxed">
+                            Weaver is evolving from a CLI tool into a comprehensive semantic operating system for AI agents. Our path forward balances immediate developer experience improvements with deep architectural research.
+                        </p>
+                        
+                        <!-- Quick Stats / Status -->
+                        <div class="flex flex-wrap gap-6 mt-8 font-mono text-xs text-weaver-indigo/60">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                                <span>Current: v0.8.2 (Beta)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 bg-weaver-vermilion rounded-full animate-pulse"></span>
+                                <span>Next Major: v0.9.0 (Q3 2026)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-github"></i>
+                                <a href="#" class="underline hover:text-weaver-indigo">View Changelog</a>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Roadmap Visualization (Chart) -->
+                    <section class="mb-20">
+                        <div class="flex items-center mb-6">
+                            <span class="h-px w-8 bg-weaver-vermilion mr-4"></span>
+                            <h2 class="font-serif text-2xl text-weaver-indigo">Development Velocity</h2>
+                        </div>
+                        <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm shadow-sm relative">
+                             <div id="velocity-chart" class="h-[300px] w-full"></div>
+                             <div class="absolute top-4 right-4 text-[10px] font-mono text-weaver-indigo/40 bg-weaver-cream px-2 py-1 border border-weaver-indigo/10">
+                                 LIVE METRICS
+                             </div>
+                        </div>
+                        <script>
+                            window.addEventListener('load', function() {
+                                try {
+                                    const trace1 = {
+                                        x: ['Q1', 'Q2', 'Q3', 'Q4'],
+                                        y: [12, 18, 29, 45],
+                                        type: 'scatter',
+                                        mode: 'lines+markers',
+                                        name: 'Features Shipped',
+                                        line: { color: '#193C6E', width: 3 },
+                                        marker: { color: '#193C6E', size: 8 }
+                                    };
+
+                                    const trace2 = {
+                                        x: ['Q1', 'Q2', 'Q3', 'Q4'],
+                                        y: [5, 8, 12, 15],
+                                        type: 'bar',
+                                        name: 'Contributors',
+                                        marker: { color: 'rgba(232, 80, 43, 0.5)' }
+                                    };
+
+                                    const layout = {
+                                        title: { text: 'Project Momentum (2026)', font: { family: 'Playfair Display', size: 18, color: '#193C6E' } },
+                                        paper_bgcolor: 'rgba(0,0,0,0)',
+                                        plot_bgcolor: 'rgba(0,0,0,0)',
+                                        font: { family: 'IBM Plex Sans', color: '#193C6E' },
+                                        xaxis: { title: 'Quarter', showgrid: false },
+                                        yaxis: { title: 'Count', showgrid: true, gridcolor: 'rgba(25, 60, 110, 0.1)' },
+                                        margin: { t: 40, r: 20, b: 40, l: 40 },
+                                        showlegend: true,
+                                        legend: { orientation: 'h', y: -0.2 }
+                                    };
+
+                                    Plotly.newPlot('velocity-chart', [trace2, trace1], layout, {displayModeBar: false, responsive: true});
+                                } catch(e) { console.error(e); }
+                            });
+                        </script>
+                    </section>
+
+                    <!-- Near Term (Q3 2026) -->
+                    <section class="mb-24 relative timeline-line">
+                        <div class="flex items-center mb-10 relative z-10">
+                            <div class="w-10 h-10 bg-weaver-indigo text-weaver-cream flex items-center justify-center rounded-sm border-2 border-white shadow-md font-bold font-serif text-xl mr-6">
+                                1
+                            </div>
+                            <div>
+                                <h2 class="font-serif text-3xl text-weaver-indigo">Near Term</h2>
+                                <p class="font-mono text-xs text-weaver-indigo/60 uppercase tracking-widest mt-1">Focus: Stabilization & UX</p>
+                            </div>
+                        </div>
+
+                        <div class="pl-20 space-y-8">
+                            <!-- Feature Card: Daemon UX -->
+                            <div class="roadmap-item bg-white border border-weaver-indigo/10 p-6 rounded-sm shadow-sm relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-weaver-indigo/5 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 relative z-10">
+                                    <div class="flex items-center gap-3">
+                                        <span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2 py-1 rounded font-mono uppercase tracking-wide">In Progress</span>
+                                        <h3 class="font-bold text-lg text-weaver-indigo font-serif">Daemon UX Overhaul</h3>
+                                    </div>
+                                    <span class="text-xs text-weaver-indigo/40 font-mono mt-2 md:mt-0">Expected: Aug 2026</span>
+                                </div>
+                                <p class="text-weaver-indigo/80 text-sm mb-4 max-w-2xl">
+                                    Improving the developer experience of the background daemon. Moving from silent failures to rich, actionable status reporting via the CLI.
+                                </p>
+                                <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono text-weaver-indigo/70">
+                                    <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> <code>weaver status --watch</code> command</li>
+                                    <li class="flex items-center"><i class="fa-regular fa-circle text-weaver-indigo/30 mr-2"></i> Auto-restart on crash policy</li>
+                                    <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Better log rotation</li>
+                                    <li class="flex items-center"><i class="fa-regular fa-circle text-weaver-indigo/30 mr-2"></i> macOS Menu Bar indicator</li>
+                                </ul>
+                            </div>
+
+                            <!-- Feature Card: Fusion Engine -->
+                            <div class="roadmap-item bg-white border border-weaver-indigo/10 p-6 rounded-sm shadow-sm relative overflow-hidden group">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-weaver-vermilion/5 rounded-bl-full -mr-10 -mt-10 transition-transform group-hover:scale-110"></div>
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 relative z-10">
+                                    <div class="flex items-center gap-3">
+                                        <span class="bg-orange-100 text-orange-800 text-[10px] font-bold px-2 py-1 rounded font-mono uppercase tracking-wide">High Priority</span>
+                                        <h3 class="font-bold text-lg text-weaver-indigo font-serif">Fusion Engine v2</h3>
+                                    </div>
+                                    <span class="text-xs text-weaver-indigo/40 font-mono mt-2 md:mt-0">Expected: Sep 2026</span>
+                                </div>
+                                <p class="text-weaver-indigo/80 text-sm mb-4 max-w-2xl">
+                                    Enhancing the Semantic Fusion Engine to support multi-repo context blending. Agents will be able to reason across microservices boundaries.
+                                </p>
+                                <div class="flex gap-2">
+                                    <a href="/weaver/how-it-works/#fusion" class="text-xs text-weaver-vermilion hover:underline font-mono">View Current Architecture <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Mid Term (Q4 2026 - Q1 2027) -->
+                    <section class="mb-24 relative timeline-line">
+                        <div class="flex items-center mb-10 relative z-10">
+                            <div class="w-10 h-10 bg-white text-weaver-indigo border-2 border-weaver-indigo flex items-center justify-center rounded-sm shadow-md font-bold font-serif text-xl mr-6">
+                                2
+                            </div>
+                            <div>
+                                <h2 class="font-serif text-3xl text-weaver-indigo">Mid Term</h2>
+                                <p class="font-mono text-xs text-weaver-indigo/60 uppercase tracking-widest mt-1">Focus: Ecosystem & Security</p>
+                            </div>
+                        </div>
+
+                        <div class="pl-20 space-y-8">
+                            <!-- Feature Card: Jacquard (Upcoming) -->
+                            <div class="roadmap-item bg-weaver-dark text-weaver-cream border border-weaver-indigo p-6 rounded-sm shadow-lg relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 relative z-10">
+                                    <div class="flex items-center gap-3">
+                                        <span class="bg-weaver-vermilion text-white text-[10px] font-bold px-2 py-1 rounded font-mono uppercase tracking-wide animate-pulse">Upcoming Major</span>
+                                        <h3 class="font-bold text-lg font-serif">Jacquard Symbol Cards</h3>
+                                    </div>
+                                    <span class="text-xs text-weaver-cream/40 font-mono mt-2 md:mt-0">Target: Q4 2026</span>
+                                </div>
+                                <p class="text-weaver-cream/80 text-sm mb-6 max-w-2xl font-light">
+                                    A visual debugging interface for agent cognition. "Cards" represent the agent's internal model of a code symbol, allowing developers to inspect and correct the AI's understanding of their codebase directly.
+                                </p>
+                                <div class="flex flex-wrap gap-3">
+                                    <span class="px-2 py-1 bg-white/10 text-xs font-mono rounded border border-white/10">Visual Debugger</span>
+                                    <span class="px-2 py-1 bg-white/10 text-xs font-mono rounded border border-white/10">State Inspection</span>
+                                    <span class="px-2 py-1 bg-white/10 text-xs font-mono rounded border border-white/10">React Components</span>
+                                </div>
+                                <div class="mt-6 pt-4 border-t border-white/10 flex justify-end">
+                                    <a href="/weaver/jacquard/" class="text-xs text-weaver-vermilion hover:text-white transition-colors font-mono uppercase tracking-wider font-bold">Preview Concept <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                                </div>
+                            </div>
+
+                            <!-- Feature Card: Sandbox Policies -->
+                            <div class="roadmap-item bg-white border border-weaver-indigo/10 p-6 rounded-sm shadow-sm relative overflow-hidden group">
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 relative z-10">
+                                    <div class="flex items-center gap-3">
+                                        <span class="bg-gray-100 text-gray-600 text-[10px] font-bold px-2 py-1 rounded font-mono uppercase tracking-wide">Planned</span>
+                                        <h3 class="font-bold text-lg text-weaver-indigo font-serif">Granular Sandbox Policies</h3>
+                                    </div>
+                                    <span class="text-xs text-weaver-indigo/40 font-mono mt-2 md:mt-0">Target: Q1 2027</span>
+                                </div>
+                                <p class="text-weaver-indigo/80 text-sm mb-4 max-w-2xl">
+                                    Moving beyond "all or nothing" network access. Define per-domain allowlists for agents (e.g., allow `api.stripe.com` but block everything else) via <code>weaver.toml</code>.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Long Term (2027+) -->
+                    <section class="mb-24 relative timeline-line">
+                        <div class="flex items-center mb-10 relative z-10">
+                            <div class="w-10 h-10 bg-weaver-cream text-weaver-indigo border-2 border-dashed border-weaver-indigo flex items-center justify-center rounded-sm shadow-sm font-bold font-serif text-xl mr-6 opacity-60">
+                                3
+                            </div>
+                            <div>
+                                <h2 class="font-serif text-3xl text-weaver-indigo">Long Term</h2>
+                                <p class="font-mono text-xs text-weaver-indigo/60 uppercase tracking-widest mt-1">Focus: Automation & Integration</p>
+                            </div>
+                        </div>
+
+                        <div class="pl-20 space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Feature Card: CI Workflows -->
+                                <div class="bg-white/50 border border-weaver-indigo/10 p-6 rounded-sm hover:bg-white transition-colors">
+                                    <i class="fa-solid fa-server text-2xl text-weaver-indigo/30 mb-4"></i>
+                                    <h3 class="font-bold text-lg text-weaver-indigo font-serif mb-2">Headless CI Workflows</h3>
+                                    <p class="text-sm text-weaver-indigo/70 mb-4">
+                                        Running Weaver agents as part of GitHub Actions or GitLab CI to automatically review PRs, check for architectural drift, and auto-fix lint errors.
+                                    </p>
+                                    <span class="text-[10px] font-mono text-weaver-indigo/40 uppercase border border-weaver-indigo/10 px-2 py-1 rounded">Research Phase</span>
+                                </div>
+
+                                <!-- Feature Card: IDE Plugins -->
+                                <div class="bg-white/50 border border-weaver-indigo/10 p-6 rounded-sm hover:bg-white transition-colors">
+                                    <i class="fa-solid fa-code text-2xl text-weaver-indigo/30 mb-4"></i>
+                                    <h3 class="font-bold text-lg text-weaver-indigo font-serif mb-2">Native IDE Plugins</h3>
+                                    <p class="text-sm text-weaver-indigo/70 mb-4">
+                                        Moving beyond the CLI. Native VS Code and IntelliJ plugins that visualize the Weaver graph directly in the editor gutter and sidebar.
+                                    </p>
+                                    <span class="text-[10px] font-mono text-weaver-indigo/40 uppercase border border-weaver-indigo/10 px-2 py-1 rounded">Concept</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Contribution Call to Action -->
+                    <section class="bg-weaver-indigo text-weaver-cream p-10 rounded-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-weaver-vermilion rounded-full filter blur-[80px] opacity-20 -mr-20 -mt-20"></div>
+                        
+                        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                            <div class="max-w-xl">
+                                <h2 class="font-serif text-3xl mb-4 font-bold">Help Shape the Future</h2>
+                                <p class="text-weaver-cream/80 text-sm mb-6 leading-relaxed">
+                                    Weaver is open source. Our roadmap is driven by community needs. If you're building AI agents or specialized dev tools, we want your input on these priorities.
+                                </p>
+                                <div class="flex gap-4">
+                                    <a href="#" class="flex items-center gap-2 text-xs font-mono hover:text-weaver-vermilion transition-colors">
+                                        <i class="fa-brands fa-github text-lg"></i> Submit Feature Request
+                                    </a>
+                                    <a href="#" class="flex items-center gap-2 text-xs font-mono hover:text-weaver-vermilion transition-colors">
+                                        <i class="fa-brands fa-discord text-lg"></i> Join Discussion
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-3 min-w-[200px]">
+                                <a href="/weaver/install/" class="px-6 py-3 bg-weaver-vermilion text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-weaver-vermilion transition-colors border border-weaver-vermilion text-center">
+                                    Install Now
+                                </a>
+                                <a href="/weaver/docs/" class="px-6 py-3 bg-transparent text-white font-mono text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors border border-white/30 text-center">
+                                    Read Docs
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+
+                <!-- Footer -->
+                <footer class="bg-weaver-cream border-t border-weaver-indigo/20 p-8 lg:p-16 relative mt-12">
+                    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                        <div class="mb-6 md:mb-0">
+                            <div class="flex items-center gap-3 mb-2">
+                                 <div class="w-8 h-8 bg-weaver-indigo flex items-center justify-center text-weaver-cream">
+                                    <span class="font-serif font-bold text-lg">W</span>
+                                 </div>
+                                 <h2 class="font-serif text-2xl font-bold text-weaver-indigo">WEAVER</h2>
+                            </div>
+                            <p class="font-mono text-xs text-weaver-indigo/60 mt-1">© 2026 Weaver Toolchain Project.</p>
+                            <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Open Source under MIT License.</p>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                            <div class="flex flex-col space-y-2">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
+                                <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
+                                <a href="/weaver/roadmap/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors font-bold text-weaver-indigo">Roadmap</a>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Resources</span>
+                                <a href="/weaver/docs/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Documentation</a>
+                                <a href="/weaver/install/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Installation</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command: Observe - Weaver AI Codebase Tooling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'weaver-cream': '#F3EFD9',
+                        'weaver-indigo': '#193C6E',
+                        'weaver-vermilion': '#E8502B',
+                        'weaver-dark': '#0F2440',
+                        'weaver-faded': '#4A6FA5',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"IBM Plex Sans"', 'sans-serif'],
+                        'mono': ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F3EFD9; }
+        ::-webkit-scrollbar-thumb { background: #193C6E; border-radius: 4px; }
+        body { background-color: #F3EFD9; color: #193C6E; font-family: 'IBM Plex Sans', sans-serif; }
+        .grid-bg { background-image: linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .stamp-rotate { transform: rotate(-15deg); }
+        .texture-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); opacity: 0.6; pointer-events: none; z-index: 50; }
+        .writing-vertical-rl { writing-mode: vertical-rl; }
+        .code-block-shadow { box-shadow: 4px 4px 0px 0px rgba(25,60,110,0.1); }
+        
+        /* Custom syntax highlighting for the JSONL examples */
+        .token-key { color: #8BE9FD; }
+        .token-string { color: #F1FA8C; }
+        .token-number { color: #BD93F9; }
+        .token-boolean { color: #FF79C6; }
+        .token-comment { color: #6272A4; font-style: italic; }
+    </style>
+</head>
+<body class="bg-weaver-cream relative overflow-x-hidden selection:bg-weaver-vermilion selection:text-white">
+    
+    <!-- Texture Overlay -->
+    <div class="texture-overlay"></div>
+
+    <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
+            <div>
+                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                    <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
+                    <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
+                </div>
+                <nav class="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    <a href="/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">00</span> Home
+                    </a>
+                    <a href="/why-weaver" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">01</span> Philosophy
+                    </a>
+                    <a href="/how-it-works" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">02</span> Architecture
+                    </a>
+                    
+                    <a href="/commands" class="block px-4 py-2 text-sm font-semibold text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs">03</span> Commands
+                    </a>
+                    <!-- Sub-navigation for Commands -->
+                    <div class="ml-4 pl-4 border-l border-weaver-indigo/20 space-y-1 my-2">
+                        <a href="/commands/observe" class="block py-1 text-xs font-mono font-bold text-weaver-vermilion bg-weaver-vermilion/5 -ml-4 pl-4 border-l-2 border-weaver-vermilion">/observe</a>
+                        <a href="/commands/act" class="block py-1 text-xs font-mono text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">/act</a>
+                        <a href="/commands/verify" class="block py-1 text-xs font-mono text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">/verify</a>
+                    </div>
+
+                    <a href="/safety" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">04</span> Safety
+                    </a>
+                    <a href="/sempai" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">05</span> Sempai Engine
+                    </a>
+                    <a href="/jacquard" class="block px-4 py-2 text-sm font-medium text-weaver-indigo/50 hover:text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-40">06</span> Jacquard <span class="text-[10px] uppercase border border-weaver-indigo/30 px-1 ml-1 rounded">Soon</span>
+                    </a>
+                    <div class="pt-4 mt-4 border-t border-weaver-indigo/10">
+                        <a href="/install" class="block px-4 py-2 text-sm font-medium text-weaver-vermilion hover:bg-weaver-vermilion/5 transition-colors border border-transparent font-mono">
+                            > Install
+                        </a>
+                        <a href="/docs" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Docs
+                        </a>
+                        <a href="/roadmap" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Roadmap
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- Version/Status Footer in Sidebar -->
+            <div class="p-6 border-t border-weaver-indigo/10 hidden lg:block">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="font-mono text-xs text-weaver-indigo/60">System Operational</span>
+                </div>
+                <p class="font-mono text-[10px] text-weaver-indigo/40">v0.8.2-beta</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 grid-bg min-h-screen relative">
+            
+            <!-- Header Section -->
+            <section id="observe-header" class="relative pt-16 pb-12 px-8 lg:px-16 border-b border-weaver-indigo/20">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+                        <div class="inline-flex items-center space-x-2 border border-weaver-indigo/30 px-3 py-1 bg-white/50 backdrop-blur-sm rounded-sm self-start">
+                            <a href="/commands" class="font-mono text-xs tracking-widest uppercase text-weaver-indigo/60 hover:text-weaver-vermilion transition-colors">COMMANDS</a>
+                            <span class="text-weaver-indigo/40">/</span>
+                            <span class="font-mono text-xs tracking-widest uppercase text-weaver-indigo font-bold">OBSERVE</span>
+                        </div>
+                    </div>
+                    
+                    <h1 class="font-serif text-5xl lg:text-7xl font-bold text-weaver-indigo leading-[1.1] mb-6">
+                        Perception & <br>
+                        <span class="text-weaver-vermilion italic font-light">Structure</span>.
+                    </h1>
+                    
+                    <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-3xl font-light">
+                        The <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded">observe</span> command is the sensory organ of the Weaver agent. It fuses raw file content with semantic metadata from Tree-sitter and LSP servers to produce a high-fidelity, structured representation of the codebase.
+                    </p>
+                </div>
+                
+                <!-- Decorative Abstract Eye Symbol -->
+                <div class="absolute right-10 top-20 hidden xl:block opacity-10 pointer-events-none">
+                    <svg width="300" height="300" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" stroke="#193C6E" stroke-width="1" fill="none" />
+                        <path d="M10,50 Q50,10 90,50 Q50,90 10,50" stroke="#193C6E" stroke-width="1" fill="none" />
+                        <circle cx="50" cy="50" r="15" stroke="#E8502B" stroke-width="2" fill="none" />
+                        <line x1="50" y1="5" x2="50" y2="95" stroke="#193C6E" stroke-width="0.5" stroke-dasharray="2,2" />
+                        <line x1="5" y1="50" x2="95" y2="50" stroke="#193C6E" stroke-width="0.5" stroke-dasharray="2,2" />
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Usage & Syntax Section -->
+            <section class="py-12 px-8 lg:px-16 border-b border-weaver-indigo/20 bg-white/40">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        
+                        <!-- Left: Synopsis -->
+                        <div class="lg:col-span-1">
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Synopsis</h2>
+                            <p class="text-sm text-weaver-indigo/70 mb-6 leading-relaxed">
+                                Invokes the Semantic Fusion Engine to parse files or directories. Output is always streamed as JSONL to stdout for easy piping to LLM context windows or analysis tools.
+                            </p>
+                            
+                            <div class="bg-weaver-cream border border-weaver-indigo p-4 relative mb-6">
+                                <div class="absolute -top-3 left-4 bg-weaver-cream px-2 text-xs font-mono text-weaver-vermilion font-bold">SYNTAX</div>
+                                <code class="font-mono text-sm text-weaver-indigo block break-all">
+                                    weaver observe [OPTIONS] &lt;PATH&gt;...
+                                </code>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs font-mono text-weaver-indigo/60">
+                                <i class="fa-solid fa-info-circle"></i>
+                                <span>Supports glob patterns (e.g., src/**/*.rs)</span>
+                            </div>
+                        </div>
+
+                        <!-- Right: Options Table -->
+                        <div class="lg:col-span-2">
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Options & Flags</h2>
+                            <div class="overflow-hidden border border-weaver-indigo/20 rounded-sm shadow-sm bg-weaver-cream">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
+                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Flag</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Type</th>
+                                            <th class="p-3">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-weaver-indigo/10">
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--depth</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Integer</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Max recursion depth for directory traversal (default: 5).</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--symbol</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">String</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Filter output to a specific function or class name (uses Sempai engine).</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--with-lsp</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Boolean</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Enrich output with LSP diagnostics, definitions, and references.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--format</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Enum</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Output format: <span class="bg-weaver-indigo/10 px-1 rounded">jsonl</span> (default), <span class="bg-weaver-indigo/10 px-1 rounded">tree</span>, or <span class="bg-weaver-indigo/10 px-1 rounded">markdown</span>.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--ignore-hidden</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flag</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Skip hidden files and directories (respects .gitignore).</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Example Scenarios -->
+            <section class="py-16 px-8 lg:px-16 border-b border-weaver-indigo/20">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="font-serif text-3xl text-weaver-indigo mb-10">Integration Examples</h2>
+                    
+                    <div class="space-y-12">
+                        
+                        <!-- Scenario 1: Basic File Observation -->
+                        <div class="relative group">
+                            <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-indigo opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">1. High-Fidelity Context Gathering</h3>
+                            <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
+                                When an agent needs to understand a file, <code class="text-xs bg-weaver-indigo/10 px-1">observe</code> provides more than just text. It returns the AST structure, enabling the agent to "see" the code's skeleton.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
+                                <!-- Command Input -->
+                                <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
+                                    <div class="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
+                                        <span class="text-xs font-mono text-weaver-cream/50">TERMINAL</span>
+                                        <div class="flex gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                        </div>
+                                    </div>
+                                    <code class="font-mono text-sm text-green-400">
+                                        $ weaver observe src/auth.rs --with-lsp
+                                    </code>
+                                </div>
+                                
+                                <!-- JSON Output -->
+                                <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
+                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL Stream</div>
+<pre class="text-gray-300">
+<span class="token-comment">// Event 1: File Metadata</span>
+{
+  <span class="token-key">"type"</span>: <span class="token-string">"file"</span>,
+  <span class="token-key">"path"</span>: <span class="token-string">"src/auth.rs"</span>,
+  <span class="token-key">"language"</span>: <span class="token-string">"rust"</span>,
+  <span class="token-key">"size_bytes"</span>: <span class="token-number">4096</span>
+}
+<span class="token-comment">// Event 2: Semantic Symbol</span>
+{
+  <span class="token-key">"type"</span>: <span class="token-string">"symbol"</span>,
+  <span class="token-key">"name"</span>: <span class="token-string">"AuthService"</span>,
+  <span class="token-key">"kind"</span>: <span class="token-string">"struct"</span>,
+  <span class="token-key">"range"</span>: {<span class="token-key">"start"</span>: <span class="token-number">12</span>, <span class="token-key">"end"</span>: <span class="token-number">45</span>},
+  <span class="token-key">"provenance"</span>: {
+    <span class="token-key">"source"</span>: <span class="token-string">"tree-sitter"</span>,
+    <span class="token-key">"confidence"</span>: <span class="token-number">1.0</span>
+  }
+}
+</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scenario 2: Targeted Query -->
+                        <div class="relative group">
+                            <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-vermilion opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">2. Targeted Sempai Query</h3>
+                            <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
+                                Instead of dumping entire files, use <code class="text-xs bg-weaver-indigo/10 px-1">--symbol</code> to extract specific functions or classes across the project. This reduces context window usage significantly.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
+                                <!-- Command Input -->
+                                <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
+                                    <div class="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
+                                        <span class="text-xs font-mono text-weaver-cream/50">TERMINAL</span>
+                                        <div class="flex gap-1">
+                                            <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                            <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                            <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                        </div>
+                                    </div>
+                                    <code class="font-mono text-sm text-green-400">
+                                        $ weaver observe . --symbol "connect_db"
+                                    </code>
+                                </div>
+                                
+                                <!-- JSON Output -->
+                                <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
+                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL Stream</div>
+<pre class="text-gray-300">
+<span class="token-comment">// Found in main.rs</span>
+{
+  <span class="token-key">"type"</span>: <span class="token-string">"match"</span>,
+  <span class="token-key">"file"</span>: <span class="token-string">"src/main.rs"</span>,
+  <span class="token-key">"signature"</span>: <span class="token-string">"fn connect_db(url: &str) -> Result&lt;PgPool&gt;"</span>,
+  <span class="token-key">"snippet"</span>: <span class="token-string">"fn connect_db(url: &str) -> Result&lt;PgPool&gt; { ... }"</span>,
+  <span class="token-key">"docstring"</span>: <span class="token-string">"/// Establishes a connection pool."</span>
+}
+<span class="token-comment">// Found in tests/db_test.rs</span>
+{
+  <span class="token-key">"type"</span>: <span class="token-string">"match"</span>,
+  <span class="token-key">"file"</span>: <span class="token-string">"tests/db_test.rs"</span>,
+  <span class="token-key">"signature"</span>: <span class="token-string">"fn test_connect_db()"</span>
+}
+</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Provenance & Architecture Diagram -->
+            <section class="py-16 px-8 lg:px-16 bg-weaver-cream border-b border-weaver-indigo/20 relative overflow-hidden">
+                <!-- Seigaiha Pattern Background -->
+                <div class="absolute right-0 bottom-0 w-1/2 h-full opacity-5 pointer-events-none" 
+                     style="background-image: url('https://www.transparenttextures.com/patterns/seigaiha.png'); mask-image: linear-gradient(to right, transparent, black);">
+                </div>
+
+                <div class="max-w-6xl mx-auto relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-2 block">ARCHITECTURE</span>
+                            <h2 class="font-serif text-3xl text-weaver-indigo">Semantic Fusion Engine</h2>
+                            <p class="text-weaver-indigo/70 mt-2 max-w-xl">How Weaver constructs the "truth" about your code.</p>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Container -->
+                    <div class="bg-white border-2 border-weaver-indigo p-8 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)]">
+                        <!-- Technical Labels -->
+                        <div class="absolute top-4 left-4 border border-weaver-indigo px-2 py-1 bg-white z-20">
+                            <span class="font-mono text-[10px] text-weaver-indigo">FIG. 3.1 - DATA FUSION</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 items-center relative">
+                            
+                            <!-- Input Sources -->
+                            <div class="space-y-4 relative z-10">
+                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
+                                    <i class="fa-regular fa-file-code text-weaver-indigo mb-2"></i>
+                                    <div class="font-mono text-xs font-bold text-weaver-indigo">Raw Text</div>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
+                                    <i class="fa-solid fa-tree text-weaver-indigo mb-2"></i>
+                                    <div class="font-mono text-xs font-bold text-weaver-indigo">Tree-sitter</div>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo p-3 text-center rounded-sm">
+                                    <i class="fa-solid fa-server text-weaver-indigo mb-2"></i>
+                                    <div class="font-mono text-xs font-bold text-weaver-indigo">LSP Server</div>
+                                </div>
+                            </div>
+
+                            <!-- Processing Core -->
+                            <div class="md:col-span-2 flex justify-center relative py-8">
+                                <!-- Connecting Lines SVG -->
+                                <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 0;">
+                                    <path d="M0,40 C50,40 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" stroke-dasharray="4,4" />
+                                    <path d="M0,150 C50,150 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" />
+                                    <path d="M0,260 C50,260 50,150 150,150" stroke="#193C6E" stroke-width="1" fill="none" stroke-dasharray="4,4" />
+                                    <path d="M350,150 L450,150" stroke="#E8502B" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+                                    <defs>
+                                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                            <path d="M0,0 L0,6 L9,3 z" fill="#E8502B" />
+                                        </marker>
+                                    </defs>
+                                </svg>
+
+                                <div class="w-48 h-48 rounded-full border-4 border-weaver-indigo bg-white flex items-center justify-center relative z-10 shadow-lg">
+                                    <div class="text-center">
+                                        <i class="fa-solid fa-layer-group text-3xl text-weaver-vermilion mb-2"></i>
+                                        <div class="font-serif font-bold text-weaver-indigo">Fusion Engine</div>
+                                        <div class="font-mono text-[10px] text-weaver-indigo/60 mt-1">Provenance<br>Tagging</div>
+                                    </div>
+                                    <!-- Rotating ring decoration -->
+                                    <div class="absolute inset-0 rounded-full border border-dashed border-weaver-indigo/30 animate-[spin_10s_linear_infinite]"></div>
+                                </div>
+                            </div>
+
+                            <!-- Output -->
+                            <div class="relative z-10">
+                                <div class="bg-weaver-dark text-weaver-cream p-4 rounded-sm border-l-4 border-weaver-vermilion shadow-md">
+                                    <div class="font-mono text-xs text-weaver-vermilion mb-2 font-bold">OUTPUT</div>
+                                    <div class="font-serif text-lg mb-1">Structured Events</div>
+                                    <div class="text-xs text-weaver-cream/60 font-mono">
+                                        { type: "symbol", ... }<br>
+                                        { type: "diagnostic", ... }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hanko Stamp -->
+                        <div class="absolute bottom-4 right-4 w-16 h-16 border-2 border-weaver-vermilion rounded-sm flex items-center justify-center stamp-rotate mix-blend-multiply bg-weaver-vermilion/5">
+                            <div class="text-center leading-none">
+                                <span class="text-weaver-vermilion font-serif font-bold text-xs block">SYSTEM</span>
+                                <span class="text-weaver-vermilion font-mono text-[8px] block mt-1">VALID</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom CTA Navigation -->
+            <section class="py-16 px-8 lg:px-16">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6 p-8 bg-weaver-indigo/5 border border-weaver-indigo/10 rounded-sm">
+                        <div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-2">Ready to take action?</h3>
+                            <p class="text-sm text-weaver-indigo/70">Now that the agent can see, learn how it manipulates the world.</p>
+                        </div>
+                        <a href="/commands/act" class="group flex items-center gap-3 px-6 py-3 bg-weaver-indigo text-weaver-cream font-mono text-xs font-bold uppercase tracking-wider hover:bg-weaver-vermilion transition-colors shadow-md">
+                            Next: Act Command
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-weaver-cream border-t border-weaver-indigo/20 p-8 lg:p-16 relative">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <div class="flex items-center gap-3 mb-2">
+                             <div class="w-8 h-8 bg-weaver-indigo flex items-center justify-center text-weaver-cream">
+                                <span class="font-serif font-bold text-lg">W</span>
+                             </div>
+                             <h2 class="font-serif text-2xl font-bold text-weaver-indigo">WEAVER</h2>
+                        </div>
+                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">© 2026 Weaver Toolchain Project.</p>
+                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Open Source under MIT License.</p>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                        <div class="flex flex-col space-y-2">
+                            <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
+                            <a href="/why-weaver" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
+                            <a href="/roadmap" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Roadmap</a>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Resources</span>
+                            <a href="/docs" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Documentation</a>
+                            <a href="/install" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Installation</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

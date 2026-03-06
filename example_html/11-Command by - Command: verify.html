@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Command: Verify - Weaver AI Codebase Tooling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'weaver-cream': '#F3EFD9',
+                        'weaver-indigo': '#193C6E',
+                        'weaver-vermilion': '#E8502B',
+                        'weaver-dark': '#0F2440',
+                        'weaver-faded': '#4A6FA5',
+                    },
+                    fontFamily: {
+                        'serif': ['"Playfair Display"', 'serif'],
+                        'sans': ['"IBM Plex Sans"', 'sans-serif'],
+                        'mono': ['"IBM Plex Mono"', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px)",
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        window.FontAwesomeConfig = { autoReplaceSvg: 'nest' };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #F3EFD9; }
+        ::-webkit-scrollbar-thumb { background: #193C6E; border-radius: 4px; }
+        body { background-color: #F3EFD9; color: #193C6E; font-family: 'IBM Plex Sans', sans-serif; }
+        .grid-bg { background-image: linear-gradient(to right, rgba(25, 60, 110, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(25, 60, 110, 0.05) 1px, transparent 1px); background-size: 40px 40px; }
+        .stamp-rotate { transform: rotate(-15deg); }
+        .texture-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png'); opacity: 0.6; pointer-events: none; z-index: 50; }
+        .writing-vertical-rl { writing-mode: vertical-rl; }
+        
+        /* Custom syntax highlighting for the JSONL/Shell examples */
+        .token-key { color: #8BE9FD; }
+        .token-string { color: #F1FA8C; }
+        .token-number { color: #BD93F9; }
+        .token-boolean { color: #FF79C6; }
+        .token-comment { color: #6272A4; font-style: italic; }
+        .token-cmd { color: #50FA7B; font-weight: bold; }
+        .token-arg { color: #F8F8F2; }
+        .token-pass { color: #50FA7B; }
+        .token-fail { color: #FF5555; }
+        
+        .verify-pulse { animation: pulse-opacity 2s infinite; }
+        @keyframes pulse-opacity {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body class="bg-weaver-cream relative overflow-x-hidden selection:bg-weaver-vermilion selection:text-white">
+    
+    <!-- Texture Overlay -->
+    <div class="texture-overlay"></div>
+
+    <div class="flex flex-col lg:flex-row min-h-screen relative z-20">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
+            <div>
+                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                    <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
+                    <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
+                </div>
+                <nav class="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    <a href="/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">00</span> Home
+                    </a>
+                    <a href="/why-weaver" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">01</span> Philosophy
+                    </a>
+                    <a href="/how-it-works" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">02</span> Architecture
+                    </a>
+                    
+                    <a href="/commands" class="block px-4 py-2 text-sm font-semibold text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs">03</span> Commands
+                    </a>
+                    <!-- Sub-navigation for Commands -->
+                    <div class="ml-4 pl-4 border-l border-weaver-indigo/20 space-y-1 my-2">
+                        <a href="/commands/observe" class="block py-1 text-xs font-mono text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">/observe</a>
+                        <a href="/commands/act" class="block py-1 text-xs font-mono text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">/act</a>
+                        <a href="/commands/verify" class="block py-1 text-xs font-mono font-bold text-weaver-vermilion bg-weaver-vermilion/5 -ml-4 pl-4 border-l-2 border-weaver-vermilion">/verify</a>
+                    </div>
+
+                    <a href="/safety" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">04</span> Safety
+                    </a>
+                    <a href="/sempai" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-60">05</span> Sempai Engine
+                    </a>
+                    <a href="/jacquard" class="block px-4 py-2 text-sm font-medium text-weaver-indigo/50 hover:text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <span class="mr-2 font-mono text-xs opacity-40">06</span> Jacquard <span class="text-[10px] uppercase border border-weaver-indigo/30 px-1 ml-1 rounded">Soon</span>
+                    </a>
+                    <div class="pt-4 mt-4 border-t border-weaver-indigo/10">
+                        <a href="/install" class="block px-4 py-2 text-sm font-medium text-weaver-vermilion hover:bg-weaver-vermilion/5 transition-colors border border-transparent font-mono">
+                            > Install
+                        </a>
+                        <a href="/docs" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Docs
+                        </a>
+                        <a href="/roadmap" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                            Roadmap
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            
+            <!-- Version/Status Footer in Sidebar -->
+            <div class="p-6 border-t border-weaver-indigo/10 hidden lg:block">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="font-mono text-xs text-weaver-indigo/60">System Operational</span>
+                </div>
+                <p class="font-mono text-[10px] text-weaver-indigo/40">v0.8.2-beta</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 grid-bg min-h-screen relative">
+            
+            <!-- Header Section -->
+            <section id="verify-header" class="relative pt-16 pb-12 px-8 lg:px-16 border-b border-weaver-indigo/20">
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 mb-8">
+                        <div class="inline-flex items-center space-x-2 border border-weaver-indigo/30 px-3 py-1 bg-white/50 backdrop-blur-sm rounded-sm self-start">
+                            <a href="/commands" class="font-mono text-xs tracking-widest uppercase text-weaver-indigo/60 hover:text-weaver-vermilion transition-colors">COMMANDS</a>
+                            <span class="text-weaver-indigo/40">/</span>
+                            <span class="font-mono text-xs tracking-widest uppercase text-weaver-indigo font-bold">VERIFY</span>
+                        </div>
+                    </div>
+                    
+                    <h1 class="font-serif text-5xl lg:text-7xl font-bold text-weaver-indigo leading-[1.1] mb-6">
+                        Trust through <br>
+                        <span class="text-weaver-vermilion italic font-light">Proof</span>.
+                    </h1>
+                    
+                    <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-3xl font-light">
+                        The <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded">verify</span> command is the gatekeeper. It runs policy checks, test suites, and provenance validation to ensure that changes made by the <a href="/commands/act" class="text-weaver-vermilion hover:underline">act</a> command meet all correctness and safety standards before integration.
+                    </p>
+                </div>
+                
+                <!-- Decorative Abstract Loupe/Check Symbol -->
+                <div class="absolute right-10 top-20 hidden xl:block opacity-10 pointer-events-none">
+                    <svg width="300" height="300" viewBox="0 0 100 100">
+                        <!-- Circle (Loupe) -->
+                        <circle cx="45" cy="45" r="30" stroke="#193C6E" stroke-width="2" fill="none" />
+                        <!-- Handle -->
+                        <path d="M68,68 L85,85" stroke="#193C6E" stroke-width="4" stroke-linecap="round" />
+                        <!-- Checkmark inside -->
+                        <path d="M30,45 L42,57 L60,35" stroke="#E8502B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <!-- Grid lines representing code behind -->
+                        <path d="M20,30 L70,30 M20,40 L70,40 M20,50 L70,50 M20,60 L70,60" stroke="#193C6E" stroke-width="0.5" opacity="0.5" />
+                    </svg>
+                </div>
+            </section>
+
+            <!-- Usage & Syntax Section -->
+            <section class="py-12 px-8 lg:px-16 border-b border-weaver-indigo/20 bg-white/40">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                        
+                        <!-- Left: Synopsis -->
+                        <div class="lg:col-span-1">
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Synopsis</h2>
+                            <p class="text-sm text-weaver-indigo/70 mb-6 leading-relaxed">
+                                Validates codebase state against defined policies and test suites. Often used in CI/CD pipelines to gate merges or as a post-action check by agents.
+                            </p>
+                            
+                            <div class="bg-weaver-cream border border-weaver-indigo p-4 relative mb-6">
+                                <div class="absolute -top-3 left-4 bg-weaver-cream px-2 text-xs font-mono text-weaver-vermilion font-bold">SYNTAX</div>
+                                <code class="font-mono text-sm text-weaver-indigo block break-all">
+                                    weaver verify [OPTIONS] &lt;TARGET&gt;
+                                </code>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs font-mono text-weaver-indigo/60">
+                                <i class="fa-solid fa-code-branch"></i>
+                                <span>CI/CD Compatible Output</span>
+                            </div>
+                        </div>
+
+                        <!-- Right: Options Table -->
+                        <div class="lg:col-span-2">
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Flags & Parameters</h2>
+                            <div class="overflow-hidden border border-weaver-indigo/20 rounded-sm shadow-sm bg-weaver-cream">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
+                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Flag</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Type</th>
+                                            <th class="p-3">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-weaver-indigo/10">
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--policy</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Path</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Path to a specific policy file (YAML/JSON) to enforce. Defaults to <span class="font-mono text-xs">weaver.policy.yaml</span>.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--provenance</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">ID</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Check against specific fusion provenance ID. Ensures code matches design intent.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--strict</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Bool</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Fail on warnings or minor policy deviations. Recommended for CI gating.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--format</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Enum</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Output format: <span class="bg-weaver-indigo/10 px-1 rounded">human</span> (default), <span class="bg-weaver-indigo/10 px-1 rounded">jsonl</span>, or <span class="bg-weaver-indigo/10 px-1 rounded">sarif</span>.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verification Layers Diagram -->
+            <section class="py-16 px-8 lg:px-16 bg-weaver-cream border-b border-weaver-indigo/20 relative overflow-hidden">
+                <div class="absolute inset-0 z-0" style="background-image: linear-gradient(rgba(25, 60, 110, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(25, 60, 110, 0.03) 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+                <div class="max-w-6xl mx-auto relative z-10">
+                    <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-2 block">ARCHITECTURE</span>
+                            <h2 class="font-serif text-3xl text-weaver-indigo">The Verification Stack</h2>
+                            <p class="text-weaver-indigo/70 mt-2 max-w-xl">
+                                Weaver verifies code on three distinct layers: syntactic correctness, semantic policy compliance, and historical provenance.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Layer 1: Syntax & Tests -->
+                        <div class="bg-white border border-weaver-indigo p-6 shadow-[4px_4px_0px_0px_rgba(25,60,110,0.1)] group hover:-translate-y-1 transition-transform">
+                            <div class="flex items-center justify-between mb-4 pb-4 border-b border-weaver-indigo/10">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo bg-weaver-indigo/10 px-2 py-1">LAYER 01</span>
+                                <i class="fa-solid fa-microchip text-weaver-vermilion text-xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-2">Build & Test</h3>
+                            <p class="text-xs text-weaver-indigo/70 mb-4 h-10">Does it compile? Do the unit tests pass? Basic functional integrity.</p>
+                            <div class="bg-weaver-dark p-3 rounded-sm font-mono text-[10px] text-gray-300">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-green-400">✓</span> cargo build
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span> pytest tests/
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 2: Policy -->
+                        <div class="bg-white border border-weaver-indigo p-6 shadow-[4px_4px_0px_0px_rgba(25,60,110,0.1)] group hover:-translate-y-1 transition-transform">
+                            <div class="flex items-center justify-between mb-4 pb-4 border-b border-weaver-indigo/10">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo bg-weaver-indigo/10 px-2 py-1">LAYER 02</span>
+                                <i class="fa-solid fa-scale-balanced text-weaver-vermilion text-xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-2">Policy Enforcement</h3>
+                            <p class="text-xs text-weaver-indigo/70 mb-4 h-10">Linting, style guides, and forbidden pattern detection via Sempai.</p>
+                            <div class="bg-weaver-dark p-3 rounded-sm font-mono text-[10px] text-gray-300">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-green-400">✓</span> no_unsafe_blocks
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-yellow-400">!</span> cyclomatic_complexity
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layer 3: Provenance -->
+                        <div class="bg-white border border-weaver-indigo p-6 shadow-[4px_4px_0px_0px_rgba(25,60,110,0.1)] group hover:-translate-y-1 transition-transform">
+                            <div class="flex items-center justify-between mb-4 pb-4 border-b border-weaver-indigo/10">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo bg-weaver-indigo/10 px-2 py-1">LAYER 03</span>
+                                <i class="fa-solid fa-link text-weaver-vermilion text-xl"></i>
+                            </div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-2">Provenance Link</h3>
+                            <p class="text-xs text-weaver-indigo/70 mb-4 h-10">Verification that code implements the design intent from Fusion.</p>
+                            <div class="bg-weaver-dark p-3 rounded-sm font-mono text-[10px] text-gray-300">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="text-green-400">✓</span> fusion:spec_match
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-green-400">✓</span> author:agent_007
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Configuration Example -->
+            <section class="py-16 px-8 lg:px-16 border-b border-weaver-indigo/20">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                        
+                        <!-- Explanation -->
+                        <div>
+                            <h2 class="font-serif text-3xl text-weaver-indigo mb-6">Defining Policy</h2>
+                            <p class="text-weaver-indigo/80 mb-6 leading-relaxed">
+                                Policies are defined in YAML. They combine standard linters with custom <a href="/sempai" class="text-weaver-vermilion underline decoration-1 underline-offset-2">Sempai</a> queries to enforce architectural constraints specific to your project.
+                            </p>
+                            
+                            <ul class="space-y-4 mb-8">
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-check text-weaver-vermilion mt-1 text-sm"></i>
+                                    <span class="text-sm text-weaver-indigo/70">Block dangerous functions or imports</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-check text-weaver-vermilion mt-1 text-sm"></i>
+                                    <span class="text-sm text-weaver-indigo/70">Enforce type hints and documentation standards</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-check text-weaver-vermilion mt-1 text-sm"></i>
+                                    <span class="text-sm text-weaver-indigo/70">Require specific test coverage thresholds</span>
+                                </li>
+                            </ul>
+
+                            <div class="p-4 bg-weaver-indigo/5 border-l-2 border-weaver-indigo">
+                                <p class="text-xs font-mono text-weaver-indigo italic">
+                                    "Verification is not just about catching bugs; it is about ensuring the AI acts within the boundaries of the system's design philosophy."
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Code Block -->
+                        <div class="bg-weaver-dark rounded-sm p-1 shadow-lg border border-weaver-indigo/20">
+                            <div class="bg-[#282A36] p-4 rounded-sm overflow-x-auto">
+                                <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
+                                    <span class="text-xs font-mono text-weaver-cream/50">weaver.policy.yaml</span>
+                                    <div class="flex gap-1">
+                                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                        <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                        <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                    </div>
+                                </div>
+<pre class="text-xs font-mono leading-relaxed text-gray-300">
+<span class="token-key">version:</span> <span class="token-string">"1.0"</span>
+<span class="token-key">rules:</span>
+  <span class="token-comment"># Enforce security patterns</span>
+  <span class="token-key">- name:</span> <span class="token-string">"no-raw-sql"</span>
+    <span class="token-key">severity:</span> <span class="token-string">"error"</span>
+    <span class="token-key">query:</span> <span class="token-string">"sempai: pattern: sql_query($X) where $X is string_literal"</span>
+    
+  <span class="token-comment"># Ensure testing standards</span>
+  <span class="token-key">- name:</span> <span class="token-string">"test-coverage"</span>
+    <span class="token-key">severity:</span> <span class="token-string">"warning"</span>
+    <span class="token-key">check:</span> <span class="token-string">"coverage > 85%"</span>
+
+  <span class="token-comment"># Provenance check</span>
+  <span class="token-key">- name:</span> <span class="token-string">"design-compliance"</span>
+    <span class="token-key">severity:</span> <span class="token-string">"error"</span>
+    <span class="token-key">requires:</span> 
+      <span class="token-key">-</span> <span class="token-string">"fusion:provenance_id"</span>
+</pre>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Output Format / CI Integration -->
+            <section class="py-16 px-8 lg:px-16 bg-white/30 border-b border-weaver-indigo/20">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="font-serif text-3xl text-weaver-indigo mb-10">CI/CD Integration Output</h2>
+                    
+                    <div class="relative">
+                        <!-- Connecting Line -->
+                        <div class="absolute left-8 top-10 bottom-10 w-0.5 bg-weaver-indigo/20 hidden md:block"></div>
+
+                        <!-- Step 1: Running -->
+                        <div class="flex flex-col md:flex-row gap-6 mb-12 relative z-10">
+                            <div class="w-16 h-16 bg-weaver-indigo text-weaver-cream flex items-center justify-center rounded-sm font-bold font-mono text-xl shrink-0 border-4 border-weaver-cream shadow-sm z-10">
+                                01
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Streaming JSONL Output</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">
+                                    Weaver streams structured logs designed for machine consumption. This allows CI pipelines to fail fast or parse specific error details.
+                                </p>
+                                <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 font-mono text-xs overflow-x-auto">
+<pre class="text-gray-300">
+<span class="token-comment"># STDOUT STREAM</span>
+{<span class="token-key">"type"</span>:<span class="token-string">"start"</span>, <span class="token-key">"target"</span>:<span class="token-string">"src/lib.rs"</span>, <span class="token-key">"timestamp"</span>:<span class="token-number">167889201</span>}
+{<span class="token-key">"type"</span>:<span class="token-string">"check"</span>, <span class="token-key">"rule"</span>:<span class="token-string">"no-raw-sql"</span>, <span class="token-key">"status"</span>:<span class="token-pass">"pass"</span>}
+{<span class="token-key">"type"</span>:<span class="token-string">"check"</span>, <span class="token-key">"rule"</span>:<span class="token-string">"test-coverage"</span>, <span class="token-key">"status"</span>:<span class="token-fail">"fail"</span>, <span class="token-key">"details"</span>:<span class="token-string">"82% < 85%"</span>}
+{<span class="token-key">"type"</span>:<span class="token-string">"summary"</span>, <span class="token-key">"passed"</span>:<span class="token-number">14</span>, <span class="token-key">"failed"</span>:<span class="token-number">1</span>, <span class="token-key">"exit_code"</span>:<span class="token-number">1</span>}
+</pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Gating -->
+                        <div class="flex flex-col md:flex-row gap-6 relative z-10">
+                            <div class="w-16 h-16 bg-weaver-vermilion text-white flex items-center justify-center rounded-sm font-bold font-mono text-xl shrink-0 border-4 border-weaver-cream shadow-sm z-10">
+                                02
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Automated Gating</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">
+                                    Easily integrate into GitHub Actions or GitLab CI to block PRs that don't meet the standard.
+                                </p>
+                                <div class="bg-weaver-cream border border-weaver-indigo/30 p-4 rounded-sm">
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <i class="fa-brands fa-github text-2xl text-weaver-indigo"></i>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">.github/workflows/verify.yml</span>
+                                    </div>
+                                    <code class="block font-mono text-xs text-weaver-indigo/80 bg-white p-2 border border-weaver-indigo/10">
+                                        - name: Run Weaver Verification<br>
+                                        &nbsp;&nbsp;run: weaver verify --strict --format sarif > results.sarif
+                                    </code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom CTA Navigation -->
+            <section class="py-16 px-8 lg:px-16">
+                <div class="max-w-6xl mx-auto">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-6 p-8 bg-weaver-indigo/5 border border-weaver-indigo/10 rounded-sm">
+                        <div>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-2">Ready to secure your agents?</h3>
+                            <p class="text-sm text-weaver-indigo/70">Learn how the sandbox keeps execution safe.</p>
+                        </div>
+                        <a href="/safety" class="group flex items-center gap-3 px-6 py-3 bg-weaver-indigo text-weaver-cream font-mono text-xs font-bold uppercase tracking-wider hover:bg-weaver-vermilion transition-colors shadow-md">
+                            Next: Safety Model
+                            <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-weaver-cream border-t border-weaver-indigo/20 p-8 lg:p-16 relative">
+                <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <div class="flex items-center gap-3 mb-2">
+                             <div class="w-8 h-8 bg-weaver-indigo flex items-center justify-center text-weaver-cream">
+                                <span class="font-serif font-bold text-lg">W</span>
+                             </div>
+                             <h2 class="font-serif text-2xl font-bold text-weaver-indigo">WEAVER</h2>
+                        </div>
+                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">© 2026 Weaver Toolchain Project.</p>
+                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Open Source under MIT License.</p>
+                    </div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                        <div class="flex flex-col space-y-2">
+                            <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
+                            <a href="/why-weaver" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
+                            <a href="/roadmap" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Roadmap</a>
+                        </div>
+                        <div class="flex flex-col space-y-2">
+                            <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Resources</span>
+                            <a href="/docs" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Documentation</a>
+                            <a href="/install" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Installation</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Decorative Footer Stamp -->
+                <div class="absolute bottom-8 right-8 opacity-20 pointer-events-none hidden lg:block">
+                    <div class="w-24 h-24 border-4 border-weaver-indigo rounded-sm flex items-center justify-center stamp-rotate">
+                        <div class="text-center">
+                            <span class="text-weaver-indigo font-serif font-bold text-xl block">DESIGN</span>
+                            <span class="text-weaver-indigo font-serif font-bold text-xl block">SYSTEM</span>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
