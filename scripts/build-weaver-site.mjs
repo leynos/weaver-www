@@ -1,4 +1,4 @@
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const sourcePages = [
@@ -51,6 +51,10 @@ const sourcePages = [
     outputDir: "weaver/commands/verify",
   },
   {
+    source: "example_html/13-Command by - Sempai White Paper.html",
+    outputDir: "weaver/sempai",
+  },
+  {
     source: "Weaver Design Language 2.html",
     outputDir: "weaver/design-language",
   },
@@ -73,11 +77,18 @@ const routeMap = new Map([
   ["/design-language", "/weaver/design-language/"],
 ]);
 
-const generatedAliases = [
+const assetCopies = [
   {
-    outputDir: "weaver/sempai",
-    destination: "/weaver/docs/#semgrep-patterns",
-    title: "Sempai Engine - Weaver AI Codebase Tooling",
+    source: "image_out/sempai-whitepaper-pipeline.png",
+    destination: "weaver/assets/sempai/sempai-whitepaper-pipeline.png",
+  },
+  {
+    source: "image_out/sempai-whitepaper-pattern-compilation.png",
+    destination: "weaver/assets/sempai/sempai-whitepaper-pattern-compilation.png",
+  },
+  {
+    source: "image_out/sempai-whitepaper-evaluation.png",
+    destination: "weaver/assets/sempai/sempai-whitepaper-evaluation.png",
   },
 ];
 
@@ -110,23 +121,7 @@ for (const page of sourcePages) {
   await writeFile(outputPath, rewrittenHtml);
 }
 
-for (const alias of generatedAliases) {
-  const outputPath = path.join(alias.outputDir, "index.html");
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${alias.title}</title>
-  <meta http-equiv="refresh" content="0; url=${alias.destination}">
-  <link rel="canonical" href="${alias.destination}">
-</head>
-<body>
-  <p>Redirecting to <a href="${alias.destination}">${alias.destination}</a>.</p>
-</body>
-</html>
-`;
-
-  await mkdir(alias.outputDir, { recursive: true });
-  await writeFile(outputPath, html);
+for (const asset of assetCopies) {
+  await mkdir(path.dirname(asset.destination), { recursive: true });
+  await copyFile(asset.source, asset.destination);
 }
