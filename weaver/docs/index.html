@@ -134,6 +134,7 @@
                         <h3 class="font-serif text-weaver-indigo font-bold mb-3 text-sm">Core Systems</h3>
                         <ul class="space-y-2 border-l border-weaver-indigo/10 ml-1">
                             <li><a href="#configuration" class="block pl-4 text-xs text-weaver-indigo/70 hover:text-weaver-vermilion hover:border-l-2 hover:border-weaver-vermilion -ml-[1px] py-1 transition-all">Configuration Reference</a></li>
+                            <li><a href="#environment-variables" class="block pl-4 text-xs text-weaver-indigo/70 hover:text-weaver-vermilion hover:border-l-2 hover:border-weaver-vermilion -ml-[1px] py-1 transition-all">Environment Variables</a></li>
                             <li><a href="#jsonl-schema" class="block pl-4 text-xs text-weaver-indigo/70 hover:text-weaver-vermilion hover:border-l-2 hover:border-weaver-vermilion -ml-[1px] py-1 transition-all">JSONL Schema</a></li>
                             <li><a href="#daemon-lifecycle" class="block pl-4 text-xs text-weaver-indigo/70 hover:text-weaver-vermilion hover:border-l-2 hover:border-weaver-vermilion -ml-[1px] py-1 transition-all">Daemon Lifecycle</a></li>
                         </ul>
@@ -231,10 +232,46 @@
                             <h2 class="font-serif text-3xl text-weaver-indigo">Configuration</h2>
                         </div>
                         <p class="mb-6 text-weaver-indigo/80">
-                            Configuration is layered: built-in defaults &rarr; TOML file &rarr; environment variables &rarr; CLI flags. Each layer overrides the previous. Files are discovered via <code class="font-mono text-xs bg-weaver-indigo/10 px-1">--config-path</code> or XDG search paths (<code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver.toml</code> / <code class="font-mono text-xs bg-weaver-indigo/10 px-1">.weaver.toml</code>).
+                            Configuration is layered with <code class="font-mono text-xs bg-weaver-indigo/10 px-1">ortho-config</code>. Each successive layer overrides earlier sources, so a CLI flag always wins.
                         </p>
 
-                        <div class="bg-weaver-dark p-6 rounded-sm shadow-lg overflow-x-auto border border-weaver-indigo/20 mb-6">
+                        <!-- Precedence table -->
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-8">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium w-16">Priority</th>
+                                        <th class="p-4 font-medium">Source</th>
+                                        <th class="p-4 font-medium">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">4</td>
+                                        <td class="p-4 font-mono text-weaver-indigo">CLI flags</td>
+                                        <td class="p-4 text-weaver-indigo/80">Always honoured. See table below.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">3</td>
+                                        <td class="p-4 font-mono text-weaver-indigo">Environment variables</td>
+                                        <td class="p-4 text-weaver-indigo/80"><code>WEAVER_*</code> convention. Override files, yield to flags.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">2</td>
+                                        <td class="p-4 font-mono text-weaver-indigo">Configuration files</td>
+                                        <td class="p-4 text-weaver-indigo/80">TOML. Discovered via <code>--config-path</code> or XDG search.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">1</td>
+                                        <td class="p-4 font-mono text-weaver-indigo">Built-in defaults</td>
+                                        <td class="p-4 text-weaver-indigo/80">Unix socket, <code>info</code> filter, <code>json</code> format, no overrides.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- TOML example -->
+                        <div class="bg-weaver-dark p-6 rounded-sm shadow-lg overflow-x-auto border border-weaver-indigo/20 mb-8 paper-panel">
                             <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
                                 <span class="text-xs font-mono text-weaver-cream/60">weaver.toml</span>
                                 <button class="text-xs text-weaver-cream/40 hover:text-white"><i class="fa-regular fa-copy"></i></button>
@@ -257,14 +294,138 @@ directive = <span class="text-green-400">"force"</span>
 </pre>
                         </div>
 
+                        <!-- XDG discovery -->
+                        <h3 id="xdg-discovery" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">File Discovery</h3>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            When <code class="font-mono text-xs bg-weaver-indigo/10 px-1">--config-path</code> is not supplied, the loader searches the standard XDG locations for <code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver.toml</code> or <code class="font-mono text-xs bg-weaver-indigo/10 px-1">.weaver.toml</code>. Discovery honours <code class="font-mono text-xs bg-weaver-indigo/10 px-1">XDG_CONFIG_HOME</code> (typically <code class="font-mono text-xs bg-weaver-indigo/10 px-1">~/.config/weaver/</code>) and falls back to the project root. If no files exist, the built-in defaults apply.
+                        </p>
+
+                        <!-- Fail-fast behaviour -->
+                        <h3 id="fail-fast" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Fail-Fast Validation</h3>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            <code class="font-mono text-xs bg-weaver-indigo/10 px-1">ortho-config</code> v0.6.0 treats invalid configuration files as fatal. Both the CLI and daemon abort with a <code class="font-mono text-xs bg-weaver-indigo/10 px-1">LoadConfiguration</code> error that lists every offending path. No silent fallback — fix or remove the reported files.
+                        </p>
+                        <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-8 paper-panel">
+                            <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">EXAMPLE ERROR OUTPUT</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+failed to load configuration: multiple configuration errors:
+1: Configuration file error in '/etc/weaver/weaver.toml': expected `}`
+2: Configuration file error in '/home/alex/.weaver.toml': invalid type:
+string "yes", expected a boolean
+</pre>
+                        </div>
+
+                        <!-- Environment variables -->
+                        <h3 id="environment-variables" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Environment Variables</h3>
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-8">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium">Variable</th>
+                                        <th class="p-4 font-medium">Equivalent Flag</th>
+                                        <th class="p-4 font-medium">Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_CONFIG_PATH</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">--config-path</td>
+                                        <td class="p-4 text-weaver-indigo/80">Explicit configuration file path.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_DAEMON_SOCKET</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">--daemon-socket</td>
+                                        <td class="p-4 text-weaver-indigo/80">Daemon transport endpoint (<code>unix://</code> or <code>tcp://</code>).</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_LOG_FILTER</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">--log-filter</td>
+                                        <td class="p-4 text-weaver-indigo/80">Tracing filter directive (default: <code>info</code>).</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_LOG_FORMAT</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">--log-format</td>
+                                        <td class="p-4 text-weaver-indigo/80">Log output format: <code>json</code> or <code>compact</code>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Capability overrides -->
+                        <h3 id="capability-overrides" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Capability Overrides</h3>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            Override directives let operators mask unreliable capabilities or force a feature on when a language server under-reports support. Each directive uses the syntax <code class="font-mono text-xs bg-weaver-indigo/10 px-1">language:capability=directive</code>.
+                        </p>
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-6">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium">Directive</th>
+                                        <th class="p-4 font-medium">Effect</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">allow</td>
+                                        <td class="p-4 text-weaver-indigo/80">Permits the capability if the server advertises it (the default).</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">deny</td>
+                                        <td class="p-4 text-weaver-indigo/80">Blocks the capability even if the server advertises it.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">force</td>
+                                        <td class="p-4 text-weaver-indigo/80">Enables the capability regardless of server advertisement.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            Identifiers are case-insensitive and whitespace-trimmed. Duplicates are resolved by keeping the last directive for each language/capability pair. In TOML, use the <code class="font-mono text-xs bg-weaver-indigo/10 px-1">[[capability_overrides]]</code> array; from the CLI, repeat <code class="font-mono text-xs bg-weaver-indigo/10 px-1">--capability-overrides</code>:
+                        </p>
+                        <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-4 paper-panel">
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+<span class="text-weaver-cream/60">$</span> weaver observe get-definition \
+    --capability-overrides <span class="text-green-400">"python:observe.call-hierarchy=force"</span> \
+    --capability-overrides <span class="text-green-400">"rust:observe.call-hierarchy=deny"</span> \
+    --uri file:///src/main.rs --position 10:5
+</pre>
+                        </div>
+
+                        <!-- CLI flags (expanded) -->
                         <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
-                            <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">CLI flags</h4>
-                            <div class="flex flex-wrap gap-2 font-mono text-xs">
-                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--config-path &lt;PATH&gt;</span>
-                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--daemon-socket &lt;ENDPOINT&gt;</span>
-                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--log-filter &lt;FILTER&gt;</span>
-                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--log-format &lt;FORMAT&gt;</span>
-                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--capability-overrides &lt;DIRECTIVE&gt;</span>
+                            <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">CLI Flags</h4>
+                            <div class="border border-weaver-indigo/20 rounded-sm overflow-hidden">
+                                <table class="w-full text-left text-sm">
+                                    <thead class="bg-weaver-indigo/5 font-mono text-xs uppercase text-weaver-indigo">
+                                        <tr>
+                                            <th class="p-3 font-medium">Flag</th>
+                                            <th class="p-3 font-medium">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-weaver-indigo/10">
+                                        <tr class="hover:bg-weaver-cream/30">
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo font-bold whitespace-nowrap">--config-path &lt;PATH&gt;</td>
+                                            <td class="p-3 text-xs text-weaver-indigo/80">Read an explicit configuration file instead of using XDG discovery.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-cream/30">
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo font-bold whitespace-nowrap">--daemon-socket &lt;ENDPOINT&gt;</td>
+                                            <td class="p-3 text-xs text-weaver-indigo/80">Override the daemon transport. Accepts <code>unix://</code> or <code>tcp://</code> URIs.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-cream/30">
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo font-bold whitespace-nowrap">--log-filter &lt;FILTER&gt;</td>
+                                            <td class="p-3 text-xs text-weaver-indigo/80">Tracing filter directive (default: <code>info</code>).</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-cream/30">
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo font-bold whitespace-nowrap">--log-format &lt;FORMAT&gt;</td>
+                                            <td class="p-3 text-xs text-weaver-indigo/80">Log output format: <code>json</code> or <code>compact</code>.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-cream/30">
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo font-bold whitespace-nowrap">--capability-overrides &lt;DIRECTIVE&gt;</td>
+                                            <td class="p-3 text-xs text-weaver-indigo/80">Append a <code>language:capability=directive</code> override. Repeatable.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </section>
