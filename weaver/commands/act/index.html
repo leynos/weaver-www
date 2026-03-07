@@ -244,13 +244,13 @@
                     </div>
 
                     <!-- Sandbox Visualizer -->
-                    <div class="bg-white border-2 border-weaver-indigo p-8 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)]">
+                    <div class="bg-white border-2 border-weaver-indigo p-8 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)] figure-fullbleed">
                         <!-- Technical Labels -->
-                        <div class="absolute top-4 left-4 border border-weaver-indigo px-2 py-1 bg-white z-20">
+                        <div class="absolute top-4 left-4 border border-weaver-indigo px-2 py-1 bg-white z-20 figure-fullbleed-label">
                             <span class="font-mono text-[10px] text-weaver-indigo">FIG. 4.2 - ISOLATION BOUNDARY</span>
                         </div>
 
-                        <div class="relative py-8">
+                        <div class="relative py-8 figure-fullbleed-img">
                             <img
                                 src="/weaver/assets/act/act-birdcage-sandbox.png"
                                 alt="Illustration of the host environment, controlled socket, and isolated Birdcage sandbox boundary."
@@ -259,7 +259,7 @@
                         </div>
 
                         <!-- Safety Note Footer -->
-                        <div class="mt-8 border-t border-weaver-indigo/10 pt-4 flex items-start gap-3">
+                        <div class="mt-8 border-t border-weaver-indigo/10 pt-4 flex items-start gap-3 figure-fullbleed-footer">
                             <i class="fa-solid fa-triangle-exclamation text-weaver-vermilion mt-1"></i>
                             <p class="text-sm text-weaver-indigo/70 font-mono">
                                 <strong class="text-weaver-indigo">Violation Policy:</strong> Any attempt to access unauthorized paths (e.g., <code class="text-xs">/etc/passwd</code>, <code class="text-xs">~/.ssh</code>) immediately kills the child process and logs a security event.
