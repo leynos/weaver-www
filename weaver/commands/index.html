@@ -538,6 +538,56 @@
                 </div>
             </section>
 
+            <!-- CLI Help Discoverability (PLANNED) -->
+            <section class="py-16 px-8 lg:px-16 border-b border-weaver-indigo/20 bg-white/40">
+                <div class="max-w-6xl mx-auto">
+                    <div class="border-2 border-dashed border-weaver-indigo/40 rounded-sm p-8 opacity-80">
+                        <div class="flex items-center gap-3 mb-6">
+                            <h2 class="font-serif text-3xl text-weaver-indigo">CLI Help &amp; Discoverability</h2>
+                            <span class="text-[10px] font-bold font-mono bg-weaver-indigo/10 text-weaver-indigo/60 px-1.5 py-0.5 uppercase tracking-widest rounded-sm">planned</span>
+                        </div>
+
+                        <p class="mb-6 text-sm text-weaver-indigo/80">
+                            Upcoming help surfaces will make the CLI self-documenting without requiring external runbooks or source inspection.
+                        </p>
+
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-6">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo/80 text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium">Command</th>
+                                        <th class="p-4 font-medium">Behaviour</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaver --help</td>
+                                        <td class="p-4 text-weaver-indigo/80">Lists all three domains and every operation for each, plus global options and a quick-start example. Does not require a running daemon.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaver &lt;domain&gt;</td>
+                                        <td class="p-4 text-weaver-indigo/80">Without an operation, prints available operations for that domain and a follow-up <code class="text-xs bg-weaver-indigo/10 px-1">--help</code> hint.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaver &lt;domain&gt; &lt;op&gt; --help</td>
+                                        <td class="p-4 text-weaver-indigo/80">Operation-level help with required arguments, examples, and exit codes.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaver --version</td>
+                                        <td class="p-4 text-weaver-indigo/80">Prints the version string and exits.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="font-serif text-lg text-weaver-indigo mb-3">Actionable Errors</h3>
+                        <p class="text-sm text-weaver-indigo/80">
+                            Invalid domains will list all valid alternatives. Unknown operations will suggest the nearest match by edit distance. All error paths will follow a three-part template: problem statement, valid alternatives, and an explicit next command.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
             <!-- Footer -->
             <footer class="bg-weaver-cream border-t border-weaver-indigo/20 p-8 lg:p-16 relative">
                 <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
