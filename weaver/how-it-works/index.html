@@ -184,7 +184,7 @@
                             </div>
                             <h2 class="font-serif text-4xl text-weaver-indigo mb-6">Semantic Fusion Engine</h2>
                             <p class="text-lg text-weaver-indigo/80 mb-6 font-light">
-                                The heart of Weaver is the Fusion Engine. It ingests raw code, AST data, and LSP diagnostics to create a unified "Knowledge Graph" of your codebase.
+                                The heart of Weaver is the Fusion Engine. It ingests raw code, AST data, and LSP diagnostics to build internal semantic data structures that power every observe, act, and verify operation.
                             </p>
                             
                             <div class="space-y-8 mt-8">
@@ -270,28 +270,32 @@
                             <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                                 <i class="fa-solid fa-server text-8xl text-white"></i>
                             </div>
-                            
+
                             <h3 class="font-serif text-2xl text-white mb-2">The Daemon</h3>
-                            <div class="font-mono text-xs text-weaver-vermilion mb-4">weaver-d</div>
-                            
+                            <div class="font-mono text-xs text-weaver-vermilion mb-4">weaver daemon</div>
+
                             <ul class="space-y-3 text-sm text-weaver-cream/80 font-light">
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Maintains in-memory graph of the codebase.</span>
+                                    <span>Hosts LSP child processes (rust-analyzer, pyright, etc.).</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Manages LSP child processes (rust-analyzer, pyright).</span>
+                                    <span>Dispatches JSONL requests from the CLI and streams responses.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Listens on Unix Domain Socket (or TCP).</span>
+                                    <span>Listens on Unix Domain Socket (or TCP via <code class="text-xs text-weaver-cream/50">--daemon-socket</code>).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
+                                    <span>Auto-starts when a domain command is issued — no manual launch needed.</span>
                                 </li>
                             </ul>
 
                             <div class="mt-8 pt-6 border-t border-white/10">
-                                <div class="font-mono text-xs text-gray-400 mb-2">Lifecycle Command:</div>
-                                <code class="block bg-black/30 p-2 rounded text-xs font-mono text-green-400">$ weaver daemon start --background</code>
+                                <div class="font-mono text-xs text-gray-400 mb-2">Manual lifecycle:</div>
+                                <code class="block bg-black/30 p-2 rounded text-xs font-mono text-green-400">$ weaver daemon start</code>
                             </div>
                         </div>
 
@@ -300,28 +304,28 @@
                             <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                                 <i class="fa-solid fa-terminal text-8xl text-white"></i>
                             </div>
-                            
+
                             <h3 class="font-serif text-2xl text-white mb-2">The Client</h3>
-                            <div class="font-mono text-xs text-weaver-vermilion mb-4">/usr/bin/weaver</div>
-                            
+                            <div class="font-mono text-xs text-weaver-vermilion mb-4">weaver &lt;domain&gt; &lt;operation&gt;</div>
+
                             <ul class="space-y-3 text-sm text-weaver-cream/80 font-light">
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Thin wrapper around JSONL streaming API.</span>
+                                    <span>Parses config (<code class="text-xs text-weaver-cream/50">--config-path</code>, XDG, env vars) and CLI flags.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Handles user authentication and config parsing.</span>
+                                    <span>Sends JSONL requests to the daemon, streams the response.</span>
                                 </li>
                                 <li class="flex items-start gap-3">
                                     <i class="fa-solid fa-check mt-1 text-weaver-vermilion text-xs"></i>
-                                    <span>Formats raw JSON events into human-readable tables.</span>
+                                    <span>Renders human-readable output when stdout is a TTY (<code class="text-xs text-weaver-cream/50">--output auto</code>).</span>
                                 </li>
                             </ul>
 
                             <div class="mt-8 pt-6 border-t border-white/10">
-                                <div class="font-mono text-xs text-gray-400 mb-2">Usage Example:</div>
-                                <code class="block bg-black/30 p-2 rounded text-xs font-mono text-green-400">$ weaver observe src/main.rs</code>
+                                <div class="font-mono text-xs text-gray-400 mb-2">Usage example:</div>
+                                <code class="block bg-black/30 p-2 rounded text-xs font-mono text-green-400">$ weaver observe get-definition --uri file:///src/main.rs --position 10:5</code>
                             </div>
                         </div>
                     </div>
