@@ -101,6 +101,10 @@ body {
         padding-left: 2rem !important;
         padding-right: 2rem !important;
     }
+
+    .figure-fullbleed.figure-fullbleed-opaque {
+        background: #fff !important;
+    }
 }
 
 .masthead-eyebrow {
