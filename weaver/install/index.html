@@ -221,21 +221,20 @@
                     <div class="relative pl-12 pb-12">
                         <div class="step-line"></div>
                         <div class="absolute left-0 top-0 w-8 h-8 bg-weaver-indigo text-white font-mono font-bold flex items-center justify-center rounded-sm shadow-sm z-10">02</div>
-                        
-                        <h3 class="font-serif text-xl font-bold text-weaver-indigo mb-2">Initialize Configuration</h3>
-                        <p class="text-weaver-indigo/70 mb-4 max-w-2xl">Create the default configuration directory at <code>~/.config/weaver</code> and generate a base policy file.</p>
-                        
+
+                        <h3 class="font-serif text-xl font-bold text-weaver-indigo mb-2">Verify Installation</h3>
+                        <p class="text-weaver-indigo/70 mb-4 max-w-2xl">No init ceremony required — Weaver discovers configuration through XDG paths, environment variables, and CLI flags, all with sensible defaults. Run the capability probe to confirm the binary is installed:</p>
+
                         <div class="bg-weaver-dark rounded-sm p-4 shadow-lg border border-weaver-indigo/20 max-w-2xl code-container group">
                             <div class="flex justify-between items-start">
-                                <code class="font-mono text-sm text-gray-300">
-                                    <span class="text-green-400">weaver</span> init --default
-                                </code>
-                                <button class="copy-btn text-xs text-gray-400 hover:text-white bg-white/10 px-2 py-1 rounded" onclick="navigator.clipboard.writeText('weaver init --default')">
+                                <code class="font-mono text-sm text-green-400">weaver --capabilities</code>
+                                <button class="copy-btn text-xs text-gray-400 hover:text-white bg-white/10 px-2 py-1 rounded" onclick="navigator.clipboard.writeText('weaver --capabilities')">
                                     <i class="fa-regular fa-copy mr-1"></i> Copy
                                 </button>
                             </div>
                             <div class="mt-2 text-xs text-gray-500 font-mono border-t border-white/10 pt-2">
-                                Output: Created config at /home/user/.config/weaver/weaver.toml
+                                Prints the negotiated capability matrix as JSON.<br>
+                                No daemon required — this runs entirely in the CLI process.
                             </div>
                         </div>
                     </div>
@@ -339,10 +338,11 @@
                                 Unix Socket Permission Denied
                             </h3>
                             <p class="text-sm text-weaver-indigo/70 mt-2 mb-4">
-                                If you see <code>Error: connect(2) failed</code>, the daemon socket may have incorrect ownership.
+                                If you see <code>Error: connect(2) failed</code>, the daemon socket may have incorrect ownership. The default socket lives at <code>$XDG_RUNTIME_DIR/weaver/weaverd.sock</code> (fallback: <code>/tmp/weaver/uid-$UID/weaverd.sock</code>). The usual fix is to ensure the daemon runs as the correct user rather than chowning the socket directly:
                             </p>
                             <div class="bg-weaver-cream p-3 font-mono text-xs text-weaver-indigo border-l-2 border-weaver-indigo">
-                                sudo chown $USER:$USER /tmp/weaver.sock
+                                <span class="text-weaver-indigo/50"># Stop any stale daemon, then restart as your user</span><br>
+                                weaver daemon stop &amp;&amp; weaver daemon start
                             </div>
                         </div>
 
@@ -357,7 +357,7 @@
                             </p>
                             <div class="bg-weaver-dark p-4 rounded-sm text-xs font-mono text-gray-300">
                                 <span class="text-weaver-indigo/50"># weaver.toml — switch to TCP transport</span><br>
-                                daemon_socket = { transport = <span class="text-green-400">"tcp"</span>, address = <span class="text-green-400">"127.0.0.1"</span>, port = <span class="text-yellow-400">9779</span> }
+                                daemon_socket = { transport = <span class="text-green-400">"tcp"</span>, host = <span class="text-green-400">"127.0.0.1"</span>, port = <span class="text-yellow-400">9779</span> }
                             </div>
                         </div>
                     </div>
