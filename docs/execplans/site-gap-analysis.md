@@ -5,7 +5,7 @@ This ExecPlan (execution plan) is a living document. The sections
 Discoveries`, `Decision Log`, and `Outcomes & Retrospective` must be kept
 up to date as work proceeds.
 
-Status: DRAFT
+Status: COMPLETED
 
 ## Purpose / big picture
 
@@ -193,6 +193,21 @@ The brief should map each homepage block to a required job:
 Completion signal: the brief is concise enough that another agent could
 rewrite the homepage without re-reading the skill prompt.
 
+Rewrite brief:
+
+- Hero: say Weaver is a CLI first, then name the concrete domain split
+  (`observe`, `act`, `verify`), then give one trust mechanism in the same
+  block.
+- Value cards: open on an operator outcome, then name the mechanism; cut
+  prestige phrases such as "bare-metal performance" unless a metric exists.
+- Command preview: leave the existing examples alone and use them as the voice
+  calibration point for the rest of the page.
+- Sempai teaser: position Sempai as the query layer behind `observe`, name the
+  Tree-sitter and Semgrep-compatible foundations, and mark language parity as
+  staged rather than complete.
+- Utility cards and footer: replace filler with concrete click reasons, and do
+  not imply a live Discord/community surface where none exists.
+
 ### Phase 2: Rewrite the homepage copy
 
 Edit `weaver/index.html` section by section. Start with the hero, then the
@@ -238,7 +253,7 @@ set -o pipefail
 markdownlint-cli2 docs/execplans/site-gap-analysis.md | tee /tmp/markdownlint-weaver-www-site-gap-analysis.out
 ```
 
-Implementation-phase validation commands, to be confirmed before execution:
+Implementation-phase validation commands:
 
 ```plaintext
 - Re-run markdownlint-cli2 on docs/execplans/site-gap-analysis.md after plan updates.
@@ -253,9 +268,13 @@ Implementation-phase validation commands, to be confirmed before execution:
   `compressed-authority` skill and existing repo analysis docs.
 - [x] 2026-03-07T20:59:35+00:00 Drafted this branch-scoped ExecPlan at
   `docs/execplans/site-gap-analysis.md`.
-- [ ] Await user approval before beginning implementation.
-- [ ] Rewrite homepage copy in `weaver/index.html`.
-- [ ] Run post-rewrite validation and capture results in this plan.
+- [x] 2026-03-07T22:25:00+00:00 User approved execution of this plan.
+- [x] 2026-03-07T22:25:00+00:00 Added the rewrite brief for Phase 1.
+- [x] 2026-03-07T22:34:00+00:00 Rewrote homepage copy in `weaver/index.html`
+  while preserving layout and command examples.
+- [x] 2026-03-07T22:53:09+00:00 Validated the rewrite with `git diff --check`,
+  `markdownlint-cli2 docs/execplans/site-gap-analysis.md`, and a local link and
+  asset sweep across all 14 `weaver/**/*.html` pages.
 
 ## Surprises & Discoveries
 
@@ -266,6 +285,9 @@ Implementation-phase validation commands, to be confirmed before execution:
   workspace. Manual file inspection was required.
 - The homepage's terminal command preview is already much closer to the target
   voice than the surrounding marketing copy.
+- The local `docs/documentation-style-guide.md` file is currently untracked,
+  but it still supplied the British English and pronoun constraints referenced
+  by this plan.
 
 ## Decision Log
 
@@ -277,13 +299,22 @@ Implementation-phase validation commands, to be confirmed before execution:
   bounded and matches the user request.
 - 2026-03-07T20:59:35+00:00: Chose the command preview block as the tone
   benchmark because it already leads with concrete, observable behaviour.
+- 2026-03-07T22:34:00+00:00: Kept the rewrite to `weaver/index.html` plus this
+  plan file. Shared footer strings on other pages can follow later if the user
+  wants a site-wide voice pass.
+- 2026-03-07T22:53:09+00:00: Used the existing repo gate pattern of
+  `git diff --check` plus a full local HTML link sweep because the repo still
+  has no Makefile or package-script site gate.
 
 ## Outcomes & Retrospective
 
-The audit is complete. The next step is not more analysis. The next step is
-approval, then a rewrite that cuts metaphor-first copy, removes weak
-adjectives, and makes the homepage sound like the product it is describing.
+The rewrite is in place. The homepage now leads with product category, current
+surface area, and trust mechanisms instead of metaphor-first branding. The
+largest gains came from deleting vague prestige language, recasting the value
+cards as operator outcomes, and making the Sempai block describe scope instead
+of posture.
 
-If this plan is approved and executed cleanly, it should also produce a
-reusable voice pattern for the rest of the site: claim first, mechanism
-second, roadmap caveats explicit, and filler deleted on sight.
+The page now provides a reusable pattern for the rest of the site: claim
+first, mechanism second, roadmap caveats explicit, and filler deleted on
+sight. The remaining follow-on question is whether the same voice pass should
+be propagated beyond the homepage.

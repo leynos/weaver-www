@@ -116,12 +116,12 @@
                             </div>
                             
                             <h1 class="font-serif text-5xl lg:text-7xl font-bold text-weaver-indigo leading-[1.1] mb-6">
-                                The Loom for <br>
-                                <span class="text-weaver-vermilion italic font-light">Intelligent</span> Code.
+                                CLI tooling for <br>
+                                <span class="text-weaver-vermilion italic font-light">code-aware</span> agents.
                             </h1>
                             
                             <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed mb-8 max-w-lg font-light">
-                                A CLI-based toolchain for integrating AI agents with your codebase. Safe, semantic, and built for the craft of software engineering.
+                                Weaver connects AI agents to a real codebase through concrete observe, act, and verify operations. The CLI stays thin, the daemon keeps context loaded, and Double-Lock plus Birdcage constrain the risky parts.
                             </p>
 
                             <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
@@ -179,7 +179,7 @@
                             </div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-3 group-hover:text-weaver-vermilion transition-colors">Composable</h3>
                             <p class="font-sans text-weaver-indigo/70 leading-relaxed mb-6">
-                                Modular architecture driven by the Semantic Fusion Engine. Integrates with language servers for structural understanding; editor plugins are a future goal.
+                                Use one surface for structural queries, patch application, and diagnostics. The CLI, daemon, and language-server bridge share the same JSONL contract.
                             </p>
                             <a href="how-it-works/#fusion" class="inline-flex items-center font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider group-hover:underline decoration-weaver-vermilion underline-offset-4">
                                 Explore Fusion <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
@@ -198,7 +198,7 @@
                             </div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-3 group-hover:text-weaver-vermilion transition-colors">Safe</h3>
                             <p class="font-sans text-weaver-indigo/70 leading-relaxed mb-6">
-                                Two independent safety layers: Double-Lock validation (syntactic + semantic checks on every edit) and Birdcage sandbox (seccomp-bpf, namespaces) for external tool execution.
+                                Block bad edits before they land. Double-Lock checks the change; Birdcage isolates untrusted tooling with seccomp-bpf and namespaces.
                             </p>
                             <a href="safety/" class="inline-flex items-center font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider group-hover:underline decoration-weaver-vermilion underline-offset-4">
                                 Security Model <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
@@ -217,7 +217,7 @@
                             </div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-3 group-hover:text-weaver-vermilion transition-colors">Fast</h3>
                             <p class="font-sans text-weaver-indigo/70 leading-relaxed mb-6">
-                                Built in Rust for bare-metal performance. JSONL streaming over Unix domain sockets delivers real-time context to agents.
+                                Keep state in a resident daemon instead of re-parsing on every call. Rust binaries stream JSONL over Unix domain sockets for low-friction automation.
                             </p>
                             <a href="how-it-works/#daemon" class="inline-flex items-center font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider group-hover:underline decoration-weaver-vermilion underline-offset-4">
                                 Daemon Specs <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
@@ -325,27 +325,27 @@
                         </div>
                         
                         <div class="order-1 lg:order-2">
-                            <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-2 block">Deep Understanding</span>
+                            <span class="font-mono text-xs text-weaver-vermilion font-bold tracking-widest uppercase mb-2 block">Query layer</span>
                             <h2 class="font-serif text-4xl text-weaver-indigo mb-6">Sempai Query Engine</h2>
                             <p class="font-sans text-lg text-weaver-indigo/80 mb-6 font-light leading-relaxed">
-                                To act, the agent must first discern structure. Sempai provides a Semgrep-compatible query layer that allows you to extract features, identify patterns, and map dependencies with surgical precision.
+                                Sempai adds Semgrep-compatible structural queries to `observe`. It runs on Tree-sitter, exposes a query-focused operator surface, and marks language parity as staged instead of implying full coverage.
                             </p>
                             <ul class="space-y-4 mb-8">
                                 <li class="flex items-start">
                                     <i class="fa-solid fa-check text-weaver-vermilion mt-1 mr-3 text-sm"></i>
-                                    <span class="text-weaver-indigo/80 text-sm">Tree-sitter backend for fault-tolerant parsing</span>
+                                    <span class="text-weaver-indigo/80 text-sm">Semgrep-compatible rules with a Tree-sitter backend</span>
                                 </li>
                                 <li class="flex items-start">
                                     <i class="fa-solid fa-check text-weaver-vermilion mt-1 mr-3 text-sm"></i>
-                                    <span class="text-weaver-indigo/80 text-sm">Rust and Python today; Go and TypeScript on the roadmap</span>
+                                    <span class="text-weaver-indigo/80 text-sm">Rust, Python, TypeScript, and Go coverage staged by language</span>
                                 </li>
                                 <li class="flex items-start">
                                     <i class="fa-solid fa-check text-weaver-vermilion mt-1 mr-3 text-sm"></i>
-                                    <span class="text-weaver-indigo/80 text-sm">Advanced feature extraction for LLM context windows</span>
+                                    <span class="text-weaver-indigo/80 text-sm">Designed to turn source structure into agent-ready context</span>
                                 </li>
                             </ul>
                             <a href="sempai/" class="text-weaver-indigo font-bold border-b-2 border-weaver-vermilion hover:text-weaver-vermilion transition-colors pb-1 inline-block">
-                                Read the Whitepaper
+                                Read the query design
                             </a>
                         </div>
                     </div>
@@ -362,7 +362,7 @@
                             <div class="bg-white border border-weaver-indigo/20 p-8 h-full hover:border-weaver-indigo hover:shadow-md transition-all relative overflow-hidden">
                                 <div class="absolute -right-4 -top-4 w-16 h-16 bg-weaver-indigo/5 rounded-full group-hover:bg-weaver-indigo/10 transition-colors"></div>
                                 <h3 class="font-serif text-xl text-weaver-indigo mb-2">Documentation</h3>
-                                <p class="text-sm text-weaver-indigo/60 mb-4">Comprehensive guides and API references.</p>
+                                <p class="text-sm text-weaver-indigo/60 mb-4">Read the command, install, safety, and configuration references.</p>
                                 <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">Read Docs &rarr;</span>
                             </div>
                         </a>
@@ -372,8 +372,8 @@
                             <div class="bg-white border border-weaver-indigo/20 p-8 h-full hover:border-weaver-indigo hover:shadow-md transition-all relative overflow-hidden">
                                 <div class="absolute -right-4 -top-4 w-16 h-16 bg-weaver-indigo/5 rounded-full group-hover:bg-weaver-indigo/10 transition-colors"></div>
                                 <h3 class="font-serif text-xl text-weaver-indigo mb-2">Roadmap</h3>
-                                <p class="text-sm text-weaver-indigo/60 mb-4">See what's coming in v0.2 and v0.3.</p>
-                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">View Timeline &rarr;</span>
+                                <p class="text-sm text-weaver-indigo/60 mb-4">See which phases are shipped, which are planned, and which ideas remain directional.</p>
+                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">View plan &rarr;</span>
                             </div>
                         </a>
 
@@ -382,18 +382,18 @@
                             <div class="bg-white border border-weaver-indigo/20 p-8 h-full hover:border-weaver-indigo hover:shadow-md transition-all relative overflow-hidden">
                                 <div class="absolute -right-4 -top-4 w-16 h-16 bg-weaver-indigo/5 rounded-full group-hover:bg-weaver-indigo/10 transition-colors"></div>
                                 <h3 class="font-serif text-xl text-weaver-indigo mb-2">GitHub</h3>
-                                <p class="text-sm text-weaver-indigo/60 mb-4">Contribute to the core or report issues.</p>
-                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">Star Repo &rarr;</span>
+                                <p class="text-sm text-weaver-indigo/60 mb-4">Read the source, track issues, and follow release work in the open.</p>
+                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">Open repo &rarr;</span>
                             </div>
                         </a>
 
                         <!-- Link Card: Community -->
-                        <a href="#" class="block group h-full">
+                        <a href="https://github.com/leynos/weaver" target="_blank" class="block group h-full">
                             <div class="bg-white border border-weaver-indigo/20 p-8 h-full hover:border-weaver-indigo hover:shadow-md transition-all relative overflow-hidden">
                                 <div class="absolute -right-4 -top-4 w-16 h-16 bg-weaver-indigo/5 rounded-full group-hover:bg-weaver-indigo/10 transition-colors"></div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Discord</h3>
-                                <p class="text-sm text-weaver-indigo/60 mb-4">Join the community of weavers.</p>
-                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">Join Server &rarr;</span>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Community</h3>
+                                <p class="text-sm text-weaver-indigo/60 mb-4">Discord is not live yet. Use GitHub issues until the public channel opens.</p>
+                                <span class="text-xs font-mono text-weaver-vermilion font-bold uppercase group-hover:underline">Track updates &rarr;</span>
                             </div>
                         </a>
 
@@ -412,7 +412,7 @@
                              <h2 class="font-serif text-2xl font-bold text-weaver-indigo">WEAVER</h2>
                         </div>
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">© 2026 df12 Productions</p>
-                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
+                        <p class="font-mono text-xs text-weaver-indigo/60 mt-1">CLI tooling for code-aware agents.</p>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-6 text-center md:flex md:flex-row md:gap-x-8 md:text-right">
