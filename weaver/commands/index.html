@@ -123,7 +123,7 @@
                     </h1>
                     
                     <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-2xl font-light">
-                        Weaver provides a minimal, composable verb set for AI agents. Three primary commands—Observe, Act, and Verify—form the foundation of all interactions.
+                        Every command follows the same shape: <code class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded">weaver &lt;domain&gt; &lt;operation&gt; [ARG ...]</code>. Three domains — Observe, Act, and Verify — cover perception, mutation, and validation respectively.
                     </p>
                 </div>
             </section>
@@ -137,10 +137,10 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
-                                    <th class="p-4 border-r border-weaver-cream/20 w-32">Command</th>
+                                    <th class="p-4 border-r border-weaver-cream/20 w-32">Domain</th>
                                     <th class="p-4 border-r border-weaver-cream/20">Purpose</th>
-                                    <th class="p-4 border-r border-weaver-cream/20 w-48">Output Format</th>
-                                    <th class="p-4 w-32">Key Flag</th>
+                                    <th class="p-4 border-r border-weaver-cream/20 w-56">Key Operations</th>
+                                    <th class="p-4 w-40">Output</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-weaver-indigo/10">
@@ -151,13 +151,13 @@
                                         </a>
                                     </td>
                                     <td class="p-4 text-sm text-weaver-indigo/80 border-r border-weaver-indigo/10">
-                                        Reads file content, AST structure, and LSP symbols. Used for context gathering.
+                                        Query code structure and relationships via LSP and Tree-sitter.
                                     </td>
                                     <td class="p-4 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">
-                                        JSONL (Streaming)
+                                        get-definition, find-references, call-hierarchy, grep
                                     </td>
-                                    <td class="p-4 font-mono text-xs text-weaver-vermilion bg-weaver-vermilion/5">
-                                        --depth
+                                    <td class="p-4 font-mono text-xs text-weaver-indigo/60">
+                                        JSONL (<code class="text-[10px]">kind</code> envelope)
                                     </td>
                                 </tr>
                                 <tr class="group hover:bg-weaver-indigo/5 transition-colors">
@@ -167,13 +167,13 @@
                                         </a>
                                     </td>
                                     <td class="p-4 text-sm text-weaver-indigo/80 border-r border-weaver-indigo/10">
-                                        Performs safe edits, file creation, or shell execution within the sandbox.
+                                        Lock-guarded, transactional code mutation via patches or rewrites.
                                     </td>
                                     <td class="p-4 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">
-                                        JSON (Result)
+                                        apply-patch, apply-rewrite, refactor
                                     </td>
-                                    <td class="p-4 font-mono text-xs text-weaver-vermilion bg-weaver-vermilion/5">
-                                        --dry-run
+                                    <td class="p-4 font-mono text-xs text-weaver-indigo/60">
+                                        JSONL (<code class="text-[10px]">kind</code> envelope)
                                     </td>
                                 </tr>
                                 <tr class="group hover:bg-weaver-indigo/5 transition-colors">
@@ -183,13 +183,13 @@
                                         </a>
                                     </td>
                                     <td class="p-4 text-sm text-weaver-indigo/80 border-r border-weaver-indigo/10">
-                                        Runs tests, linters, or custom validation scripts to confirm correctness.
+                                        Pull diagnostics from language servers to confirm code health.
                                     </td>
                                     <td class="p-4 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">
-                                        Exit Code + Logs
+                                        diagnostics
                                     </td>
-                                    <td class="p-4 font-mono text-xs text-weaver-vermilion bg-weaver-vermilion/5">
-                                        --strict
+                                    <td class="p-4 font-mono text-xs text-weaver-indigo/60">
+                                        JSONL (<code class="text-[10px]">kind</code> envelope)
                                     </td>
                                 </tr>
                             </tbody>
@@ -208,12 +208,12 @@
                             <i class="fa-solid fa-eye text-6xl text-weaver-indigo"></i>
                         </div>
                         <h3 class="font-serif text-2xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">Observe</h3>
-                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">perception_engine</p>
+                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">perception</p>
                         <p class="text-weaver-indigo/80 mb-6 text-sm leading-relaxed min-h-[80px]">
-                            The agent's eyes. Parses code into structured data, extracting signatures, dependencies, and documentation.
+                            The agent's eyes. Queries code structure via LSP and Tree-sitter — definitions, references, call hierarchies, structural grep.
                         </p>
                         <div class="bg-weaver-dark p-3 rounded-sm mb-4 border border-weaver-indigo/20">
-                            <code class="font-mono text-xs text-green-400 block">$ weaver observe src/lib.rs</code>
+                            <code class="font-mono text-xs text-green-400 block">$ weaver observe get-definition \<br>&nbsp;&nbsp;--uri file:///src/main.rs --position 10:5</code>
                         </div>
                         <a href="/weaver/commands/observe/" class="inline-flex items-center text-xs font-bold font-mono uppercase tracking-wider text-weaver-vermilion hover:text-weaver-indigo transition-colors">
                             Full Documentation <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -226,12 +226,12 @@
                             <i class="fa-solid fa-hand-holding-hand text-6xl text-weaver-indigo"></i>
                         </div>
                         <h3 class="font-serif text-2xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">Act</h3>
-                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">kinetic_engine</p>
+                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">mutation</p>
                         <p class="text-weaver-indigo/80 mb-6 text-sm leading-relaxed min-h-[80px]">
-                            The agent's hands. Applies patches, runs shell commands, and modifies file systems within the safety sandbox.
+                            The agent's hands. Applies patches and rewrites through Double-Lock validation — every edit passes syntactic and semantic checks before it touches disk.
                         </p>
                         <div class="bg-weaver-dark p-3 rounded-sm mb-4 border border-weaver-indigo/20">
-                            <code class="font-mono text-xs text-green-400 block">$ weaver act --patch diff.patch</code>
+                            <code class="font-mono text-xs text-green-400 block">$ weaver act apply-patch &lt; fix.diff</code>
                         </div>
                         <a href="/weaver/commands/act/" class="inline-flex items-center text-xs font-bold font-mono uppercase tracking-wider text-weaver-vermilion hover:text-weaver-indigo transition-colors">
                             Full Documentation <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -244,12 +244,12 @@
                             <i class="fa-solid fa-scale-balanced text-6xl text-weaver-indigo"></i>
                         </div>
                         <h3 class="font-serif text-2xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">Verify</h3>
-                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">integrity_engine</p>
+                        <p class="text-sm font-mono text-weaver-indigo/50 mb-4">validation</p>
                         <p class="text-weaver-indigo/80 mb-6 text-sm leading-relaxed min-h-[80px]">
-                            The agent's conscience. Validates changes against tests, linters, and security policies before commitment.
+                            The agent's conscience. Currently pulls LSP diagnostics for any file with a supported language server. Policy and test orchestration are directional.
                         </p>
                         <div class="bg-weaver-dark p-3 rounded-sm mb-4 border border-weaver-indigo/20">
-                            <code class="font-mono text-xs text-green-400 block">$ weaver verify --test unit</code>
+                            <code class="font-mono text-xs text-green-400 block">$ weaver verify diagnostics \<br>&nbsp;&nbsp;--uri file:///src/lib.rs</code>
                         </div>
                         <a href="/weaver/commands/verify/" class="inline-flex items-center text-xs font-bold font-mono uppercase tracking-wider text-weaver-vermilion hover:text-weaver-indigo transition-colors">
                             Full Documentation <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -292,7 +292,7 @@
 
                     <!-- Pipeline Steps -->
                     <div class="space-y-4">
-                        
+
                         <!-- Step 1: Observe -->
                         <div class="bg-white border border-weaver-indigo/20 p-6 rounded-sm shadow-sm relative overflow-hidden">
                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-weaver-indigo"></div>
@@ -302,17 +302,17 @@
                                         <span class="font-mono text-xs font-bold bg-weaver-indigo text-weaver-cream px-2 py-0.5 rounded-sm">01</span>
                                         <h3 class="font-serif text-xl text-weaver-indigo">Observe Context</h3>
                                     </div>
-                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent scans the file to understand the current implementation of `process_data`.</p>
+                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent jumps to the definition of <code class="text-xs bg-weaver-indigo/10 px-1">process_data</code> to understand it before editing.</p>
                                     <div class="font-mono text-xs text-weaver-indigo/50 bg-weaver-cream p-2 border border-weaver-indigo/10 rounded">
-                                        <span class="text-weaver-vermilion">$</span> weaver observe src/main.rs --symbol process_data
+                                        <span class="text-weaver-vermilion">$</span> weaver observe get-definition \<br>
+                                        &nbsp;&nbsp;--uri file:///src/main.rs --position 10:5
                                     </div>
                                 </div>
                                 <div class="lg:w-2/3 bg-weaver-dark p-4 rounded-sm font-mono text-xs text-gray-300 overflow-x-auto border border-weaver-indigo/10 shadow-inner">
 <pre>
-<span class="text-gray-500"># Output (JSONL Stream)</span>
-{"type": "symbol", "name": "process_data", "kind": "function", "line": 42}
-{"type": "signature", "raw": "fn process_data(input: Vec<u8>) -> Result<()>"}
-{"type": "provenance", "source": "tree-sitter-rust", "confidence": 1.0}
+<span class="text-gray-500">// JSONL output</span>
+{"kind":"stream","stream":"stdout","data":"[{\"uri\":\"file:///src/lib.rs\",\"line\":42,\"column\":17}]\n"}
+{"kind":"exit","status":0}
 </pre>
                                 </div>
                             </div>
@@ -330,22 +330,18 @@
                                 <div class="lg:w-1/3 flex flex-col justify-center">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span class="font-mono text-xs font-bold bg-weaver-vermilion text-white px-2 py-0.5 rounded-sm">02</span>
-                                        <h3 class="font-serif text-xl text-weaver-indigo">Apply Changes</h3>
+                                        <h3 class="font-serif text-xl text-weaver-indigo">Apply Patch</h3>
                                     </div>
-                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent submits a patch to optimize the function.</p>
+                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent pipes a diff through Double-Lock validation and onto disk.</p>
                                     <div class="font-mono text-xs text-weaver-indigo/50 bg-weaver-cream p-2 border border-weaver-indigo/10 rounded">
-                                        <span class="text-weaver-vermilion">$</span> weaver act --patch refactor.diff
+                                        <span class="text-weaver-vermilion">$</span> weaver act apply-patch &lt; refactor.diff
                                     </div>
                                 </div>
                                 <div class="lg:w-2/3 bg-weaver-dark p-4 rounded-sm font-mono text-xs text-gray-300 overflow-x-auto border border-weaver-indigo/10 shadow-inner">
 <pre>
-<span class="text-gray-500"># Output (Result JSON)</span>
-{
-  "status": "success",
-  "files_modified": ["src/main.rs"],
-  "hunks_applied": 1,
-  "sandbox_check": "passed"
-}
+<span class="text-gray-500">// JSONL output</span>
+{"kind":"stream","stream":"stdout","data":"{\"applied\":true,\"files\":[\"src/lib.rs\"]}\n"}
+{"kind":"exit","status":0}
 </pre>
                                 </div>
                             </div>
@@ -363,19 +359,19 @@
                                 <div class="lg:w-1/3 flex flex-col justify-center">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span class="font-mono text-xs font-bold bg-green-600 text-white px-2 py-0.5 rounded-sm">03</span>
-                                        <h3 class="font-serif text-xl text-weaver-indigo">Verify Integrity</h3>
+                                        <h3 class="font-serif text-xl text-weaver-indigo">Verify Diagnostics</h3>
                                     </div>
-                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent runs the test suite to ensure no regressions.</p>
+                                    <p class="text-sm text-weaver-indigo/70 mb-4">Agent confirms the edited file has no compiler warnings or errors.</p>
                                     <div class="font-mono text-xs text-weaver-indigo/50 bg-weaver-cream p-2 border border-weaver-indigo/10 rounded">
-                                        <span class="text-weaver-vermilion">$</span> weaver verify --test unit
+                                        <span class="text-weaver-vermilion">$</span> weaver verify diagnostics \<br>
+                                        &nbsp;&nbsp;--uri file:///src/lib.rs
                                     </div>
                                 </div>
                                 <div class="lg:w-2/3 bg-weaver-dark p-4 rounded-sm font-mono text-xs text-gray-300 overflow-x-auto border border-weaver-indigo/10 shadow-inner">
 <pre>
-<span class="text-gray-500"># Output (Standard Out)</span>
-Running cargo test...
-test result: <span class="text-green-400">ok</span>. 14 passed; 0 failed; 0 ignored; 0 measured.
-<span class="text-blue-300">Exit Code: 0</span>
+<span class="text-gray-500">// JSONL output — no diagnostics, clean file</span>
+{"kind":"stream","stream":"stdout","data":"{\"diagnostics\":[]}\n"}
+{"kind":"exit","status":0}
 </pre>
                                 </div>
                             </div>
@@ -396,20 +392,20 @@ test result: <span class="text-green-400">ok</span>. 14 passed; 0 failed; 0 igno
                             <table class="w-full text-left">
                                 <tbody class="divide-y divide-weaver-indigo/10">
                                     <tr>
-                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5 w-32">--json</td>
-                                        <td class="p-3 text-sm text-weaver-indigo/80">Force structured JSON output for all messages.</td>
+                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5 w-44">--output</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Output mode: <code class="text-xs bg-weaver-indigo/10 px-1">auto</code> (default), <code class="text-xs bg-weaver-indigo/10 px-1">human</code>, or <code class="text-xs bg-weaver-indigo/10 px-1">json</code>.</td>
                                     </tr>
                                     <tr>
-                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--verbose, -v</td>
-                                        <td class="p-3 text-sm text-weaver-indigo/80">Enable debug logging (includes LSP trace).</td>
+                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--config-path</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Path to an explicit <code class="text-xs bg-weaver-indigo/10 px-1">weaver.toml</code> configuration file.</td>
                                     </tr>
                                     <tr>
-                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--config, -c</td>
-                                        <td class="p-3 text-sm text-weaver-indigo/80">Path to custom `weaver.toml` configuration.</td>
+                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--daemon-socket</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Override daemon transport (e.g. <code class="text-xs bg-weaver-indigo/10 px-1">unix:///run/user/1000/weaver.sock</code>).</td>
                                     </tr>
                                     <tr>
-                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--socket</td>
-                                        <td class="p-3 text-sm text-weaver-indigo/80">Override default daemon socket path.</td>
+                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--log-filter</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Tracing filter (default <code class="text-xs bg-weaver-indigo/10 px-1">info</code>).</td>
                                     </tr>
                                 </tbody>
                             </table>
