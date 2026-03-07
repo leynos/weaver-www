@@ -152,64 +152,69 @@
             <section class="py-12 px-8 lg:px-16 border-b border-weaver-indigo/20 bg-white/40">
                 <div class="max-w-6xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        
+
                         <!-- Left: Synopsis -->
                         <div class="lg:col-span-1">
                             <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Synopsis</h2>
                             <p class="text-sm text-weaver-indigo/70 mb-6 leading-relaxed">
-                                Invokes the Semantic Fusion Engine to parse files or directories. Output is always streamed as JSONL to stdout for easy piping to LLM context windows or analysis tools.
+                                Each <code class="font-mono text-xs bg-weaver-indigo/10 px-1">observe</code> operation queries code structure and relationships via the daemon. Output is streamed as JSONL (or human-readable when stdout is a TTY).
                             </p>
-                            
+
                             <div class="bg-weaver-cream border border-weaver-indigo p-4 relative mb-6">
                                 <div class="absolute -top-3 left-4 bg-weaver-cream px-2 text-xs font-mono text-weaver-vermilion font-bold">SYNTAX</div>
                                 <code class="font-mono text-sm text-weaver-indigo block break-all">
-                                    weaver observe [OPTIONS] &lt;PATH&gt;...
+                                    weaver observe &lt;OPERATION&gt; [ARG ...]
                                 </code>
                             </div>
 
                             <div class="flex items-center gap-2 text-xs font-mono text-weaver-indigo/60">
                                 <i class="fa-solid fa-info-circle"></i>
-                                <span>Supports glob patterns (e.g., src/**/*.rs)</span>
+                                <span>Language inferred from file extension</span>
                             </div>
                         </div>
 
-                        <!-- Right: Options Table -->
+                        <!-- Right: Operations Table -->
                         <div class="lg:col-span-2">
-                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Options & Flags</h2>
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Operations</h2>
                             <div class="overflow-hidden border border-weaver-indigo/20 rounded-sm shadow-sm bg-weaver-cream">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
-                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Flag</th>
-                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Type</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Operation</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Source</th>
                                             <th class="p-3">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-weaver-indigo/10">
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--depth</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Integer</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Max recursion depth for directory traversal (default: 5).</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">get-definition</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Jump to definition. Requires <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--uri</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--position</span>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--symbol</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">String</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Filter output to a specific function or class name (uses Sempai engine).</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">find-references</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Find all usages of a symbol. Same flags as <code>get-definition</code>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--with-lsp</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Boolean</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Enrich output with LSP diagnostics, definitions, and references.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">call-hierarchy</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Incoming/outgoing call graph. Returns nodes and edges.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--format</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Enum</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Output format: <span class="bg-weaver-indigo/10 px-1 rounded">jsonl</span> (default), <span class="bg-weaver-indigo/10 px-1 rounded">tree</span>, or <span class="bg-weaver-indigo/10 px-1 rounded">markdown</span>.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">grep</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Tree-sitter</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">AST-aware structural search via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--pattern</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--path</span>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--ignore-hidden</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flag</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Skip hidden files and directories (respects .gitignore).</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">get-card <span class="ml-1 text-[9px] font-mono bg-weaver-indigo/10 text-weaver-indigo/60 px-1 rounded uppercase">planned</span></td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Jacquard</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Structured symbol card (signature, docstring, locals). Progressive detail levels.</td>
+                                        </tr>
+                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">graph-slice <span class="ml-1 text-[9px] font-mono bg-weaver-indigo/10 text-weaver-indigo/60 px-1 rounded uppercase">planned</span></td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Jacquard</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Budgeted subgraph rooted at a symbol, with typed edges.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -225,15 +230,15 @@
                     <h2 class="font-serif text-3xl text-weaver-indigo mb-10">Integration Examples</h2>
                     
                     <div class="space-y-12">
-                        
-                        <!-- Scenario 1: Basic File Observation -->
+
+                        <!-- Scenario 1: get-definition -->
                         <div class="relative group">
                             <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-indigo opacity-30 group-hover:opacity-100 transition-opacity"></div>
-                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">1. High-Fidelity Context Gathering</h3>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">1. Jump to Definition</h3>
                             <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
-                                When an agent needs to understand a file, <code class="text-xs bg-weaver-indigo/10 px-1">observe</code> provides more than just text. It returns the AST structure, enabling the agent to "see" the code's skeleton.
+                                Point at any symbol with a URI and cursor position. Weaver starts the appropriate language server, resolves the definition, and returns the location as structured JSON.
                             </p>
-                            
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
                                 <!-- Command Input -->
                                 <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
@@ -246,45 +251,34 @@
                                         </div>
                                     </div>
                                     <code class="font-mono text-sm text-green-400">
-                                        $ weaver observe src/auth.rs --with-lsp
+                                        $ weaver observe get-definition \<br>
+                                        &nbsp;&nbsp;--uri file:///src/main.rs \<br>
+                                        &nbsp;&nbsp;--position 10:5
                                     </code>
                                 </div>
-                                
+
                                 <!-- JSON Output -->
                                 <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
                                     <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL Stream</div>
 <pre class="text-gray-300">
-<span class="token-comment">// Event 1: File Metadata</span>
-{
-  <span class="token-key">"type"</span>: <span class="token-string">"file"</span>,
-  <span class="token-key">"path"</span>: <span class="token-string">"src/auth.rs"</span>,
-  <span class="token-key">"language"</span>: <span class="token-string">"rust"</span>,
-  <span class="token-key">"size_bytes"</span>: <span class="token-number">4096</span>
-}
-<span class="token-comment">// Event 2: Semantic Symbol</span>
-{
-  <span class="token-key">"type"</span>: <span class="token-string">"symbol"</span>,
-  <span class="token-key">"name"</span>: <span class="token-string">"AuthService"</span>,
-  <span class="token-key">"kind"</span>: <span class="token-string">"struct"</span>,
-  <span class="token-key">"range"</span>: {<span class="token-key">"start"</span>: <span class="token-number">12</span>, <span class="token-key">"end"</span>: <span class="token-number">45</span>},
-  <span class="token-key">"provenance"</span>: {
-    <span class="token-key">"source"</span>: <span class="token-string">"tree-sitter"</span>,
-    <span class="token-key">"confidence"</span>: <span class="token-number">1.0</span>
-  }
-}
+<span class="token-comment">// definition locations (JSON payload)</span>
+{<span class="token-key">"kind"</span>:<span class="token-string">"stream"</span>,<span class="token-key">"stream"</span>:<span class="token-string">"stdout"</span>,
+ <span class="token-key">"data"</span>:<span class="token-string">"[{\"uri\":\"file:///src/auth.rs\",\"line\":42,\"column\":17}]\n"</span>}
+<span class="token-comment">// exit status</span>
+{<span class="token-key">"kind"</span>:<span class="token-string">"exit"</span>,<span class="token-key">"status"</span>:<span class="token-number">0</span>}
 </pre>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Scenario 2: Targeted Query -->
+                        <!-- Scenario 2: find-references -->
                         <div class="relative group">
                             <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-vermilion opacity-30 group-hover:opacity-100 transition-opacity"></div>
-                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">2. Targeted Sempai Query</h3>
+                            <h3 class="font-serif text-xl text-weaver-indigo mb-4 pl-4">2. Find All References</h3>
                             <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
-                                Instead of dumping entire files, use <code class="text-xs bg-weaver-indigo/10 px-1">--symbol</code> to extract specific functions or classes across the project. This reduces context window usage significantly.
+                                Same shape, different operation. Finds every call-site, import, and usage of the symbol at the given position — useful for impact analysis before a refactor.
                             </p>
-                            
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
                                 <!-- Command Input -->
                                 <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
@@ -297,28 +291,21 @@
                                         </div>
                                     </div>
                                     <code class="font-mono text-sm text-green-400">
-                                        $ weaver observe . --symbol "connect_db"
+                                        $ weaver observe find-references \<br>
+                                        &nbsp;&nbsp;--uri file:///src/auth.rs \<br>
+                                        &nbsp;&nbsp;--position 42:17
                                     </code>
                                 </div>
-                                
+
                                 <!-- JSON Output -->
                                 <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
                                     <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL Stream</div>
 <pre class="text-gray-300">
-<span class="token-comment">// Found in main.rs</span>
-{
-  <span class="token-key">"type"</span>: <span class="token-string">"match"</span>,
-  <span class="token-key">"file"</span>: <span class="token-string">"src/main.rs"</span>,
-  <span class="token-key">"signature"</span>: <span class="token-string">"fn connect_db(url: &str) -> Result&lt;PgPool&gt;"</span>,
-  <span class="token-key">"snippet"</span>: <span class="token-string">"fn connect_db(url: &str) -> Result&lt;PgPool&gt; { ... }"</span>,
-  <span class="token-key">"docstring"</span>: <span class="token-string">"/// Establishes a connection pool."</span>
-}
-<span class="token-comment">// Found in tests/db_test.rs</span>
-{
-  <span class="token-key">"type"</span>: <span class="token-string">"match"</span>,
-  <span class="token-key">"file"</span>: <span class="token-string">"tests/db_test.rs"</span>,
-  <span class="token-key">"signature"</span>: <span class="token-string">"fn test_connect_db()"</span>
-}
+<span class="token-comment">// reference locations (JSON payload)</span>
+{<span class="token-key">"kind"</span>:<span class="token-string">"stream"</span>,<span class="token-key">"stream"</span>:<span class="token-string">"stdout"</span>,
+ <span class="token-key">"data"</span>:<span class="token-string">"{\"references\":[{\"uri\":\"file:///src/main.rs\",\"line\":10,\"column\":5},{\"uri\":\"file:///tests/auth_test.rs\",\"line\":7,\"column\":12}]}\n"</span>}
+<span class="token-comment">// exit status</span>
+{<span class="token-key">"kind"</span>:<span class="token-string">"exit"</span>,<span class="token-key">"status"</span>:<span class="token-number">0</span>}
 </pre>
                                 </div>
                             </div>
