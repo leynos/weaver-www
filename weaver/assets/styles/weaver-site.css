@@ -76,9 +76,13 @@ body {
         border-radius: 0 !important;
     }
 
-    .figure-fullbleed > .figure-fullbleed-label,
+    .figure-fullbleed > .figure-fullbleed-label {
+        padding-right: 2.5em !important;
+    }
+
     .figure-fullbleed > .figure-fullbleed-caption {
-        display: none !important;
+        padding-left: 2.5em !important;
+        padding-right: 2.5em !important;
     }
 
     .figure-fullbleed > .figure-fullbleed-img {
