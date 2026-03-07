@@ -401,6 +401,209 @@
                 </div>
             </section>
 
+            <!-- Act Extricate (PLANNED) -->
+            <section id="extricate" class="py-16 px-8 lg:px-16 border-t border-weaver-indigo/10">
+                <div class="max-w-6xl mx-auto">
+                    <div class="border-2 border-dashed border-weaver-indigo/40 rounded-sm p-8 lg:p-12 opacity-80">
+                        <div class="flex items-center gap-3 mb-8">
+                            <h2 class="font-serif text-3xl font-bold text-weaver-indigo">act extricate</h2>
+                            <span class="text-[10px] font-bold font-mono bg-weaver-indigo/10 text-weaver-indigo/60 px-1.5 py-0.5 uppercase tracking-widest rounded-sm">planned</span>
+                        </div>
+
+                        <p class="text-sm text-weaver-indigo/80 leading-relaxed mb-8 max-w-3xl">
+                            Move a selected symbol into a different module while preserving behaviour. Import paths, references, and associated <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">impl</code> blocks are rewritten automatically. The entire operation is transactional — if any verification check fails, the workspace is left unchanged.
+                        </p>
+
+                        <!-- Synopsis -->
+                        <div class="mb-8">
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Synopsis</h3>
+                            <div class="paper-panel bg-weaver-dark text-weaver-cream p-4 rounded-sm">
+                                <code class="text-xs font-mono">weaver act extricate --uri &lt;file:///...&gt; --position &lt;line:col&gt; --to &lt;module&gt;</code>
+                            </div>
+                        </div>
+
+                        <!-- Capability -->
+                        <div class="mb-8">
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Capability</h3>
+                            <p class="text-sm text-weaver-indigo/80">
+                                Maps to capability ID <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">extricate-symbol</code>. Providers declare this capability in their plugin manifest; the daemon resolves the correct provider for the source file's language.
+                            </p>
+                        </div>
+
+                        <!-- Providers -->
+                        <div class="mb-8">
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Providers</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm border border-weaver-indigo/20">
+                                    <thead>
+                                        <tr class="bg-weaver-indigo/5">
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Language</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Plugin</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Backend</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-weaver-indigo/80">
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">Python</td>
+                                            <td class="p-3 font-mono text-xs">rope</td>
+                                            <td class="p-3 text-xs">Rope refactoring library</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-mono text-xs">Rust</td>
+                                            <td class="p-3 font-mono text-xs">rust-analyzer</td>
+                                            <td class="p-3 text-xs">RA LSP + overlay transaction engine</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Orchestration -->
+                        <div class="mb-8">
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Orchestration Sequence</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">1</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Resolve</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Validate arguments, resolve the selected definition, and collect pre-move references.</p>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">2</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Overlay</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Start an in-memory overlay transaction. No filesystem writes until all checks pass.</p>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">3</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Move</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Build move-set closure for the symbol and associated <code class="font-mono">impl</code> blocks. Apply edits to overlay.</p>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">4</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Import Repair</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Rewrite external references and <code class="font-mono">use</code> trees. Disambiguate imports via definition-equivalence probes.</p>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">5</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Verify</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Run semantic invariants: no new diagnostics, all reference probes resolve to the moved definition.</p>
+                                </div>
+                                <div class="bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">6</span>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Commit / Rollback</span>
+                                    </div>
+                                    <p class="text-xs text-weaver-indigo/70">Emit unified diff on success. On any failure, discard overlay and return diagnostics unchanged.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Arguments -->
+                        <div class="mb-8">
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Arguments</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm border border-weaver-indigo/20">
+                                    <thead>
+                                        <tr class="bg-weaver-indigo/5">
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Argument</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Type</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Required</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-weaver-indigo/80">
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">--uri</td>
+                                            <td class="p-3 font-mono text-xs">string</td>
+                                            <td class="p-3 text-xs">Yes</td>
+                                            <td class="p-3 text-xs">Source file URI containing the selected symbol.</td>
+                                        </tr>
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">--position</td>
+                                            <td class="p-3 font-mono text-xs">string</td>
+                                            <td class="p-3 text-xs">Yes</td>
+                                            <td class="p-3 text-xs">Source position in <code class="font-mono bg-weaver-indigo/5 px-1 rounded">line:col</code> form (LSP coordinates).</td>
+                                        </tr>
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">--to</td>
+                                            <td class="p-3 font-mono text-xs">string</td>
+                                            <td class="p-3 text-xs">Yes</td>
+                                            <td class="p-3 text-xs">Destination module path or file URI.</td>
+                                        </tr>
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">--create-missing-modules</td>
+                                            <td class="p-3 font-mono text-xs">bool</td>
+                                            <td class="p-3 text-xs">No</td>
+                                            <td class="p-3 text-xs">Create missing destination modules. Default <code class="font-mono bg-weaver-indigo/5 px-1 rounded">true</code>.</td>
+                                        </tr>
+                                        <tr class="border-b border-weaver-indigo/10">
+                                            <td class="p-3 font-mono text-xs">--format</td>
+                                            <td class="p-3 font-mono text-xs">string</td>
+                                            <td class="p-3 text-xs">No</td>
+                                            <td class="p-3 text-xs"><code class="font-mono bg-weaver-indigo/5 px-1 rounded">auto</code>, <code class="font-mono bg-weaver-indigo/5 px-1 rounded">on</code>, or <code class="font-mono bg-weaver-indigo/5 px-1 rounded">off</code>. Default <code class="font-mono bg-weaver-indigo/5 px-1 rounded">auto</code>.</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="p-3 font-mono text-xs">--explain</td>
+                                            <td class="p-3 font-mono text-xs">bool</td>
+                                            <td class="p-3 text-xs">No</td>
+                                            <td class="p-3 text-xs">Emit execution plan metadata in diagnostics output.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Refusal Cases -->
+                        <div>
+                            <h3 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">Refusal Cases</h3>
+                            <p class="text-sm text-weaver-indigo/80 leading-relaxed mb-4">
+                                The plugin refuses execution for non-deterministic or unsound cases. Each refusal returns precise diagnostics and leaves workspace content unchanged.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div class="flex items-start gap-3 bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <i class="fa-solid fa-xmark text-weaver-vermilion/60 mt-0.5"></i>
+                                    <div>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Macro-generated items</span>
+                                        <p class="text-xs text-weaver-indigo/60 mt-1">Items lacking stable editable source ranges cannot be moved safely.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <i class="fa-solid fa-xmark text-weaver-vermilion/60 mt-0.5"></i>
+                                    <div>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Ambiguous imports</span>
+                                        <p class="text-xs text-weaver-indigo/60 mt-1">Import repair without a unique semantic match is a hard error.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <i class="fa-solid fa-xmark text-weaver-vermilion/60 mt-0.5"></i>
+                                    <div>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Unsupported visibility</span>
+                                        <p class="text-xs text-weaver-indigo/60 mt-1">Non-preservable <code class="font-mono text-[10px]">pub(in ...)</code> constraints that cannot be maintained across modules.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-3 bg-weaver-cream border border-weaver-indigo/20 p-4 rounded-sm">
+                                    <i class="fa-solid fa-xmark text-weaver-vermilion/60 mt-0.5"></i>
+                                    <div>
+                                        <span class="font-mono text-xs font-bold text-weaver-indigo">Incomplete payloads</span>
+                                        <p class="text-xs text-weaver-indigo/60 mt-1">File payload does not cover all files required for deterministic execution.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
             <!-- Bottom CTA Navigation -->
             <section class="py-16 px-8 lg:px-16">
                 <div class="max-w-6xl mx-auto">
