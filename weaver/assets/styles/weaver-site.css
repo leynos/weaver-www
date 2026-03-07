@@ -207,11 +207,11 @@ pre code {
     }
 
     #sidebar nav {
-        display: none !important;
+        display: none;
     }
 
     #sidebar.mobile-nav-open nav {
-        display: block !important;
+        display: block;
         position: fixed;
         top: var(--mobile-header-height, 5rem);
         left: 0;

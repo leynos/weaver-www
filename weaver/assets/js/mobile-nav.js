@@ -8,7 +8,7 @@
   var nav = sidebar.querySelector("nav");
   if (!nav) return;
 
-  var header = sidebar.querySelector(".border-b-2");
+  var header = sidebar.querySelector("[data-mobile-nav-header]");
   if (!header) return;
 
   /* ---- hamburger button ---- */
@@ -33,12 +33,15 @@
     sidebar.style.setProperty("--mobile-header-height", h + "px");
   }
 
+  var previousBodyOverflow = "";
+
   /* ---- open / close helpers ---- */
   function open() {
     sidebar.classList.add("mobile-nav-open");
     btn.setAttribute("aria-expanded", "true");
     btn.setAttribute("aria-label", "Close navigation menu");
     btn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+    previousBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     setHeaderHeight();
   }
@@ -48,7 +51,7 @@
     btn.setAttribute("aria-expanded", "false");
     btn.setAttribute("aria-label", "Open navigation menu");
     btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-    document.body.style.overflow = "";
+    document.body.style.overflow = previousBodyOverflow;
   }
 
   function isOpen() {
