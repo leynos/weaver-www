@@ -393,7 +393,7 @@
                                 <tbody class="divide-y divide-weaver-indigo/10">
                                     <tr>
                                         <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5 w-44">--output</td>
-                                        <td class="p-3 text-sm text-weaver-indigo/80">Output mode: <code class="text-xs bg-weaver-indigo/10 px-1">auto</code> (default), <code class="text-xs bg-weaver-indigo/10 px-1">human</code>, or <code class="text-xs bg-weaver-indigo/10 px-1">json</code>.</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Output mode: <code class="text-xs bg-weaver-indigo/10 px-1">auto</code> (default), <code class="text-xs bg-weaver-indigo/10 px-1">human</code>, or <code class="text-xs bg-weaver-indigo/10 px-1">json</code>. <code class="text-xs bg-weaver-indigo/10 px-1">auto</code> selects <code class="text-xs bg-weaver-indigo/10 px-1">human</code> on a TTY, <code class="text-xs bg-weaver-indigo/10 px-1">json</code> when redirected. Must appear <em>before</em> the domain/operation.</td>
                                     </tr>
                                     <tr>
                                         <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--config-path</td>
@@ -406,6 +406,10 @@
                                     <tr>
                                         <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--log-filter</td>
                                         <td class="p-3 text-sm text-weaver-indigo/80">Tracing filter (default <code class="text-xs bg-weaver-indigo/10 px-1">info</code>).</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-mono text-xs text-weaver-vermilion bg-weaver-indigo/5">--log-format</td>
+                                        <td class="p-3 text-sm text-weaver-indigo/80">Log output format: <code class="text-xs bg-weaver-indigo/10 px-1">json</code> (default) or <code class="text-xs bg-weaver-indigo/10 px-1">compact</code>.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -439,6 +443,98 @@
                         </div>
                     </div>
 
+                </div>
+            </section>
+
+            <!-- Capability Discovery & Output Contract -->
+            <section class="py-16 px-8 lg:px-16 border-b border-weaver-indigo/20">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="font-serif text-3xl text-weaver-indigo mb-8">Capability Discovery &amp; Output</h2>
+
+                    <!-- weaver --capabilities -->
+                    <h3 class="font-serif text-xl text-weaver-indigo mb-3">Capability Probe</h3>
+                    <p class="mb-4 text-sm text-weaver-indigo/80">
+                        Run <code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver --capabilities</code> to query the negotiated capability surface — the product of language-server advertisement merged with operator overrides. Output is always JSON (pretty-printed for humans).
+                    </p>
+                    <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-4 paper-panel">
+                        <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">SYNOPSIS</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+<span class="text-weaver-cream/60">$</span> weaver --capabilities
+</pre>
+                    </div>
+                    <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-8 paper-panel">
+                        <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">EXAMPLE OUTPUT</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+{
+  <span class="text-green-400">"languages"</span>: {
+    <span class="text-green-400">"python"</span>: {
+      <span class="text-green-400">"overrides"</span>: {
+        <span class="text-green-400">"observe.call-hierarchy"</span>: <span class="text-green-400">"force"</span>
+      }
+    }
+  }
+}
+</pre>
+                    </div>
+
+                    <!-- Override syntax -->
+                    <p class="mb-8 text-sm text-weaver-indigo/80">
+                        Override syntax uses <code class="font-mono text-xs bg-weaver-indigo/10 px-1">language:capability=directive</code> where directive is <code class="font-mono text-xs bg-weaver-indigo/10 px-1">allow</code>, <code class="font-mono text-xs bg-weaver-indigo/10 px-1">deny</code>, or <code class="font-mono text-xs bg-weaver-indigo/10 px-1">force</code>. See the <a href="/weaver/docs/#capability-overrides" class="text-weaver-vermilion hover:underline">Docs Hub</a> for detail.
+                    </p>
+
+                    <!-- MissingCapability -->
+                    <h3 class="font-serif text-xl text-weaver-indigo mb-3">MissingCapability Error</h3>
+                    <p class="mb-4 text-sm text-weaver-indigo/80">
+                        When an operation targets a capability the language server does not advertise (and no <code class="font-mono text-xs bg-weaver-indigo/10 px-1">force</code> override applies), the daemon returns a structured, machine-readable error with an actionable fallback suggestion:
+                    </p>
+                    <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-8 paper-panel">
+                        <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">MISSINGCAPABILITY RESPONSE</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+{
+  <span class="text-green-400">"status"</span>: <span class="text-green-400">"error"</span>,
+  <span class="text-green-400">"type"</span>: <span class="text-green-400">"MissingCapability"</span>,
+  <span class="text-green-400">"details"</span>: {
+    <span class="text-green-400">"language"</span>: <span class="text-green-400">"swift"</span>,
+    <span class="text-green-400">"feature"</span>: <span class="text-green-400">"rename"</span>
+  },
+  <span class="text-green-400">"suggestion"</span>: <span class="text-green-400">"Use 'observe grep' to find occurrences and 'act apply-edits' for syntactic replacement."</span>
+}
+</pre>
+                    </div>
+
+                    <!-- Output contract -->
+                    <h3 class="font-serif text-xl text-weaver-indigo mb-3">Output Contract</h3>
+                    <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-6">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                <tr>
+                                    <th class="p-4 font-medium">Mode</th>
+                                    <th class="p-4 font-medium">Selection</th>
+                                    <th class="p-4 font-medium">Rendering</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-weaver-indigo/10">
+                                <tr class="hover:bg-weaver-cream/30">
+                                    <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">auto</td>
+                                    <td class="p-4 text-weaver-indigo/80">Default. Picks <code>human</code> when stdout is a TTY, <code>json</code> otherwise.</td>
+                                    <td class="p-4 text-weaver-indigo/80">Depends on TTY detection.</td>
+                                </tr>
+                                <tr class="hover:bg-weaver-cream/30">
+                                    <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">human</td>
+                                    <td class="p-4 text-weaver-indigo/80">Forced via <code>--output human</code>.</td>
+                                    <td class="p-4 text-weaver-indigo/80">File headers, line-numbered source context, caret spans. Falls back to path + range when source is unavailable.</td>
+                                </tr>
+                                <tr class="hover:bg-weaver-cream/30">
+                                    <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">json</td>
+                                    <td class="p-4 text-weaver-indigo/80">Forced via <code>--output json</code>.</td>
+                                    <td class="p-4 text-weaver-indigo/80">JSONL <code>kind</code>-envelope. Stable for piping and automation.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-weaver-indigo/80">
+                        Daemon connections time out after 5&nbsp;seconds. The CLI aborts after 10 consecutive blank lines and treats missing exit messages as failures.
+                    </p>
                 </div>
             </section>
 
