@@ -223,7 +223,7 @@
                     <h2 class="font-serif text-4xl lg:text-5xl mb-8">Safety-First Posture</h2>
                     
                     <p class="font-sans text-xl text-weaver-cream/80 leading-relaxed mb-12 max-w-2xl mx-auto font-light">
-                        We don't trust agents blindly. Weaver implements a "Double-Lock" sandbox that validates intent before execution.
+                        We don't trust agents blindly. Weaver validates every edit against syntactic and semantic integrity (the Double-Lock) and sandboxes external tool execution separately.
                     </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
@@ -234,8 +234,8 @@
                         </div>
                         <div class="bg-weaver-dark/50 p-6 border border-weaver-cream/20 backdrop-blur-sm">
                             <i class="fa-solid fa-eye text-weaver-vermilion text-2xl mb-4"></i>
-                            <h3 class="font-mono text-sm font-bold mb-2 uppercase">Supervision</h3>
-                            <p class="text-xs text-weaver-cream/60">Every action is proposed, analyzed for side-effects, and requires approval or policy match.</p>
+                            <h3 class="font-mono text-sm font-bold mb-2 uppercase">Lock-Guarded Validation</h3>
+                            <p class="text-xs text-weaver-cream/60">Every edit passes syntactic (Tree-sitter) and semantic (LSP) checks on an in-memory copy before it touches disk.</p>
                         </div>
                         <div class="bg-weaver-dark/50 p-6 border border-weaver-cream/20 backdrop-blur-sm">
                             <i class="fa-solid fa-rotate-left text-weaver-vermilion text-2xl mb-4"></i>
