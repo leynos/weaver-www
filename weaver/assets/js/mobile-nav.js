@@ -37,6 +37,16 @@
   }
 
   var previousBodyOverflow = "";
+  var savedFocus = null;
+  var focusTrapHandler = null;
+
+  /* ---- focus-trap helper ---- */
+  function getFocusableElements() {
+    return nav.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), ' +
+      'select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+  }
 
   /* ---- open / close helpers ---- */
   function open() {
@@ -47,6 +57,33 @@
     previousBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     setHeaderHeight();
+
+    /* Save focus and move it into the nav */
+    savedFocus = document.activeElement;
+    var focusables = getFocusableElements();
+    if (focusables.length) focusables[0].focus();
+    else nav.setAttribute("tabindex", "-1"), nav.focus();
+
+    /* Install focus trap */
+    focusTrapHandler = function (e) {
+      if (e.key !== "Tab") return;
+      var els = getFocusableElements();
+      if (!els.length) return;
+      var first = els[0];
+      var last = els[els.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first || document.activeElement === btn) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          btn.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", focusTrapHandler);
   }
 
   function close() {
@@ -55,6 +92,20 @@
     btn.setAttribute("aria-label", "Open navigation menu");
     btn.innerHTML = '<i class="fa-solid fa-bars"></i>';
     document.body.style.overflow = previousBodyOverflow;
+
+    /* Remove focus trap */
+    if (focusTrapHandler) {
+      document.removeEventListener("keydown", focusTrapHandler);
+      focusTrapHandler = null;
+    }
+
+    /* Restore focus */
+    if (savedFocus && typeof savedFocus.focus === "function") {
+      savedFocus.focus();
+    } else {
+      btn.focus();
+    }
+    savedFocus = null;
   }
 
   function isOpen() {
@@ -68,6 +119,14 @@
   });
 
   backdrop.addEventListener("click", close);
+
+  /* Close drawer when a nav link is clicked (same-page anchors, etc.) */
+  var navLinks = nav.querySelectorAll("a");
+  for (var i = 0; i < navLinks.length; i++) {
+    navLinks[i].addEventListener("click", function () {
+      if (isOpen()) close();
+    });
+  }
 
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && isOpen()) close();
