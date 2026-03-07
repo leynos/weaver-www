@@ -64,6 +64,32 @@ body {
     box-shadow: 10px 10px 0 rgba(25, 60, 110, 0.08);
 }
 
+/* Full-bleed framed images on mobile */
+@media (max-width: 767px) {
+    .figure-fullbleed {
+        border: none !important;
+        padding: 0 !important;
+        margin-left: -2rem;
+        margin-right: -2rem;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-label,
+    .figure-fullbleed > .figure-fullbleed-caption {
+        display: none !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-img {
+        height: auto !important;
+        border: none !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-img > img {
+        object-fit: contain !important;
+    }
+}
+
 .masthead-eyebrow {
     display: inline-flex;
     align-items: center;
