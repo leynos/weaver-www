@@ -44,7 +44,7 @@
         .step-line { position: absolute; left: 15px; top: 40px; bottom: -20px; width: 2px; background-color: rgba(25, 60, 110, 0.2); z-index: 0; }
         .last-step .step-line { display: none; }
     </style>
-    <link rel="stylesheet" href="/weaver/assets/styles/weaver-site.css">
+    <link rel="stylesheet" href="../assets/styles/weaver-site.css">
 </head>
 <body class="bg-weaver-cream relative overflow-x-hidden selection:bg-weaver-vermilion selection:text-white">
     
@@ -61,32 +61,32 @@
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
                 <nav class="p-6 space-y-2 overflow-y-auto max-h-[calc(100vh-200px)]">
-                    <a href="/weaver/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">00</span> Home
                     </a>
-                    <a href="/weaver/why-weaver/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../why-weaver/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">01</span> Philosophy
                     </a>
-                    <a href="/weaver/how-it-works/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../how-it-works/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">02</span> Architecture
                     </a>
-                    <a href="/weaver/commands/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../commands/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">03</span> Commands
                     </a>
                     
-                    <a href="/weaver/safety/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../safety/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">04</span> Safety
                     </a>
 
-                    <a href="/weaver/sempai/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../sempai/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">05</span> Sempai Engine
                     </a>
-                    <a href="/weaver/jacquard/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                    <a href="../jacquard/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                         <span class="mr-2 font-mono text-xs opacity-60">06</span> Jacquard
                     </a>
                     <div class="pt-4 mt-4 border-t border-weaver-indigo/10">
                         <!-- Active State for Installation -->
-                        <a href="/weaver/install/" class="block px-4 py-2 text-sm font-semibold bg-weaver-indigo text-weaver-cream rounded-sm border border-weaver-indigo shadow-[2px_2px_0px_0px_rgba(25,60,110,1)] font-mono">
+                        <a href="./" class="block px-4 py-2 text-sm font-semibold bg-weaver-indigo text-weaver-cream rounded-sm border border-weaver-indigo shadow-[2px_2px_0px_0px_rgba(25,60,110,1)] font-mono">
                             > Install
                         </a>
                         <!-- Sub-navigation for Install -->
@@ -96,10 +96,10 @@
                             <a href="#troubleshooting" class="block py-1 text-xs font-mono text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Troubleshooting</a>
                         </div>
 
-                        <a href="/weaver/docs/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <a href="../docs/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                             Docs
                         </a>
-                        <a href="/weaver/roadmap/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
+                        <a href="../roadmap/" class="block px-4 py-2 text-sm font-medium text-weaver-indigo hover:bg-weaver-indigo/5 transition-colors border border-transparent">
                             Roadmap
                         </a>
                     </div>
@@ -235,6 +235,21 @@
                             <div class="mt-2 text-xs text-gray-500 font-mono border-t border-white/10 pt-2">
                                 Prints the negotiated capability matrix as JSON.<br>
                                 No daemon required — this runs entirely in the CLI process.
+                            </div>
+                        </div>
+
+                        <div class="reference-callout mt-4 max-w-2xl">
+                            <div class="reference-callout-title">
+                                <i class="fa-solid fa-book-open"></i>
+                                Canonical reference
+                            </div>
+                            <p class="text-sm text-weaver-indigo/80 mb-3">
+                                Need the real defaults, XDG discovery rules, or the daemon JSONL envelope? Use the docs hub instead of this quick-start page.
+                            </p>
+                            <div class="flex flex-wrap gap-3 text-xs font-mono">
+                                <a href="../docs/#configuration" class="text-weaver-vermilion hover:underline">Configuration</a>
+                                <a href="../docs/#jsonl-schema" class="text-weaver-vermilion hover:underline">JSONL protocol</a>
+                                <a href="../docs/#daemon-lifecycle" class="text-weaver-vermilion hover:underline">Daemon lifecycle</a>
                             </div>
                         </div>
                     </div>
@@ -381,13 +396,13 @@
                     <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
-                            <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
-                            <a href="/weaver/roadmap/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Roadmap</a>
+                            <a href="../why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
+                            <a href="../roadmap/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Roadmap</a>
                         </div>
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Resources</span>
-                            <a href="/weaver/docs/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Documentation</a>
-                            <a href="/weaver/install/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Installation</a>
+                            <a href="../docs/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Documentation</a>
+                            <a href="./" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Installation</a>
                         </div>
                     </div>
                 </div>
@@ -416,6 +431,6 @@
             });
         });
     </script>
-    <script src="/weaver/assets/js/mobile-nav.js"></script>
+    <script src="../assets/js/mobile-nav.js"></script>
 </body>
 </html>
