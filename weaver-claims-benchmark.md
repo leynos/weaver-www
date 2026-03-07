@@ -1,273 +1,276 @@
-# Weaver Website Claims Benchmark
+# Weaver Site Claim Benchmark
 
 ## Scope
 
-This benchmark compares the claims made by the static website under
-`weaver/`, starting from `weaver/index.html`, against the referenced
-Weaver design documents in `../weaver/docs/`.
+This benchmark compares the public site under `weaver/`, starting from
+`weaver/index.html`, against the supplied design documents, ADRs, references,
+and roadmap in `../weaver/docs/`.
 
-Verdict levels used here:
+Assessment labels used below:
 
-- `Supported`: the claim is materially backed by the design sources.
-- `Partially supported`: the claim reflects the design direction, but the
-  website overstates maturity, scope, or certainty.
-- `Unsupported or conflicting`: the claim is not backed by the current
-  design sources, or it contradicts the documented current interface and
-  roadmap.
+- `Aligned`: the site claim is supported by the referenced source material.
+- `Partially aligned`: the site captures the direction, but drops important
+  qualifiers or collapses planned and implemented behaviour.
+- `Overstated`: the claim goes beyond what the design material currently
+  supports.
+- `Contradicted`: the site describes a different mechanism or interface from the
+  source documents.
+- `Unverifiable`: the supplied references do not substantiate the claim either
+  way.
 
-## Supported Claims
+## Product Positioning
 
-### 1. Weaver is a CLI and daemon toolchain built around JSONL
+- Claim: Weaver is "a CLI-based toolchain for integrating AI agents with your
+  codebase" and is built around a CLI plus daemon split.
+  Site evidence: `weaver/index.html:124-126`,
+  `weaver/how-it-works/index.html:138-140`,
+  `weaver/how-it-works/index.html:261-264`.
+  Benchmark: `weaver-design.md:333-374`, `users-guide.md:218-243`.
+  Verdict: `Aligned`.
+  Notes: The design docs consistently describe a thin CLI client plus long-lived
+  daemon architecture.
 
-Verdict: `Supported`
+- Claim: Weaver is "safe, semantic" and combines Tree-sitter and LSP into a
+  fusion layer.
+  Site evidence: `weaver/index.html:124-126`,
+  `weaver/how-it-works/index.html:185-206`,
+  `weaver/commands/observe/index.html:137-160`.
+  Benchmark: `weaver-design.md:552-568`, `weaver-design.md:1071-1126`,
+  `weaver-design.md:1131-1183`, `jacquard-card-first-symbol-graph-design.md:10-23`.
+  Verdict: `Aligned`.
 
-The home page presents Weaver as a CLI-centred toolchain and says JSONL is
-the transport for agent-facing output
-([weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L125),
-[weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L221)).
-That matches the main design, which defines Weaver as composable
-UNIX-style primitives using JSON Lines as the native protocol and a thin
-CLI client over a daemon-backed transport
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L15),
-[../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L333),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L220),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L247)).
+- Claim: Weaver "plugs into any LSP-compatible editor or CI pipeline
+  seamlessly."
+  Site evidence: `weaver/index.html:181-184`.
+  Benchmark: `weaver-design.md:343-374`, `weaver-design.md:1071-1126`,
+  `users-guide.md:816-855`, `roadmap.md:742-771`.
+  Verdict: `Overstated`.
+  Notes: The sources support integration with language servers and automation,
+  but not a current editor-facing integration surface. Editor plugins are still
+  a concept in the site roadmap and a long-term idea in the broader design
+  direction, not a documented implemented interface.
 
-### 2. Weaver fuses LSP, Tree-sitter, and a relational graph layer
+## Transport, Runtime, and Configuration
 
-Verdict: `Supported`
+- Claim: Weaver uses JSONL streaming and a client-daemon model over Unix domain
+  sockets, with TCP on non-Unix targets.
+  Site evidence: `weaver/index.html:219-223`,
+  `weaver/how-it-works/index.html:257-295`,
+  `weaver/install/index.html:247-264`,
+  `weaver/docs/index.html:249-253`.
+  Benchmark: `weaver-design.md:376-408`, `weaver-design.md:944-952`,
+  `users-guide.md:24-37`, `users-guide.md:88-102`,
+  `users-guide.md:168-217`.
+  Verdict: `Partially aligned`.
+  Notes: The transport defaults are supported. The site is weaker on the actual
+  CLI contract, which uses explicit `--daemon-socket`, runtime files, and
+  auto-start semantics rather than the simplified examples shown on the site.
 
-The architecture page and home page describe a "Semantic Fusion Engine"
-that combines Tree-sitter and LSP signals
-([weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L183),
-[weaver/how-it-works/index.html](/data/leynos/Projects/weaver-www/weaver/how-it-works/index.html#L185),
-[weaver/how-it-works/index.html](/data/leynos/Projects/weaver-www/weaver/how-it-works/index.html#L197)).
-The design sources describe the same three-layer model: LSP for semantic
-inspection, Tree-sitter for syntactic structure, and a relational layer for
-call-graph and graph-derived context
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L24),
-[../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L565),
-[../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L12)).
+- Claim: The daemon maintains an "in-memory graph" or "knowledge graph" of the
+  codebase.
+  Site evidence: `weaver/how-it-works/index.html:185-188`,
+  `weaver/how-it-works/index.html:280-289`,
+  `weaver/docs/index.html:300-314`.
+  Benchmark: `weaver-design.md:918-920`, `weaver-design.md:1214-1247`,
+  `jacquard-card-first-symbol-graph-design.md:94-119`.
+  Verdict: `Partially aligned`.
+  Notes: The sources do describe semantic fusion, graph generation, and
+  relational layers, but they do not define the current operator-facing product
+  as an "in-memory graph database." The site turns an internal architectural
+  direction into a stronger product claim.
 
-### 3. Safety model: sandbox plus Double-Lock
+- Claim: The site docs page shows the current configuration contract.
+  Site evidence: `weaver/docs/index.html:214-241`.
+  Benchmark: `users-guide.md:8-65`, `weaver-design.md:923-968`.
+  Verdict: `Contradicted`.
+  Notes: The site invents a nested `[daemon]` and `[lsp]` schema with
+  `socket_type`, `socket_path`, and `max_memory_mb`, while the user's guide
+  documents top-level `daemon_socket`, `log_filter`, `log_format`, and repeated
+  `[[capability_overrides]]`.
 
-Verdict: `Supported`
+- Claim: The site docs page shows the current JSONL protocol schema.
+  Site evidence: `weaver/docs/index.html:249-287`.
+  Benchmark: `users-guide.md:245-275`, `weaver-design.md:376-408`.
+  Verdict: `Contradicted`.
+  Notes: The site presents `event_id`, `timestamp`, and `payload.type` frames.
+  The user's guide documents a `kind`-based envelope with `stream`, `data`, and
+  terminal `exit` messages.
 
-The site repeatedly claims a Birdcage sandbox plus Double-Lock control
-model, including seccomp-bpf-based confinement
-([weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L202),
-[weaver/safety/index.html](/data/leynos/Projects/weaver-www/weaver/safety/index.html#L138),
-[weaver/safety/index.html](/data/leynos/Projects/weaver-www/weaver/safety/index.html#L159)).
-That is consistent with the design, which specifies a zero-trust sandbox
-and a two-phase safety harness using Tree-sitter and LSP checks before
-commit
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L32),
-[../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L1387),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L857)).
+## Safety Model
 
-### 4. Sempai is intended as a Semgrep-compatible, Tree-sitter-backed query engine
+- Claim: Weaver uses `seccomp-bpf`, namespaces, and sandboxing to isolate
+  untrusted tooling.
+  Site evidence: `weaver/index.html:200-203`,
+  `weaver/safety/index.html:157-160`,
+  `weaver/safety/index.html:272-309`.
+  Benchmark: `weaver-design.md:919`, `weaver-design.md:1897-1932`,
+  `users-guide.md:155-166`.
+  Verdict: `Aligned`.
 
-Verdict: `Supported`
+- Claim: "Double-Lock" means Birdcage sandbox plus policy verification.
+  Site evidence: `weaver/safety/index.html:137-139`,
+  `weaver/safety/index.html:157-160`,
+  `weaver/safety/index.html:217-223`.
+  Benchmark: `weaver-design.md:1387-1459`, `users-guide.md:857-924`.
+  Verdict: `Contradicted`.
+  Notes: The design docs define Double-Lock as syntactic lock plus semantic lock
+  around in-memory edits. Sandboxing is a separate zero-trust execution layer,
+  not one of the two locks.
 
-The Sempai page describes a Semgrep-shaped query language lowered into a
-normalised model and executed against Tree-sitter
-([weaver/sempai/index.html](/data/leynos/Projects/weaver-www/weaver/sempai/index.html#L103),
-[weaver/sempai/index.html](/data/leynos/Projects/weaver-www/weaver/sempai/index.html#L146),
-[weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L334)).
-That aligns with ADR 002, ADR 003, and the technical design, all of which
-choose a Semgrep-compatible front-end with Tree-sitter-backed execution and
-an escape hatch for raw Tree-sitter queries
-([../weaver/docs/adr-002-query-language-for-feature-extraction-in-weaver.md](/data/leynos/Projects/weaver/docs/adr-002-query-language-for-feature-extraction-in-weaver.md#L101),
-[../weaver/docs/adr-003-sempai-semgrep-compatible-query-engine.md](/data/leynos/Projects/weaver/docs/adr-003-sempai-semgrep-compatible-query-engine.md#L104),
-[../weaver/docs/sempai-query-language-design.md](/data/leynos/Projects/weaver/docs/sempai-query-language-design.md#L3),
-[../weaver/docs/sempai-query-language-design.md](/data/leynos/Projects/weaver/docs/sempai-query-language-design.md#L865)).
+- Claim: Every action is proposed, analyzed, and requires approval or policy
+  match before execution.
+  Site evidence: `weaver/why-weaver/index.html:237-243`,
+  `weaver/commands/act/index.html:167-210`,
+  `weaver/commands/act/index.html:275-360`.
+  Benchmark: `weaver-design.md:1555-1853`, `users-guide.md:494-567`,
+  `roadmap.md:757-763`, `weaver-design.md:2260-2263`.
+  Verdict: `Overstated`.
+  Notes: Human approval appears only as a planned hybrid interactive mode.
+  Current documented actuation is lock-guarded, transactional, and plugin- or
+  patch-driven; it is not a proposal-review-apply workflow.
 
-### 5. Jacquard: cards, slices, and history
+- Claim: Rollback is a first-class behaviour.
+  Site evidence: `weaver/why-weaver/index.html:241-243`.
+  Benchmark: `weaver-design.md:1505-1515`,
+  `rust-extricate-actuator-plugin-technical-design.md:248-249`,
+  `roadmap.md:599-603`.
+  Verdict: `Aligned`.
+  Notes: The sources repeatedly describe rollback and unchanged working trees on
+  failure as explicit requirements.
 
-Verdict: `Supported`
+## Command Model
 
-The Jacquard page says the system centres on deterministic symbol cards,
-bounded graph slices, and recent-commit history matching
-([weaver/jacquard/index.html](/data/leynos/Projects/weaver-www/weaver/jacquard/index.html#L103),
-[weaver/jacquard/index.html](/data/leynos/Projects/weaver-www/weaver/jacquard/index.html#L147),
-[weaver/jacquard/index.html](/data/leynos/Projects/weaver-www/weaver/jacquard/index.html#L283)).
-That is faithful to the Jacquard design and roadmap phase 7
-([../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L41),
-[../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L776),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L773)).
+- Claim: Weaver's interface is fundamentally three verbs: `observe`, `act`,
+  `verify`.
+  Site evidence: `weaver/commands/index.html:125-127`.
+  Benchmark: `users-guide.md:220-243`, `users-guide.md:322-341`.
+  Verdict: `Partially aligned`.
+  Notes: The high-level domain split is correct, but the documented CLI contract
+  is `weaver <domain> <operation> [ARG ...]`, not the simpler path-oriented
+  syntax shown by the site.
 
-## Partially Supported Claims
+- Claim: `observe` reads files or directories directly and streams structured
+  context to stdout.
+  Site evidence: `weaver/commands/observe/index.html:159-173`,
+  `weaver/commands/observe/index.html:232-323`.
+  Benchmark: `users-guide.md:343-468`, `weaver-design.md:1144-1169`.
+  Verdict: `Overstated`.
+  Notes: The supplied references describe `observe get-definition`,
+  `find-references`, `call-hierarchy`, and `grep`, plus planned `query`,
+  `get-card`, `graph-slice`, and `graph-history`. The site presents a more
+  monolithic `observe <path>` interface than the docs support.
 
-### 6. "Plug into any LSP-compatible editor or CI pipeline seamlessly"
+- Claim: `act` exposes proposal-cycle subcommands such as `propose` and
+  `apply`.
+  Site evidence: `weaver/commands/act/index.html:174-223`,
+  `weaver/commands/act/index.html:275-360`.
+  Benchmark: `users-guide.md:494-567`,
+  `adr-001-plugin-capability-model-and-act-extricate.md:47-63`,
+  `rust-extricate-actuator-plugin-technical-design.md:99-122`.
+  Verdict: `Contradicted`.
+  Notes: The source documents describe `act apply-patch`, `act apply-rewrite`,
+  `act refactor`, and `act extricate` as the meaningful command surfaces. The
+  proposal-cycle UI is a site invention.
 
-Verdict: `Partially supported`
+- Claim: `verify` runs tests, linters, policy checks, and provenance validation.
+  Site evidence: `weaver/commands/index.html:185-193`,
+  `weaver/commands/verify/index.html:145-170`,
+  `weaver/commands/verify/index.html:233-303`.
+  Benchmark: `users-guide.md:470-492`, `users-guide.md:857-924`.
+  Verdict: `Overstated`.
+  Notes: The current user's guide documents `verify diagnostics`. The design
+  direction absolutely cares about validation, but the site presents a richer,
+  more CI-like command surface than the current operator docs do.
 
-The home page claims broad, seamless integration with any LSP-compatible
-editor or CI pipeline
-([weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L183)).
-The source docs do support CI-friendly CLI usage and process-based LSP
-integration, but they describe capability negotiation, language-specific
-workarounds, and explicit daemon orchestration rather than editor-agnostic
-drop-in support
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L163),
-[../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L917),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L828)).
-The claim captures the intent, but "any" and "seamlessly" are stronger than
-the documented contract.
+- Claim: `act apply-patch`-style behaviour is central to the write path.
+  Site evidence: `weaver/commands/index.html:230-238`,
+  `weaver/commands/index.html:333-348`.
+  Benchmark: `users-guide.md:494-518`, `weaver-design.md:1555-1853`,
+  `roadmap.md:713-740`.
+  Verdict: `Aligned`.
+  Notes: The site gets the importance of patch application right, even though it
+  documents the wrong command shape.
 
-### 7. The installation model is a single Cargo-installed binary with daemon support
+## Sempai
 
-Verdict: `Partially supported`
+- Claim: Sempai is a Semgrep-compatible query engine with a Tree-sitter
+  backend, YAML and DSL front doors, limited MVP parity, and Rust/Python/
+  TypeScript/Go coverage with optional HCL.
+  Site evidence: `weaver/sempai/index.html:146-167`,
+  `weaver/sempai/index.html:176-182`,
+  `weaver/sempai/index.html:337-345`,
+  `weaver/sempai/index.html:375-389`.
+  Benchmark: `adr-002...md:99-105`, `adr-003...md:100-133`,
+  `sempai-query-language-design.md:17-30`,
+  `sempai-query-language-design.md:103-178`,
+  `sempai-query-language-design.md:859-951`.
+  Verdict: `Aligned`.
 
-The install page says Weaver is distributed as a single Cargo-installed
-binary that includes both CLI and daemon behaviour
-([weaver/install/index.html](/data/leynos/Projects/weaver-www/weaver/install/index.html#L134),
-[weaver/install/index.html](/data/leynos/Projects/weaver-www/weaver/install/index.html#L208)).
-The design does document a CLI executable plus daemon runtime, but it does
-not establish this website language as a release or packaging guarantee; it
-also documents platform-dependent socket handling and shared runtime paths
-rather than a simplified "single binary" operational story
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L915),
-[../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L944),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L298)).
+- Claim: The Sempai CLI surface is `weaver observe query` with rule-file, inline
+  rule, or DSL options.
+  Site evidence: `weaver/sempai/index.html:335-345`.
+  Benchmark: `sempai-query-language-design.md:861-875`,
+  `sempai-query-language-design.md:1146-1153`.
+  Verdict: `Aligned`.
 
-### 8. The roadmap page reflects the project's forward plan
+## Jacquard
 
-Verdict: `Partially supported`
+- Claim: Jacquard centers on symbol cards, bounded slices, graph history, and
+  probabilistic matching with explicit ambiguity and budgets.
+  Site evidence: `weaver/jacquard/index.html:120-126`,
+  `weaver/jacquard/index.html:143-168`,
+  `weaver/jacquard/index.html:257-271`,
+  `weaver/jacquard/index.html:281-294`,
+  `weaver/jacquard/index.html:351-386`,
+  `weaver/jacquard/index.html:397-419`.
+  Benchmark: `jacquard-card-first-symbol-graph-design.md:5-23`,
+  `jacquard-card-first-symbol-graph-design.md:50-67`,
+  `jacquard-card-first-symbol-graph-design.md:424-438`,
+  `jacquard-card-first-symbol-graph-design.md:522-560`,
+  `jacquard-card-first-symbol-graph-design.md:584-605`,
+  `jacquard-card-first-symbol-graph-design.md:783-838`,
+  `jacquard-card-first-symbol-graph-design.md:1003-1035`.
+  Verdict: `Aligned`.
 
-The roadmap page does point to future work on daemon UX, multi-repo context,
-and Jacquard
-([weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L236),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L257),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L285)).
-Those themes overlap with the design roadmap's focus on daemon UX, graph
-enrichment, and advanced agent support, but the website converts the plan
-into invented version numbers, quarters, and feature packaging that the
-actual roadmap does not commit to
-([../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L335),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L699),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L742)).
+- Claim: Jacquard is already the "Preview Concept" of a visual debugging
+  interface for agent cognition.
+  Site evidence: `weaver/roadmap/index.html:279-299`.
+  Benchmark: `jacquard-card-first-symbol-graph-design.md:45-46`,
+  `roadmap.md:773-963`.
+  Verdict: `Overstated`.
+  Notes: The reference docs describe Jacquard as a family of `observe`
+  operations and structured JSONL payloads. A visual debugger is site-level
+  framing, not the actual documented product surface.
 
-## Unsupported or Conflicting Claims
+## Documentation and Roadmap Framing
 
-### 9. Site overstates the current `observe` surface
+- Claim: The docs hub accurately fronts the available design material.
+  Site evidence: `weaver/docs/index.html:176-205`.
+  Benchmark: the supplied docs list itself.
+  Verdict: `Partially aligned`.
+  Notes: The categories are directionally reasonable, but the design-doc cards
+  are placeholders (`href="#"`) and use invented RFC names rather than linking
+  to the actual ADRs and design docs under `../weaver/docs/`.
 
-Verdict: `Unsupported or conflicting`
+- Claim: The site roadmap reflects the product roadmap.
+  Site evidence: `weaver/roadmap/index.html:139-349`.
+  Benchmark: `roadmap.md:21-963`, `weaver-design.md:2161-2265`.
+  Verdict: `Partially aligned`.
+  Notes: Both roadmaps point toward richer daemon UX, plugin ecosystems,
+  Jacquard, and advanced agent support. The site version, however, replaces the
+  official phased plan with a marketing roadmap that introduces different
+  milestones, versioning, and UI concepts.
 
-The `observe` page documents `weaver observe [OPTIONS] <PATH>...`,
-directory-recursion flags, `--symbol`, `--with-lsp`, and format switches
-([weaver/commands/observe/index.html](/data/leynos/Projects/weaver-www/weaver/commands/observe/index.html#L160),
-[weaver/commands/observe/index.html](/data/leynos/Projects/weaver-www/weaver/commands/observe/index.html#L166),
-[weaver/commands/observe/index.html](/data/leynos/Projects/weaver-www/weaver/commands/observe/index.html#L190)).
-The user guide instead defines the current CLI around explicit operations
-such as `observe get-definition`, `observe find-references`, and
-`observe call-hierarchy`; even `observe grep` is described as illustrative
-until fully wired into the daemon
-([../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L322),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L343),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L338)).
+## Overall Conclusion
 
-### 10. Site invents a current `act propose` / `act apply` UX
+The site is strongest when it summarizes architectural direction: CLI plus
+daemon, JSONL transport, Tree-sitter plus LSP fusion, sandboxing with
+`seccomp-bpf`, Semgrep-compatible Sempai, and Jacquard's cards/slices/history
+model all have real support in the supplied references.
 
-Verdict: `Unsupported or conflicting`
-
-The `act` page describes an explicit proposal cycle with `act propose`,
-`act apply`, proposal IDs, staged plans, and required human confirmation for
-high-impact changes
-([weaver/commands/act/index.html](/data/leynos/Projects/weaver-www/weaver/commands/act/index.html#L145),
-[weaver/commands/act/index.html](/data/leynos/Projects/weaver-www/weaver/commands/act/index.html#L168),
-[weaver/commands/act/index.html](/data/leynos/Projects/weaver-www/weaver/commands/act/index.html#L198),
-[weaver/commands/act/index.html](/data/leynos/Projects/weaver-www/weaver/commands/act/index.html#L297)).
-The design documents the current `act` surface around `apply-patch`,
-`apply-rewrite`, `refactor`, and the planned `act extricate`; an interactive
-approval mode is a future roadmap item, not the default current interface
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L1555),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L494),
-[../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L540),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L757),
-[../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md](/data/leynos/Projects/weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md#L108)).
-
-### 11. Site overstates the current `verify` surface
-
-Verdict: `Unsupported or conflicting`
-
-The `verify` page says verification spans build and test, policy
-enforcement, and provenance validation, with flags such as `--policy`,
-`--provenance`, `--strict`, and `--format sarif`
-([weaver/commands/verify/index.html](/data/leynos/Projects/weaver-www/weaver/commands/verify/index.html#L169),
-[weaver/commands/verify/index.html](/data/leynos/Projects/weaver-www/weaver/commands/verify/index.html#L199),
-[weaver/commands/verify/index.html](/data/leynos/Projects/weaver-www/weaver/commands/verify/index.html#L236)).
-The user guide documents the current `verify` surface as
-`weaver verify diagnostics --uri <URI>` and does not define the site's
-broader CLI contract
-([../weaver/docs/users-guide.md](/data/leynos/Projects/weaver/docs/users-guide.md#L470)).
-The provenance and project-onboarding material exists in the high-level
-design as advanced capabilities, not as the current `verify` command UX
-([../weaver/docs/weaver-design.md](/data/leynos/Projects/weaver/docs/weaver-design.md#L2079),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L749)).
-
-### 12. Site reframes Jacquard as a visual debugger
-
-Verdict: `Unsupported or conflicting`
-
-The roadmap page frames Jacquard as "a visual debugging interface for agent
-cognition" and tags it with "React Components"
-([weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L285),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L290),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L295)).
-The actual Jacquard design is CLI-first and JSONL-first: it defines
-`observe get-card`, `observe graph-slice`, and `observe graph-history`
-payloads and rollout phases, not a React front end
-([../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L776),
-[../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L783),
-[../weaver/docs/jacquard-card-first-symbol-graph-design.md](/data/leynos/Projects/weaver/docs/jacquard-card-first-symbol-graph-design.md#L832)).
-
-### 13. Site roadmap adds unsupported headline features
-
-Verdict: `Unsupported or conflicting`
-
-The website roadmap introduces `weaver status --watch`, a macOS menu-bar
-indicator, and native VS Code / IntelliJ plugins
-([weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L239),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L242),
-[weaver/roadmap/index.html](/data/leynos/Projects/weaver-www/weaver/roadmap/index.html#L345)).
-Those features are not present in the actual roadmap, which instead
-prioritises capability discovery, `act extricate`, `apply-patch`,
-`onboard-project`, interactive lock review, dynamic analysis ingestion, and
-Jacquard's CLI surfaces
-([../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L635),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L713),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L749),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L782)).
-
-### 14. "System Operational" overstates feature completeness
-
-Verdict: `Unsupported or conflicting`
-
-Multiple pages carry the same "System Operational" and `v0.1.0` footer
-language while documenting command families and workflows as if they are all
-current
-([weaver/index.html](/data/leynos/Projects/weaver-www/weaver/index.html#L94),
-[weaver/commands/observe/index.html](/data/leynos/Projects/weaver-www/weaver/commands/observe/index.html#L113),
-[weaver/commands/act/index.html](/data/leynos/Projects/weaver-www/weaver/commands/act/index.html#L121),
-[weaver/commands/verify/index.html](/data/leynos/Projects/weaver-www/weaver/commands/verify/index.html#L122)).
-The design and roadmap still mark large parts of Sempai, plugin capability
-discovery, `act extricate`, Jacquard, onboarding, and interactive approval
-as planned or partially implemented
-([../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L447),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L538),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L635),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L749),
-[../weaver/docs/roadmap.md](/data/leynos/Projects/weaver/docs/roadmap.md#L782)).
-
-## Overall Assessment
-
-The website is strongest when it describes Weaver's architectural thesis:
-CLI plus daemon, JSONL transport, LSP plus Tree-sitter fusion, sandboxing,
-Double-Lock verification, Sempai, and Jacquard's basic conceptual shape.
-
-It becomes unreliable when it moves from architecture into current product
-surface. The command pages, roadmap, and status framing often convert design
-intent or future roadmap items into present-tense product claims. That makes
-the site effective as a concept brochure, but materially weaker as a source
-of truth for current Weaver behaviour.
+The weakest areas are the command surface and the meaning of "Double-Lock". The
+site repeatedly turns planned, abstract, or speculative behaviour into a
+current-looking user interface: proposal-cycle `act` commands, generic
+path-oriented `observe`, build-and-test `verify`, policy-engine-as-second-lock,
+and a configuration/protocol schema that does not match the user's guide. Those
+areas should be treated as documentation debt, not just copy drift.
