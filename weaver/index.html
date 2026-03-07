@@ -47,7 +47,7 @@
         <!-- Sidebar Navigation (Consistent with context) -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -186,7 +186,7 @@
                                 Explore Fusion <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
                             </a>
                             <!-- Corner Accent -->
-                            <div class="absolute bottom-0 left-0 w-0 h-0 border-b-[20px] border-l-[20px] border-b-weaver-vermilion border-l-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div class="absolute bottom-0 end-0 w-0 h-0 border-b-[20px] border-r-[20px] border-b-weaver-vermilion border-r-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
 
                         <!-- Prop 2: Safe -->
@@ -205,7 +205,7 @@
                                 Security Model <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
                             </a>
                              <!-- Corner Accent -->
-                             <div class="absolute bottom-0 left-0 w-0 h-0 border-b-[20px] border-l-[20px] border-b-weaver-vermilion border-l-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                             <div class="absolute bottom-0 end-0 w-0 h-0 border-b-[20px] border-r-[20px] border-b-weaver-vermilion border-r-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
 
                         <!-- Prop 3: Fast -->
@@ -224,7 +224,7 @@
                                 Daemon Specs <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
                             </a>
                              <!-- Corner Accent -->
-                             <div class="absolute bottom-0 left-0 w-0 h-0 border-b-[20px] border-l-[20px] border-b-weaver-vermilion border-l-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                             <div class="absolute bottom-0 end-0 w-0 h-0 border-b-[20px] border-r-[20px] border-b-weaver-vermilion border-r-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         </div>
 
                     </div>
@@ -311,16 +311,16 @@
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                         <div class="order-2 lg:order-1 relative">
                              <!-- Blueprint Illustration -->
-                             <div class="border-2 border-weaver-indigo bg-weaver-cream p-6 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)]">
-                                <div class="absolute top-0 left-0 bg-weaver-indigo text-white px-2 py-1 font-mono text-xs">QUERY ENGINE</div>
-                                <div class="h-64 border border-weaver-indigo/20 relative overflow-hidden">
+                             <div class="figure-fullbleed border-2 border-weaver-indigo bg-weaver-cream p-6 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)]">
+                                <div class="figure-fullbleed-label absolute top-0 left-0 z-10 bg-weaver-indigo text-white px-2 py-1 font-mono text-xs">QUERY ENGINE</div>
+                                <div class="figure-fullbleed-img h-64 border border-weaver-indigo/20 relative overflow-hidden">
                                     <img
                                         src="/weaver/assets/home/home-sempai-query-pipeline.png"
                                         alt="Illustrated left-to-right Sempai query pipeline showing code entering a circular parsing chamber and flowing as structured output toward an agent target."
                                         class="w-full h-full object-cover"
                                     >
                                 </div>
-                                <div class="mt-4 flex justify-between font-mono text-[10px] text-weaver-indigo/60">
+                                <div class="figure-fullbleed-caption mt-4 flex justify-between font-mono text-[10px] text-weaver-indigo/60">
                                     <span>INPUT: RAW SOURCE</span>
                                     <span>OUTPUT: STRUCTURED JSONL</span>
                                 </div>
@@ -418,7 +418,7 @@
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                     </div>
                     
-                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                    <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                             <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -457,5 +457,6 @@
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>

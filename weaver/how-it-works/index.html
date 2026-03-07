@@ -53,7 +53,7 @@
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -156,8 +156,8 @@
                         </div>
                         
                         <!-- ASCII / CSS Diagram -->
-                        <div class="bg-weaver-dark p-4 rounded-sm shadow-xl overflow-hidden border border-weaver-indigo/50 relative group">
-                            <div class="absolute top-2 right-2 text-[10px] text-weaver-vermilion opacity-50">FIG 3.0</div>
+                        <div class="bg-weaver-dark p-4 rounded-sm shadow-xl overflow-hidden border border-weaver-indigo/50 relative group figure-fullbleed">
+                            <div class="absolute top-2 right-2 text-[10px] text-weaver-vermilion opacity-50 figure-fullbleed-label">FIG 3.0</div>
                             <img
                                 src="/weaver/assets/how-it-works/how-it-works-system-topology.png"
                                 alt="System-topology illustration showing the Weaver CLI shell, daemon, semantic fusion core, JSONL output, and analysis engines."
@@ -440,7 +440,7 @@
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                     </div>
                     
-                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                    <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                             <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -479,5 +479,6 @@
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>

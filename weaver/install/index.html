@@ -56,7 +56,7 @@
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -290,7 +290,7 @@
                                 <div class="w-8 h-8 rounded-full bg-weaver-vermilion flex items-center justify-center text-white font-bold text-xs">1</div>
                                 <h3 class="font-mono font-bold text-white">OBSERVE</h3>
                             </div>
-                            <p class="text-xs text-weaver-cream/60 mb-4 h-10">Analyze the codebase structure and generate a semantic map.</p>
+                            <p class="text-xs text-weaver-cream/60 mb-4 h-10">Analyse the codebase structure and generate a semantic map.</p>
                             <div class="bg-black/30 p-3 rounded font-mono text-xs text-green-400 border border-white/5">
                                 $ weaver observe .
                             </div>
@@ -377,7 +377,7 @@
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                     </div>
                     
-                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                    <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                             <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -415,5 +415,6 @@
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>

@@ -47,7 +47,7 @@
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -176,8 +176,8 @@
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
                         <!-- Left: Visual -->
                         <div class="lg:col-span-6 order-2 lg:order-1">
-                            <div class="relative border-2 border-weaver-indigo bg-weaver-cream p-4">
-                                <div class="absolute top-2 left-2 text-[10px] font-mono text-weaver-indigo border border-weaver-indigo px-1 bg-weaver-cream/90">FIG 2.1: PROTOCOLS</div>
+                            <div class="relative border-2 border-weaver-indigo bg-weaver-cream p-4 figure-fullbleed">
+                                <div class="absolute top-2 left-2 text-[10px] font-mono text-weaver-indigo border border-weaver-indigo px-1 bg-weaver-cream/90 figure-fullbleed-label">FIG 2.1: PROTOCOLS</div>
                                 <img
                                     src="/weaver/assets/why-weaver/why-weaver-open-interfaces.png"
                                     alt="Illustration of Weaver's open interface model connecting language servers, a JSONL event spine, and terminal tools."
@@ -325,7 +325,7 @@
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                     </div>
                     
-                    <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                    <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                         <div class="flex flex-col space-y-2">
                             <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                             <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -364,5 +364,6 @@
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>

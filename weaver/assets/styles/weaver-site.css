@@ -64,6 +64,61 @@ body {
     box-shadow: 10px 10px 0 rgba(25, 60, 110, 0.08);
 }
 
+/* Full-bleed framed images on mobile.
+   Containers with non-default horizontal padding can override
+   --fullbleed-offset to match (e.g., style="--fullbleed-offset: 1rem"). */
+@media (max-width: 767px) {
+    .figure-fullbleed {
+        border: none !important;
+        padding: 0 !important;
+        margin-left: calc(-1 * var(--fullbleed-offset, 2rem));
+        margin-right: calc(-1 * var(--fullbleed-offset, 2rem));
+        box-shadow: none !important;
+        background: transparent !important;
+        border-radius: 0 !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-label {
+        padding-right: calc(var(--fullbleed-offset, 2rem) + 0.5em) !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-caption {
+        padding-left: calc(var(--fullbleed-offset, 2rem) + 0.5em) !important;
+        padding-right: calc(var(--fullbleed-offset, 2rem) + 0.5em) !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-img {
+        height: auto !important;
+        border: none !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-img > img,
+    .figure-fullbleed > img {
+        object-fit: contain !important;
+        border: none !important;
+        border-radius: 0 !important;
+    }
+
+    .figure-fullbleed > figcaption {
+        padding: 0.75rem var(--fullbleed-offset, 2rem) 0 !important;
+    }
+
+    .figure-fullbleed > .figure-fullbleed-footer {
+        padding-left: var(--fullbleed-offset, 2rem) !important;
+        padding-right: var(--fullbleed-offset, 2rem) !important;
+    }
+
+    .figure-fullbleed.figure-fullbleed-opaque {
+        background: #fff !important;
+    }
+
+    .panel-fullbleed {
+        margin-left: calc(-1 * var(--fullbleed-offset, 2rem)) !important;
+        margin-right: calc(-1 * var(--fullbleed-offset, 2rem)) !important;
+        border-radius: 0 !important;
+    }
+}
+
 .masthead-eyebrow {
     display: inline-flex;
     align-items: center;
@@ -131,4 +186,80 @@ pre code {
 
 #sidebar nav :is(a[href="/install"], a[href$="/install/"]):not(.bg-weaver-indigo):hover {
     background: rgba(232, 80, 43, 0.05);
+}
+
+/* ---- Mobile hamburger navigation ---- */
+
+/* Hide toggle button by default (visible only in mobile media query) */
+#mobile-nav-toggle {
+    display: none;
+}
+
+#mobile-nav-backdrop {
+    display: none;
+}
+
+@media (max-width: 1023px) {
+    #sidebar {
+        position: sticky;
+        top: 0;
+        height: auto;
+        z-index: 40;
+        border-right: none;
+    }
+
+    .has-mobile-nav #sidebar nav {
+        display: none;
+    }
+
+    #sidebar.mobile-nav-open nav {
+        display: block;
+        position: fixed;
+        top: var(--mobile-header-height, 5rem);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--weaver-cream);
+        z-index: 41;
+        overflow-y: auto;
+        max-height: none;
+        padding: 1.5rem;
+        border-top: 2px solid rgba(25, 60, 110, 0.2);
+    }
+
+    #mobile-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: 50%;
+        right: 1.5rem;
+        transform: translateY(-50%);
+        width: 2.5rem;
+        height: 2.5rem;
+        background: transparent;
+        border: 1px solid rgba(25, 60, 110, 0.2);
+        border-radius: 0.125rem;
+        color: var(--weaver-indigo);
+        font-size: 1.125rem;
+        cursor: pointer;
+        z-index: 42;
+    }
+
+    #mobile-nav-toggle:focus-visible {
+        outline: 2px solid var(--weaver-vermilion);
+        outline-offset: 2px;
+    }
+
+    #mobile-nav-backdrop {
+        display: none;
+    }
+
+    #sidebar.mobile-nav-open ~ #mobile-nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 36, 64, 0.3);
+        z-index: 39;
+    }
 }

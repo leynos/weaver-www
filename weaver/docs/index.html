@@ -53,7 +53,7 @@
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -354,7 +354,7 @@ pattern:
                     </div>
 
                     <!-- Help Footer -->
-                    <div class="bg-weaver-indigo text-weaver-cream p-8 rounded-sm mt-12 flex flex-col md:flex-row items-center justify-between">
+                    <div class="bg-weaver-indigo text-weaver-cream p-8 rounded-sm mt-12 flex flex-col md:flex-row items-center justify-between panel-fullbleed">
                         <div class="mb-4 md:mb-0">
                             <h3 class="font-serif text-2xl mb-2">Need deeper integration?</h3>
                             <p class="text-weaver-cream/70 text-sm">Check out the plugin development guide for extending Weaver.</p>
@@ -380,7 +380,7 @@ pattern:
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                        <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                             <div class="flex flex-col space-y-2">
                                 <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                                 <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -415,5 +415,6 @@ pattern:
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>

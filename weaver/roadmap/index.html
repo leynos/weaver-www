@@ -64,7 +64,7 @@
         <!-- Sidebar Navigation -->
         <aside id="sidebar" class="w-full lg:w-64 bg-weaver-cream border-r-2 border-weaver-indigo/20 flex-shrink-0 lg:fixed h-auto lg:h-full z-40 flex flex-col justify-between">
             <div>
-                <div class="p-8 border-b-2 border-weaver-indigo/20">
+                <div class="p-8 border-b-2 border-weaver-indigo/20" data-mobile-nav-header>
                     <h1 class="font-serif text-3xl font-bold tracking-tight text-weaver-indigo">WEAVER</h1>
                     <p class="font-mono text-xs mt-2 text-weaver-indigo/70">AI CODEBASE TOOLING</p>
                 </div>
@@ -164,10 +164,10 @@
                             <span class="h-px w-8 bg-weaver-vermilion mr-4"></span>
                             <h2 class="font-serif text-2xl text-weaver-indigo">Development Velocity</h2>
                         </div>
-                        <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm shadow-sm relative">
+                        <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm shadow-sm relative figure-fullbleed figure-fullbleed-opaque">
                              <div id="velocity-chart" class="h-[300px] w-full"></div>
-                             <div class="absolute top-4 right-4 text-[10px] font-mono text-weaver-indigo/40 bg-weaver-cream px-2 py-1 border border-weaver-indigo/10">
-                                 LIVE METRICS
+                             <div class="absolute top-4 right-4 z-10 text-[10px] font-mono text-weaver-indigo/40 bg-weaver-cream px-2 py-1 border border-weaver-indigo/10 figure-fullbleed-label">
+                                 QUARTERLY METRICS
                              </div>
                         </div>
                         <script>
@@ -353,7 +353,7 @@
                     </section>
 
                     <!-- Contribution Call to Action -->
-                    <section class="bg-weaver-indigo text-weaver-cream p-10 rounded-sm relative overflow-hidden">
+                    <section class="bg-weaver-indigo text-weaver-cream p-10 rounded-sm relative overflow-hidden panel-fullbleed">
                         <div class="absolute top-0 right-0 w-64 h-64 bg-weaver-vermilion rounded-full filter blur-[80px] opacity-20 -mr-20 -mt-20"></div>
                         
                         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -398,7 +398,7 @@
                         <p class="font-mono text-xs text-weaver-indigo/60 mt-1">Serious tools, <span class="text-weaver-vermilion">playful worlds.</span></p>
                         </div>
                         
-                        <div class="flex flex-col md:flex-row gap-8 text-center md:text-right">
+                        <div class="flex flex-col md:flex-row gap-y-4 md:gap-x-8 text-center md:text-right">
                             <div class="flex flex-col space-y-2">
                                 <span class="font-mono text-xs font-bold text-weaver-indigo uppercase mb-1">Project</span>
                                 <a href="/weaver/why-weaver/" class="text-sm text-weaver-indigo/80 hover:text-weaver-vermilion transition-colors">Philosophy</a>
@@ -433,5 +433,6 @@
             });
         });
     </script>
+    <script src="/weaver/assets/js/mobile-nav.js"></script>
 </body>
 </html>
