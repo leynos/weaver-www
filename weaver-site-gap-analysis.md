@@ -171,13 +171,15 @@ prominent in the source references.
 
 ## CLI Discoverability and Help-Surface Gaps
 
-- The site does not cover the roadmap's command discoverability work.
+- The site now covers the roadmap's command discoverability work as planned, not
+  shipped.
   Source evidence: `roadmap.md:142-237`, `roadmap.md:278-334`.
-  Missing from the site:
-  top-level help improvements, operation-level help,
-  `weaver help <topic>`, and actionable startup/routing errors.
+  Documented on the site as planned:
+  `weaver --help`, `weaver help <topic>`, operation-level `--help`, and
+  actionable startup/routing errors.
   Why this matters: the roadmap treats these as explicit UX deliverables for the
-  CLI, but the site mostly bypasses the issue with stylized examples.
+  CLI. The remaining gap is implementation status and current availability, not
+  documentation absence.
 
 ## Documentation and Site-Level Gaps
 

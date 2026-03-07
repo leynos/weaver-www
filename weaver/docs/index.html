@@ -213,7 +213,7 @@
                                     <i class="fa-solid fa-arrow-right ml-auto text-weaver-vermilion opacity-0 group-hover:opacity-100 transition-opacity"></i>
                                 </div>
                             </a>
-                            <a href="../sempai/" class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden hover:border-weaver-vermilion/40 transition-colors">
+                            <a href="https://github.com/leynos/weaver/blob/main/docs/sempai-query-language-design.md" target="_blank" class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden hover:border-weaver-vermilion/40 transition-colors">
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-magnifying-glass text-4xl text-weaver-indigo"></i>
                                 </div>
@@ -224,7 +224,7 @@
                                     <i class="fa-solid fa-arrow-right ml-auto text-weaver-vermilion opacity-0 group-hover:opacity-100 transition-opacity"></i>
                                 </div>
                             </a>
-                            <a href="../jacquard/" class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden hover:border-weaver-vermilion/40 transition-colors">
+                            <a href="https://github.com/leynos/weaver/blob/main/docs/jacquard-card-first-symbol-graph-design.md" target="_blank" class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden hover:border-weaver-vermilion/40 transition-colors">
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-diagram-project text-4xl text-weaver-indigo"></i>
                                 </div>
@@ -395,6 +395,26 @@ string "yes", expected a boolean
                                         <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_LOG_FORMAT</td>
                                         <td class="p-4 font-mono text-weaver-faded text-xs">--log-format</td>
                                         <td class="p-4 text-weaver-indigo/80">Log output format: <code>json</code> or <code>compact</code>.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_FOREGROUND</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">env only</td>
+                                        <td class="p-4 text-weaver-indigo/80">Keep <code>weaverd</code> attached to the terminal instead of daemonising. Set to <code>1</code> for debugging and CI.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVERD_BIN</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">env only</td>
+                                        <td class="p-4 text-weaver-indigo/80">Override the daemon binary path used by <code>weaver daemon start</code> and automatic daemon startup.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_ROPE_PLUGIN_PATH</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">env only</td>
+                                        <td class="p-4 text-weaver-indigo/80">Override the executable path for the built-in Rope refactoring provider.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">WEAVER_RUST_ANALYZER_PLUGIN_PATH</td>
+                                        <td class="p-4 font-mono text-weaver-faded text-xs">env only</td>
+                                        <td class="p-4 text-weaver-indigo/80">Override the executable path for the built-in <code>rust-analyzer</code> integration used for Rust semantic operations.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -782,13 +802,6 @@ capabilities = [<span class="text-green-400">"rename-symbol"</span>]
                                         <td class="p-4 text-weaver-indigo/80">Python</td>
                                         <td class="p-4 font-mono text-weaver-indigo/80">30s</td>
                                         <td class="p-4 font-mono text-xs text-weaver-indigo/80">WEAVER_ROPE_PLUGIN_PATH</td>
-                                    </tr>
-                                    <tr class="hover:bg-weaver-cream/30">
-                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">rust-analyzer</td>
-                                        <td class="p-4 text-weaver-indigo/80">actuator</td>
-                                        <td class="p-4 text-weaver-indigo/80">Rust</td>
-                                        <td class="p-4 font-mono text-weaver-indigo/80">60s</td>
-                                        <td class="p-4 font-mono text-xs text-weaver-indigo/80">WEAVER_RUST_ANALYZER_PLUGIN_PATH</td>
                                     </tr>
                                 </tbody>
                             </table>

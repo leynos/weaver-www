@@ -135,7 +135,7 @@
                     </h1>
 
                     <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-2xl font-light">
-                        Weaver assumes that AI agents are fundamentally untrusted actors. Two independent safety layers protect the codebase: the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Double-Lock</span> validation harness (syntactic + semantic checks on every edit) and the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Birdcage</span> sandbox (kernel-level process isolation for all external tools). They operate independently — the Double-Lock guards code correctness; the sandbox guards system integrity.
+                        Weaver assumes that AI agents are fundamentally untrusted actors. Two independent safety layers protect the codebase: the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Double-Lock</span> validation harness (syntactic + semantic checks on edits to supported files, with exemptions detailed below) and the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Birdcage</span> sandbox (kernel-level process isolation for all external tools). They operate independently — the Double-Lock guards code correctness; the sandbox guards system integrity.
                     </p>
                 </div>
                 

@@ -207,7 +207,7 @@
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">refactor</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flags</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Delegate to a registered plugin via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--provider</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--refactoring</span>. Currently supports <code>rename</code>.</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Delegate to a registered plugin via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--provider</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--refactoring</span>. Add <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--file</span> when the provider needs explicit workspace-relative file context, then pass provider-specific trailing <span class="font-mono text-xs bg-weaver-indigo/10 px-1">KEY=VALUE</span> operands. Built-in <code>rename</code> examples use <code>new_name=&lt;IDENT&gt;</code> and <code>offset=&lt;BYTE_OFFSET&gt;</code>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">extricate <span class="status-pill status-pill-planned ml-1">Planned</span></td>
@@ -313,7 +313,7 @@
                                 <h3 class="font-serif text-xl text-weaver-indigo">refactor (rename via plugin)</h3>
                             </div>
                             <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
-                                The plugin produces a unified diff. The daemon validates it through the Double-Lock before writing. If either lock fails, the filesystem is untouched.
+                                The provider returns a unified diff to the daemon. The daemon validates that diff through the Double-Lock, commits files to disk only on success, and discards the overlay on any failure.
                             </p>
 
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
@@ -503,7 +503,7 @@
                                         <span class="w-6 h-6 bg-weaver-indigo text-weaver-cream flex items-center justify-center font-mono text-xs font-bold rounded-sm">6</span>
                                         <span class="font-mono text-xs font-bold text-weaver-indigo">Commit / Rollback</span>
                                     </div>
-                                    <p class="text-xs text-weaver-indigo/70">Emit unified diff on success. On any failure, discard overlay and return diagnostics unchanged.</p>
+                                    <p class="text-xs text-weaver-indigo/70">The provider returns a unified diff to the daemon on success. The daemon then commits the edit to disk and updates <code class="font-mono bg-weaver-indigo/5 px-1 rounded">files_written</code> only if both locks pass; on any failure it discards the overlay and returns diagnostics unchanged.</p>
                                 </div>
                             </div>
                         </div>
@@ -541,10 +541,10 @@
                                             <td class="p-3 text-xs">Destination module path or file URI.</td>
                                         </tr>
                                         <tr class="border-b border-weaver-indigo/10">
-                                            <td class="p-3 font-mono text-xs">--create-missing-modules</td>
+                                            <td class="p-3 font-mono text-xs">--create-missing-modules / --no-create-missing-modules</td>
                                             <td class="p-3 font-mono text-xs">bool</td>
                                             <td class="p-3 text-xs">No</td>
-                                            <td class="p-3 text-xs">Create missing destination modules. Default <code class="font-mono bg-weaver-indigo/5 px-1 rounded">true</code>.</td>
+                                            <td class="p-3 text-xs">Create missing destination modules. Default <code class="font-mono bg-weaver-indigo/5 px-1 rounded">true</code>; to disable, pass <code class="font-mono bg-weaver-indigo/5 px-1 rounded">--no-create-missing-modules</code>.</td>
                                         </tr>
                                         <tr class="border-b border-weaver-indigo/10">
                                             <td class="p-3 font-mono text-xs">--format</td>

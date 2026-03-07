@@ -250,7 +250,7 @@
 
                                 <!-- Complete card JSON example -->
                                 <div class="bg-weaver-dark text-weaver-cream rounded-sm p-6 paper-panel">
-                                    <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Card JSON (structure detail)</p>
+                                    <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Card JSON (full)</p>
 <pre class="font-mono text-xs text-weaver-cream/90 whitespace-pre-wrap leading-relaxed">{
   "card_version": 1,
   "symbol": {
@@ -446,7 +446,7 @@
                                 <!-- Match output and scoring -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                                     <div class="bg-weaver-dark text-weaver-cream rounded-sm p-6 paper-panel">
-                                        <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Match Output</p>
+                                        <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Debug Match Output</p>
 <pre class="font-mono text-xs text-weaver-cream/90 whitespace-pre-wrap leading-relaxed">{
   "best_match": { "symbol_id": "sym_...", "p": 0.91 },
   "alternates": [
@@ -456,7 +456,7 @@
   "phase": 4
 }</pre>
                                         <p class="text-xs text-weaver-cream/70 mt-3 leading-relaxed">
-                                            Use <code>--debug-matching</code> to include reason codes (<code>name_tokens</code>, <code>signature</code>, <code>ast_shape</code>, <code>neighbourhood_overlap</code>) in JSON output.
+                                            This example shows the extra fields emitted with <code>--debug-matching</code>, including reason codes such as <code>name_tokens</code>, <code>signature</code>, <code>ast_shape</code>, and <code>neighbourhood_overlap</code>.
                                         </p>
                                     </div>
                                     <div class="bg-white/70 border border-weaver-indigo/10 rounded-sm p-6">
