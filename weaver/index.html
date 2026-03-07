@@ -180,7 +180,7 @@
                             </div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-3 group-hover:text-weaver-vermilion transition-colors">Composable</h3>
                             <p class="font-sans text-weaver-indigo/70 leading-relaxed mb-6">
-                                Modular architecture driven by the Semantic Fusion Engine. Plug into any LSP-compatible editor or CI pipeline seamlessly.
+                                Modular architecture driven by the Semantic Fusion Engine. Integrates with language servers for structural understanding; editor plugins are a future goal.
                             </p>
                             <a href="/weaver/how-it-works/#fusion" class="inline-flex items-center font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider group-hover:underline decoration-weaver-vermilion underline-offset-4">
                                 Explore Fusion <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
@@ -199,7 +199,7 @@
                             </div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-3 group-hover:text-weaver-vermilion transition-colors">Safe</h3>
                             <p class="font-sans text-weaver-indigo/70 leading-relaxed mb-6">
-                                Double-Lock sandboxing ensures AI agents operate within strict boundaries. seccomp-bpf filters prevent unauthorized syscalls.
+                                Two independent safety layers: Double-Lock validation (syntactic + semantic checks on every edit) and Birdcage sandbox (seccomp-bpf, namespaces) for external tool execution.
                             </p>
                             <a href="/weaver/safety/" class="inline-flex items-center font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider group-hover:underline decoration-weaver-vermilion underline-offset-4">
                                 Security Model <i class="fa-solid fa-arrow-right ml-2 text-[10px]"></i>
@@ -260,31 +260,29 @@
                         
                         <!-- Terminal Body -->
                         <div class="p-6 font-mono text-sm md:text-base overflow-x-auto">
-                            <!-- Command 1 -->
+                            <!-- Command 1: observe get-definition -->
                             <div class="mb-6">
                                 <div class="flex text-gray-400">
                                     <span class="text-weaver-vermilion mr-2">➜</span>
                                     <span class="mr-2">~</span>
-                                    <span class="text-white">weaver observe src/main.rs</span>
+                                    <span class="text-white">weaver observe get-definition --uri file:///src/main.rs --position 10:5</span>
                                 </div>
                                 <div class="text-blue-300 mt-2 pl-4 border-l-2 border-blue-500/30">
-                                    [INFO] Parsing AST with Tree-sitter...<br>
-                                    [DATA] Found 3 structs, 12 functions, 2 traits<br>
-                                    [JSON] { "file": "src/main.rs", "complexity": 14, "deps": ["clap", "tokio"] }
+                                    {"kind":"stream","stream":"stdout","data":"[{\"uri\":\"file:///src/lib.rs\",\"line\":42,\"column\":17}]\n"}<br>
+                                    {"kind":"exit","status":0}
                                 </div>
                             </div>
 
-                            <!-- Command 2 -->
+                            <!-- Command 2: act apply-patch -->
                             <div class="mb-6">
                                 <div class="flex text-gray-400">
                                     <span class="text-weaver-vermilion mr-2">➜</span>
                                     <span class="mr-2">~</span>
-                                    <span class="text-white">weaver act --dry-run "Refactor error handling"</span>
+                                    <span class="text-white">weaver act apply-patch &lt; fix.diff</span>
                                 </div>
                                 <div class="text-yellow-300 mt-2 pl-4 border-l-2 border-yellow-500/30">
-                                    [WARN] Dry-run mode active. No changes will be written.<br>
-                                    [PLAN] 1. Identify Result&lt;T, E&gt; patterns<br>
-                                    [PLAN] 2. Suggest anyhow::Context implementation
+                                    {"kind":"stream","stream":"stdout","data":"{\"applied\":true,\"files\":[\"src/lib.rs\"]}\n"}<br>
+                                    {"kind":"exit","status":0}
                                 </div>
                             </div>
 
@@ -292,7 +290,7 @@
                             <div class="flex text-gray-400">
                                 <span class="text-weaver-vermilion mr-2">➜</span>
                                 <span class="mr-2">~</span>
-                                <span class="text-white">weaver verify<span class="animate-pulse inline-block w-2.5 h-5 bg-gray-400 ml-1 align-middle"></span></span>
+                                <span class="text-white">weaver verify diagnostics --uri file:///src/lib.rs<span class="animate-pulse inline-block w-2.5 h-5 bg-gray-400 ml-1 align-middle"></span></span>
                             </div>
                         </div>
                     </div>
