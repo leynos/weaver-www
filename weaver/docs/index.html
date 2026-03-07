@@ -489,13 +489,13 @@ string "yes", expected a boolean
                             <span class="h-px w-8 bg-weaver-vermilion mr-4"></span>
                             <h2 class="font-serif text-3xl text-weaver-indigo">Daemon Lifecycle</h2>
                         </div>
-                        
-                        <div class="relative pl-8 border-l-2 border-dashed border-weaver-indigo/30 space-y-12">
+
+                        <div class="relative pl-8 border-l-2 border-dashed border-weaver-indigo/30 space-y-12 mb-12">
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-indigo text-white flex items-center justify-center text-xs font-bold">1</div>
                                 <h3 class="font-serif text-xl text-weaver-indigo mb-2">Start</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon start</code> spawns <code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaverd</code>, which daemonises itself, creates lock/PID/health files, and binds the configured socket. Health snapshot transitions through <code>starting</code> &rarr; <code>ready</code>.</p>
-                                <code class="bg-weaver-indigo/5 px-2 py-1 rounded text-xs font-mono text-weaver-indigo">Auto-start: domain commands start the daemon automatically if it is not running.</code>
+                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon start</code> verifies the configured socket is free, spawns <code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaverd</code> (overridable via <code class="font-mono text-xs bg-weaver-indigo/10 px-1">WEAVERD_BIN</code>), and waits for the health snapshot to report <code>ready</code>. The daemon daemonises itself, creates runtime artefacts, and binds the socket.</p>
+                                <code class="bg-weaver-indigo/5 px-2 py-1 rounded text-xs font-mono text-weaver-indigo">Auto-start: domain commands start the daemon automatically if it is not running (30&nbsp;s timeout).</code>
                             </div>
 
                             <div class="relative">
@@ -507,7 +507,101 @@ string "yes", expected a boolean
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-vermilion text-white flex items-center justify-center text-xs font-bold">3</div>
                                 <h3 class="font-serif text-xl text-weaver-indigo mb-2">Stop</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon stop</code> sends SIGTERM and waits for graceful shutdown (10&nbsp;s budget). Running language servers receive <code>shutdown</code> + <code>exit</code>. Runtime artefacts and socket are cleaned up.</p>
+                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon stop</code> reads the PID file, sends SIGTERM, and waits for the runtime artefacts and socket to disappear. Running language servers receive <code>shutdown</code> + <code>exit</code>. If the socket is reachable but the PID file is missing, the command surfaces an error rather than blindly killing a process.</p>
+                            </div>
+                        </div>
+
+                        <!-- Runtime files table -->
+                        <h3 id="runtime-files" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Runtime Artefacts</h3>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            The daemon creates three files in the runtime directory (typically <code class="font-mono text-xs bg-weaver-indigo/10 px-1">$XDG_RUNTIME_DIR/weaver/</code>). PID and health files are written atomically.
+                        </p>
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-8">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium">File</th>
+                                        <th class="p-4 font-medium">Purpose</th>
+                                        <th class="p-4 font-medium">Lifecycle</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaverd.lock</td>
+                                        <td class="p-4 text-weaver-indigo/80">Prevents duplicate daemon instances.</td>
+                                        <td class="p-4 text-weaver-indigo/80">Created on start, removed on shutdown. Stale locks from unclean exits are cleaned up automatically.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaverd.pid</td>
+                                        <td class="p-4 text-weaver-indigo/80">Records the daemon process ID.</td>
+                                        <td class="p-4 text-weaver-indigo/80">Written atomically after daemonisation; read by <code>daemon stop</code> and <code>daemon status</code>.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold text-xs">weaverd.health</td>
+                                        <td class="p-4 text-weaver-indigo/80">JSON health snapshot for readiness polling.</td>
+                                        <td class="p-4 text-weaver-indigo/80">Updated through state transitions; removed on shutdown.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Health snapshot -->
+                        <h3 id="health-snapshot" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Health Snapshot</h3>
+                        <p class="mb-4 text-sm text-weaver-indigo/80">
+                            The health file is a single-line JSON document that operators and automation can poll without speaking the daemon protocol. Status transitions: <code class="font-mono text-xs bg-weaver-indigo/10 px-1">starting</code> &rarr; <code class="font-mono text-xs bg-weaver-indigo/10 px-1">ready</code> &rarr; <code class="font-mono text-xs bg-weaver-indigo/10 px-1">stopping</code>.
+                        </p>
+                        <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto mb-8 paper-panel">
+                            <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">HEALTH SNAPSHOT</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+{"status":"ready","pid":12345,"timestamp":1713356400}
+</pre>
+                        </div>
+
+                        <!-- Signal handling -->
+                        <h3 id="signal-handling" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Signal Handling</h3>
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-8">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
+                                    <tr>
+                                        <th class="p-4 font-medium">Signal</th>
+                                        <th class="p-4 font-medium">Behaviour</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-weaver-indigo/10">
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">SIGTERM / SIGINT</td>
+                                        <td class="p-4 text-weaver-indigo/80">Graceful shutdown within a 10-second budget. Language servers receive <code>shutdown</code> + <code>exit</code>. Runtime artefacts and socket are cleaned up.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">SIGQUIT</td>
+                                        <td class="p-4 text-weaver-indigo/80">Graceful shutdown (same sequence as SIGTERM).</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">SIGHUP</td>
+                                        <td class="p-4 text-weaver-indigo/80">Graceful shutdown (same sequence as SIGTERM).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Operational details -->
+                        <h3 id="daemon-operations" class="font-serif text-xl text-weaver-indigo mb-3 scroll-mt-20">Operational Details</h3>
+                        <div class="space-y-4 mb-4">
+                            <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
+                                <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-2">Foreground Mode</h4>
+                                <p class="text-sm text-weaver-indigo/80">Set <code class="font-mono text-xs bg-weaver-indigo/10 px-1">WEAVER_FOREGROUND=1</code> to keep the daemon attached to the terminal. Useful for interactive debugging and CI jobs. Lock, PID, and health semantics are preserved.</p>
+                            </div>
+                            <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
+                                <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-2">Auto-Start</h4>
+                                <p class="text-sm text-weaver-indigo/80">Domain commands (<code>observe</code>, <code>act</code>, <code>verify</code>) spawn the daemon automatically if it is not running. The CLI prints <code class="font-mono text-xs bg-weaver-indigo/10 px-1">Waiting for daemon start&hellip;</code> to stderr and waits up to 30&nbsp;seconds. Configuration flags passed to the command are forwarded to the daemon. Errors unrelated to the daemon being offline (e.g.&nbsp;permission denied) bypass auto-start and are reported immediately.</p>
+                            </div>
+                            <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
+                                <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-2">WEAVERD_BIN</h4>
+                                <p class="text-sm text-weaver-indigo/80">Override the daemon binary path via the <code class="font-mono text-xs bg-weaver-indigo/10 px-1">WEAVERD_BIN</code> environment variable. Primarily useful for development and CI where the daemon is not on <code>$PATH</code>.</p>
+                            </div>
+                            <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
+                                <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-2">Duplicate-Start Handling</h4>
+                                <p class="text-sm text-weaver-indigo/80">If the socket is already bound by a running daemon, <code class="font-mono text-xs bg-weaver-indigo/10 px-1">daemon start</code> fails fast with an "already running" error reporting the existing PID. If the original launch is still initialising, the second invocation reports "launch already in progress" instead of removing the lock. Stale artefacts from unclean exits are cleaned up automatically.</p>
                             </div>
                         </div>
                     </section>
