@@ -142,7 +142,7 @@
                     </h1>
                     
                     <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-3xl font-light">
-                        The <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded">act</span> command is the effector arm of the Weaver agent. It executes code modifications through a strictly sandboxed daemon, enforcing a "Double-Lock" safety mechanism that requires explicit human confirmation for high-impact changes.
+                        The <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded">act</span> domain groups all code-modification operations. Every edit is lock-guarded and transactional: changes are applied to in-memory copies, validated by the Double-Lock harness (syntactic + semantic checks), and only then atomically committed to disk. No proposal cycle, no human approval gate&mdash;the locks <em>are</em> the safety gate.
                     </p>
                 </div>
                 
@@ -160,64 +160,59 @@
             <section class="py-12 px-8 lg:px-16 border-b border-weaver-indigo/20 bg-white/40">
                 <div class="max-w-6xl mx-auto">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                        
+
                         <!-- Left: Synopsis -->
                         <div class="lg:col-span-1">
                             <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Synopsis</h2>
                             <p class="text-sm text-weaver-indigo/70 mb-6 leading-relaxed">
-                                Submits a plan or direct command to the Weaver daemon. Actions are never executed immediately; they are first <strong>staged</strong>, then <strong>proposed</strong>, and finally <strong>applied</strong> only after verification.
+                                Each <code class="font-mono text-xs bg-weaver-indigo/10 px-1">act</code> operation sends a structured request to the daemon. The daemon applies the edit in memory, runs both locks, and writes to disk only on success. Failures leave the filesystem untouched.
                             </p>
-                            
+
                             <div class="bg-weaver-cream border border-weaver-indigo p-4 relative mb-6">
                                 <div class="absolute -top-3 left-4 bg-weaver-cream px-2 text-xs font-mono text-weaver-vermilion font-bold">SYNTAX</div>
                                 <code class="font-mono text-sm text-weaver-indigo block break-all">
-                                    weaver act [OPTIONS] &lt;SUBCOMMAND&gt;
+                                    weaver act &lt;OPERATION&gt; [ARG ...]
                                 </code>
                             </div>
 
                             <div class="flex items-center gap-2 text-xs font-mono text-weaver-indigo/60">
                                 <i class="fa-solid fa-shield-halved"></i>
-                                <span>Daemon requires socket authentication</span>
+                                <span>All writes pass through the Double-Lock harness</span>
                             </div>
                         </div>
 
-                        <!-- Right: Options Table -->
+                        <!-- Right: Operations Table -->
                         <div class="lg:col-span-2">
-                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Subcommands & Options</h2>
+                            <h2 class="font-serif text-2xl text-weaver-indigo mb-4">Operations</h2>
                             <div class="overflow-hidden border border-weaver-indigo/20 rounded-sm shadow-sm bg-weaver-cream">
                                 <table class="w-full text-left border-collapse">
                                     <thead>
                                         <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
-                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Command/Flag</th>
-                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Type</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-40">Operation</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-24">Input</th>
                                             <th class="p-3">Description</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-weaver-indigo/10">
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">propose</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Action</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Submit a JSONL plan for review. Returns a proposal ID.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">apply-patch</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">STDIN</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Read a Git-style patch from STDIN. Supports modify, create, and delete hunks.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">apply</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Action</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Execute a verified proposal. Requires <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--id &lt;ID&gt;</span>.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">apply-rewrite</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flags</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">AST-aware search-and-replace via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--pattern</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--replacement</span>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--dry-run</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flag</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Simulate execution without modifying files. Returns diffs.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">refactor</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flags</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Delegate to a registered plugin via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--provider</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--refactoring</span>. Currently supports <code>rename</code>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--sandbox-level</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Enum</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Isolation strictness: <span class="bg-weaver-indigo/10 px-1 rounded">process</span> (default), <span class="bg-weaver-indigo/10 px-1 rounded">container</span>, or <span class="bg-weaver-indigo/10 px-1 rounded">vm</span>.</td>
-                                        </tr>
-                                        <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">--timeout</td>
-                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Int (ms)</td>
-                                            <td class="p-3 text-sm text-weaver-indigo/80">Hard limit for execution time. Default 5000ms.</td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">extricate <span class="ml-1 text-[9px] font-mono bg-weaver-indigo/10 text-weaver-indigo/60 px-1 rounded uppercase">planned</span></td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Flags</td>
+                                            <td class="p-3 text-sm text-weaver-indigo/80">Move a symbol to a different module. Capability: <code>extricate-symbol</code>.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -269,47 +264,39 @@
                 </div>
             </section>
 
-            <!-- Workflow Examples -->
+            <!-- Lock-Guarded Actuation -->
             <section class="py-16 px-8 lg:px-16 border-b border-weaver-indigo/20">
                 <div class="max-w-6xl mx-auto">
-                    <h2 class="font-serif text-3xl text-weaver-indigo mb-10">Workflow: The Proposal Cycle</h2>
-                    
+                    <h2 class="font-serif text-3xl text-weaver-indigo mb-10">Lock-Guarded Actuation</h2>
+
                     <div class="space-y-12">
-                        
-                        <!-- Step 1: Propose -->
+
+                        <!-- Example 1: apply-patch -->
                         <div class="relative group">
                             <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-indigo opacity-30 group-hover:opacity-100 transition-opacity"></div>
                             <div class="flex items-baseline gap-3 mb-4 pl-4">
-                                <span class="font-mono text-xs font-bold text-weaver-cream bg-weaver-indigo px-2 py-1 rounded-sm">STEP 1</span>
-                                <h3 class="font-serif text-xl text-weaver-indigo">Propose a Change</h3>
+                                <span class="font-mono text-xs font-bold text-weaver-cream bg-weaver-indigo px-2 py-1 rounded-sm">EXAMPLE</span>
+                                <h3 class="font-serif text-xl text-weaver-indigo">apply-patch</h3>
                             </div>
                             <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
-                                Agents cannot modify files directly. They must submit a structured plan describing the intended changes.
+                                Pipe a Git-style diff to STDIN. The daemon parses it, applies to in-memory copies, runs both locks, and commits atomically.
                             </p>
-                            
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
-                                <!-- Command Input -->
                                 <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
                                     <div class="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
                                         <span class="text-xs font-mono text-weaver-cream/50">TERMINAL</span>
                                     </div>
                                     <div class="font-mono text-sm leading-relaxed">
-                                        <span class="text-green-400">$</span> <span class="text-white">cat</span> <span class="text-yellow-300">plan.jsonl</span> <span class="text-white">|</span> <span class="text-green-400">weaver</span> <span class="text-white">act propose</span>
+                                        <span class="text-green-400">$</span> <span class="text-white">cat fix.diff |</span> <span class="text-green-400">weaver</span> <span class="text-white">act apply-patch</span>
                                     </div>
                                 </div>
-                                
-                                <!-- JSON Output -->
+
                                 <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
-                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">STDOUT</div>
+                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL</div>
 <pre class="text-gray-300">
-{
-  <span class="token-key">"status"</span>: <span class="token-string">"received"</span>,
-  <span class="token-key">"proposal_id"</span>: <span class="token-string">"prop_8x92mK"</span>,
-  <span class="token-key">"impact_analysis"</span>: {
-    <span class="token-key">"files_touched"</span>: <span class="token-number">2</span>,
-    <span class="token-key">"risk_score"</span>: <span class="token-string">"low"</span>
-  }
-}
+{<span class="token-key">"kind"</span>:<span class="token-string">"stream"</span>,<span class="token-key">"stream"</span>:<span class="token-string">"stdout"</span>,<span class="token-key">"data"</span>:<span class="token-string">"{\"status\":\"ok\",\"files_written\":1,\"files_deleted\":0}"</span>}
+{<span class="token-key">"kind"</span>:<span class="token-string">"exit"</span>,<span class="token-key">"status"</span>:<span class="token-number">0</span>}
 </pre>
                                 </div>
                             </div>
@@ -320,50 +307,36 @@
                             <i class="fa-solid fa-arrow-down text-weaver-indigo/20 text-2xl"></i>
                         </div>
 
-                        <!-- Step 2: Apply -->
+                        <!-- Example 2: refactor (rename) -->
                         <div class="relative group">
                             <div class="absolute -left-4 top-0 bottom-0 w-1 bg-weaver-vermilion opacity-30 group-hover:opacity-100 transition-opacity"></div>
                             <div class="flex items-baseline gap-3 mb-4 pl-4">
-                                <span class="font-mono text-xs font-bold text-white bg-weaver-vermilion px-2 py-1 rounded-sm">STEP 2</span>
-                                <h3 class="font-serif text-xl text-weaver-indigo">Apply with Verification</h3>
+                                <span class="font-mono text-xs font-bold text-white bg-weaver-vermilion px-2 py-1 rounded-sm">EXAMPLE</span>
+                                <h3 class="font-serif text-xl text-weaver-indigo">refactor (rename via plugin)</h3>
                             </div>
                             <p class="text-sm text-weaver-indigo/70 mb-4 pl-4 max-w-2xl">
-                                Once reviewed (by human or automated policy), the proposal is applied. The daemon streams the results of each operation.
+                                The plugin produces a unified diff. The daemon validates it through the Double-Lock before writing. If either lock fails, the filesystem is untouched.
                             </p>
-                            
+
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pl-4">
-                                <!-- Command Input -->
                                 <div class="bg-weaver-dark rounded-sm p-4 border border-weaver-indigo/20">
                                     <div class="flex justify-between items-center mb-2 border-b border-white/10 pb-2">
                                         <span class="text-xs font-mono text-weaver-cream/50">TERMINAL</span>
                                     </div>
                                     <div class="font-mono text-sm leading-relaxed">
-                                        <span class="text-green-400">$</span> <span class="text-green-400">weaver</span> <span class="text-white">act apply --id</span> <span class="text-yellow-300">prop_8x92mK</span>
+                                        <span class="text-green-400">$</span> <span class="text-green-400">weaver</span> <span class="text-white">act refactor \</span><br>
+                                        <span class="text-white pl-4">--provider rope \</span><br>
+                                        <span class="text-white pl-4">--refactoring rename \</span><br>
+                                        <span class="text-white pl-4">--file src/main.py \</span><br>
+                                        <span class="text-white pl-4">new_name=renamed_symbol offset=4</span>
                                     </div>
                                 </div>
-                                
-                                <!-- JSON Output -->
+
                                 <div class="bg-[#282A36] rounded-sm p-4 border border-weaver-indigo/20 font-mono text-xs overflow-x-auto shadow-inner relative">
-                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">STREAM</div>
+                                    <div class="absolute top-2 right-2 text-[10px] text-white/30 uppercase tracking-widest">JSONL</div>
 <pre class="text-gray-300">
-<span class="token-comment">// Op 1: Modify File</span>
-{
-  <span class="token-key">"op"</span>: <span class="token-string">"patch"</span>,
-  <span class="token-key">"file"</span>: <span class="token-string">"src/main.rs"</span>,
-  <span class="token-key">"result"</span>: <span class="token-string">"success"</span>,
-  <span class="token-key">"checksum"</span>: <span class="token-string">"sha256:e3b0c442..."</span>
-}
-<span class="token-comment">// Op 2: Run Tests</span>
-{
-  <span class="token-key">"op"</span>: <span class="token-string">"exec"</span>,
-  <span class="token-key">"cmd"</span>: <span class="token-string">"cargo test"</span>,
-  <span class="token-key">"exit_code"</span>: <span class="token-number">0</span>
-}
-<span class="token-comment">// Completion</span>
-{
-  <span class="token-key">"status"</span>: <span class="token-string">"completed"</span>,
-  <span class="token-key">"duration_ms"</span>: <span class="token-number">1240</span>
-}
+{<span class="token-key">"kind"</span>:<span class="token-string">"stream"</span>,<span class="token-key">"stream"</span>:<span class="token-string">"stdout"</span>,<span class="token-key">"data"</span>:<span class="token-string">"{\"status\":\"ok\",\"files_written\":1,\"files_deleted\":0}"</span>}
+{<span class="token-key">"kind"</span>:<span class="token-string">"exit"</span>,<span class="token-key">"status"</span>:<span class="token-number">0</span>}
 </pre>
                                 </div>
                             </div>
@@ -378,49 +351,49 @@
                 <div class="max-w-6xl mx-auto">
                     <h2 class="font-serif text-2xl text-weaver-indigo mb-6">Common Failure Modes</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        
-                        <!-- Error 1 -->
+
+                        <!-- Error 1: Syntactic Lock -->
                         <div class="bg-weaver-cream border border-weaver-vermilion/30 p-5 rounded-sm relative overflow-hidden">
                             <div class="absolute top-0 left-0 w-1 h-full bg-weaver-vermilion"></div>
                             <div class="flex items-start justify-between mb-3">
-                                <span class="font-mono text-xs font-bold text-weaver-vermilion">ERR_SANDBOX_VIOLATION</span>
-                                <i class="fa-solid fa-ban text-weaver-vermilion/40"></i>
+                                <span class="font-mono text-xs font-bold text-weaver-vermilion">ERR_SYNTACTIC_LOCK</span>
+                                <i class="fa-solid fa-code text-weaver-vermilion/40"></i>
                             </div>
                             <p class="text-xs text-weaver-indigo/80 leading-relaxed mb-3">
-                                The code attempted to access a file outside the allowed workspace scope.
+                                The modified file failed Tree-sitter parsing. Structural error (e.g. unbalanced braces, missing semicolons).
+                            </p>
+                            <code class="block bg-weaver-indigo/5 p-2 rounded text-[10px] font-mono text-weaver-indigo">
+                                syntactic lock failed: src/main.rs:42:5 syntax error
+                            </code>
+                        </div>
+
+                        <!-- Error 2: Semantic Lock -->
+                        <div class="bg-weaver-cream border border-weaver-vermilion/30 p-5 rounded-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-weaver-vermilion"></div>
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="font-mono text-xs font-bold text-weaver-vermilion">ERR_SEMANTIC_LOCK</span>
+                                <i class="fa-solid fa-microscope text-weaver-vermilion/40"></i>
+                            </div>
+                            <p class="text-xs text-weaver-indigo/80 leading-relaxed mb-3">
+                                New diagnostics detected after the edit. The language server found type errors or unresolved references that were not present before.
+                            </p>
+                            <code class="block bg-weaver-indigo/5 p-2 rounded text-[10px] font-mono text-weaver-indigo">
+                                semantic lock failed: 2 new error(s)
+                            </code>
+                        </div>
+
+                        <!-- Error 3: Sandbox Violation -->
+                        <div class="bg-weaver-cream border border-weaver-indigo/20 p-5 rounded-sm relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-weaver-indigo"></div>
+                            <div class="flex items-start justify-between mb-3">
+                                <span class="font-mono text-xs font-bold text-weaver-indigo">ERR_SANDBOX_VIOLATION</span>
+                                <i class="fa-solid fa-ban text-weaver-indigo/40"></i>
+                            </div>
+                            <p class="text-xs text-weaver-indigo/80 leading-relaxed mb-3">
+                                A plugin attempted to access a path outside the sandbox allowlist. The child process is killed immediately.
                             </p>
                             <code class="block bg-weaver-indigo/5 p-2 rounded text-[10px] font-mono text-weaver-indigo">
                                 Access denied: /etc/hosts
-                            </code>
-                        </div>
-
-                        <!-- Error 2 -->
-                        <div class="bg-weaver-cream border border-weaver-indigo/20 p-5 rounded-sm relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1 h-full bg-weaver-indigo"></div>
-                            <div class="flex items-start justify-between mb-3">
-                                <span class="font-mono text-xs font-bold text-weaver-indigo">ERR_LOCK_TIMEOUT</span>
-                                <i class="fa-regular fa-clock text-weaver-indigo/40"></i>
-                            </div>
-                            <p class="text-xs text-weaver-indigo/80 leading-relaxed mb-3">
-                                Proposal was not approved within the configured time window.
-                            </p>
-                            <code class="block bg-weaver-indigo/5 p-2 rounded text-[10px] font-mono text-weaver-indigo">
-                                Proposal prop_99 expired
-                            </code>
-                        </div>
-
-                        <!-- Error 3 -->
-                        <div class="bg-weaver-cream border border-weaver-indigo/20 p-5 rounded-sm relative overflow-hidden">
-                            <div class="absolute top-0 left-0 w-1 h-full bg-weaver-indigo"></div>
-                            <div class="flex items-start justify-between mb-3">
-                                <span class="font-mono text-xs font-bold text-weaver-indigo">ERR_CHECKSUM_MISMATCH</span>
-                                <i class="fa-solid fa-fingerprint text-weaver-indigo/40"></i>
-                            </div>
-                            <p class="text-xs text-weaver-indigo/80 leading-relaxed mb-3">
-                                The file changed on disk between proposal and application.
-                            </p>
-                            <code class="block bg-weaver-indigo/5 p-2 rounded text-[10px] font-mono text-weaver-indigo">
-                                Stale file handle
                             </code>
                         </div>
 
