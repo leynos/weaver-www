@@ -180,28 +180,47 @@
                             <h2 class="font-serif text-3xl text-weaver-indigo">Design Documents</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <a href="#" class="group block p-6 bg-white border border-weaver-indigo/10 hover:border-weaver-indigo/30 transition-all hover:shadow-md rounded-sm relative overflow-hidden">
+                            <div class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden">
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-pen-ruler text-4xl text-weaver-indigo"></i>
                                 </div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-001: Semantic Fusion</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-4">Foundational architecture for the multi-modal fusion engine.</p>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Weaver Design Document</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">Architecture, Semantic Fusion Engine, Double-Lock harness, client-daemon model, and composable UNIX primitives.</p>
                                 <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
-                                    <span class="bg-green-100 text-green-800 px-2 py-0.5 rounded mr-2">ACCEPTED</span>
-                                    <span>Updated 2 days ago</span>
+                                    <span class="font-mono">weaver-design.md</span>
                                 </div>
-                            </a>
-                            <a href="#" class="group block p-6 bg-white border border-weaver-indigo/10 hover:border-weaver-indigo/30 transition-all hover:shadow-md rounded-sm relative overflow-hidden">
+                            </div>
+                            <div class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden">
                                 <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
                                     <i class="fa-solid fa-shield-halved text-4xl text-weaver-indigo"></i>
                                 </div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2 group-hover:text-weaver-vermilion transition-colors">RFC-004: Double-Lock Sandbox</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-4">Security model for executing untrusted agent code.</p>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">ADR-001: Plugin Capability Model</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">Capability-first model for act operations, including <code>extricate-symbol</code> and provider resolution.</p>
                                 <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
-                                    <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded mr-2">DRAFT</span>
-                                    <span>Updated 1 week ago</span>
+                                    <span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded mr-2">PROPOSED</span>
+                                    <span class="font-mono">adr-001-plugin-capability-model-and-act-extricate.md</span>
                                 </div>
-                            </a>
+                            </div>
+                            <div class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <i class="fa-solid fa-magnifying-glass text-4xl text-weaver-indigo"></i>
+                                </div>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Sempai Query Language Design</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">Semgrep-compatible query engine backed by Tree-sitter for semantics-aware code pattern matching.</p>
+                                <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
+                                    <span class="font-mono">sempai-query-language-design.md</span>
+                                </div>
+                            </div>
+                            <div class="group block p-6 bg-white border border-weaver-indigo/10 rounded-sm relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                                    <i class="fa-solid fa-diagram-project text-4xl text-weaver-indigo"></i>
+                                </div>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Jacquard: Card-First Symbol Graph</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-4">Structured symbol cards, bounded graph slices, and time-travel diffs over recent commits.</p>
+                                <div class="flex items-center text-xs font-mono text-weaver-indigo/50">
+                                    <span class="font-mono">jacquard-card-first-symbol-graph-design.md</span>
+                                </div>
+                            </div>
                         </div>
                     </section>
 
@@ -211,34 +230,42 @@
                             <span class="h-px w-8 bg-weaver-vermilion mr-4"></span>
                             <h2 class="font-serif text-3xl text-weaver-indigo">Configuration</h2>
                         </div>
-                        <p class="mb-6 text-weaver-indigo/80">Weaver is configured via a TOML file located at <code>~/.config/weaver/weaver.toml</code>.</p>
-                        
-                        <div class="bg-weaver-dark p-6 rounded-sm shadow-lg overflow-x-auto border border-weaver-indigo/20">
+                        <p class="mb-6 text-weaver-indigo/80">
+                            Configuration is layered: built-in defaults &rarr; TOML file &rarr; environment variables &rarr; CLI flags. Each layer overrides the previous. Files are discovered via <code class="font-mono text-xs bg-weaver-indigo/10 px-1">--config-path</code> or XDG search paths (<code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver.toml</code> / <code class="font-mono text-xs bg-weaver-indigo/10 px-1">.weaver.toml</code>).
+                        </p>
+
+                        <div class="bg-weaver-dark p-6 rounded-sm shadow-lg overflow-x-auto border border-weaver-indigo/20 mb-6">
                             <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-2">
                                 <span class="text-xs font-mono text-weaver-cream/60">weaver.toml</span>
                                 <button class="text-xs text-weaver-cream/40 hover:text-white"><i class="fa-regular fa-copy"></i></button>
                             </div>
 <pre class="font-mono text-sm text-gray-300 leading-relaxed">
-<span class="text-gray-500"># Core Daemon Settings</span>
-<span class="text-weaver-faded">[daemon]</span>
-socket_type = <span class="text-green-400">"unix"</span> <span class="text-gray-500"># or "tcp" for Windows</span>
-socket_path = <span class="text-green-400">"/tmp/weaver.sock"</span>
-max_memory_mb = <span class="text-yellow-400">2048</span>
+<span class="text-gray-500"># Top-level keys (no [section] headers)</span>
 
-<span class="text-gray-500"># Language Server Protocol Integrations</span>
-<span class="text-weaver-faded">[lsp]</span>
-enabled = <span class="text-weaver-vermilion">true</span>
-timeout_ms = <span class="text-yellow-400">5000</span>
+<span class="text-gray-500"># Daemon transport (Unix socket or TCP)</span>
+daemon_socket = { transport = <span class="text-green-400">"tcp"</span>, host = <span class="text-green-400">"127.0.0.1"</span>, port = <span class="text-yellow-400">9779</span> }
 
-<span class="text-weaver-faded">[[lsp.servers]]</span>
-language = <span class="text-green-400">"rust"</span>
-command = <span class="text-green-400">"rust-analyzer"</span>
-args = []
+<span class="text-gray-500"># Logging</span>
+log_filter = <span class="text-green-400">"info"</span>
+log_format = <span class="text-green-400">"compact"</span>  <span class="text-gray-500"># "json" or "compact"</span>
 
-<span class="text-weaver-faded">[sandbox]</span>
-mode = <span class="text-green-400">"strict"</span> <span class="text-gray-500"># Options: strict, permissive, off</span>
-allow_network = <span class="text-weaver-vermilion">false</span>
+<span class="text-gray-500"># Capability overrides (repeatable)</span>
+<span class="text-weaver-faded">[[capability_overrides]]</span>
+language = <span class="text-green-400">"python"</span>
+capability = <span class="text-green-400">"observe.call-hierarchy"</span>
+directive = <span class="text-green-400">"force"</span>
 </pre>
+                        </div>
+
+                        <div class="bg-white border border-weaver-indigo/10 p-4 rounded-sm">
+                            <h4 class="font-mono text-xs font-bold text-weaver-indigo uppercase tracking-wider mb-3">CLI flags</h4>
+                            <div class="flex flex-wrap gap-2 font-mono text-xs">
+                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--config-path &lt;PATH&gt;</span>
+                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--daemon-socket &lt;ENDPOINT&gt;</span>
+                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--log-filter &lt;FILTER&gt;</span>
+                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--log-format &lt;FORMAT&gt;</span>
+                                <span class="px-2 py-1 bg-weaver-cream text-weaver-indigo border border-weaver-indigo/20 rounded">--capability-overrides &lt;DIRECTIVE&gt;</span>
+                            </div>
                         </div>
                     </section>
 
@@ -249,10 +276,10 @@ allow_network = <span class="text-weaver-vermilion">false</span>
                             <h2 class="font-serif text-3xl text-weaver-indigo">JSONL Protocol</h2>
                         </div>
                         <p class="mb-6 text-weaver-indigo/80 max-w-3xl">
-                            All communication between the CLI client and the Daemon occurs via a streaming JSONL protocol over the socket. This enables real-time provenance tracking and interruptibility.
+                            Communication between the CLI and daemon uses a <code class="font-mono text-xs bg-weaver-indigo/10 px-1">kind</code>-based JSONL envelope. Each line is a JSON object with <code class="font-mono text-xs bg-weaver-indigo/10 px-1">kind</code> set to <code class="font-mono text-xs bg-weaver-indigo/10 px-1">stream</code> or <code class="font-mono text-xs bg-weaver-indigo/10 px-1">exit</code>.
                         </p>
 
-                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden">
+                        <div class="border border-weaver-indigo/20 rounded-sm bg-white overflow-hidden mb-6">
                             <table class="w-full text-left text-sm">
                                 <thead class="bg-weaver-indigo text-white font-mono text-xs uppercase">
                                     <tr>
@@ -263,27 +290,35 @@ allow_network = <span class="text-weaver-vermilion">false</span>
                                 </thead>
                                 <tbody class="divide-y divide-weaver-indigo/10">
                                     <tr class="hover:bg-weaver-cream/30">
-                                        <td class="p-4 font-mono text-weaver-indigo font-bold">event_id</td>
-                                        <td class="p-4 font-mono text-weaver-faded">uuid</td>
-                                        <td class="p-4 text-weaver-indigo/80">Unique identifier for the event frame.</td>
-                                    </tr>
-                                    <tr class="hover:bg-weaver-cream/30">
-                                        <td class="p-4 font-mono text-weaver-indigo font-bold">timestamp</td>
-                                        <td class="p-4 font-mono text-weaver-faded">iso8601</td>
-                                        <td class="p-4 text-weaver-indigo/80">Server-side timestamp of event generation.</td>
-                                    </tr>
-                                    <tr class="hover:bg-weaver-cream/30">
-                                        <td class="p-4 font-mono text-weaver-indigo font-bold">payload.type</td>
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">kind</td>
                                         <td class="p-4 font-mono text-weaver-faded">enum</td>
-                                        <td class="p-4 text-weaver-indigo/80">One of: <code>observation</code>, <code>action</code>, <code>verification</code>, <code>error</code>.</td>
+                                        <td class="p-4 text-weaver-indigo/80">Discriminator: <code>"stream"</code> for data messages or <code>"exit"</code> for termination.</td>
                                     </tr>
                                     <tr class="hover:bg-weaver-cream/30">
-                                        <td class="p-4 font-mono text-weaver-indigo font-bold">provenance</td>
-                                        <td class="p-4 font-mono text-weaver-faded">object</td>
-                                        <td class="p-4 text-weaver-indigo/80">Traceability data linking output to source code location (file, line, col).</td>
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">stream</td>
+                                        <td class="p-4 font-mono text-weaver-faded">enum</td>
+                                        <td class="p-4 text-weaver-indigo/80">Target host stream: <code>"stdout"</code> or <code>"stderr"</code>. Present when <code>kind</code> is <code>"stream"</code>.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">data</td>
+                                        <td class="p-4 font-mono text-weaver-faded">string</td>
+                                        <td class="p-4 text-weaver-indigo/80">Payload (plain text or JSON). Present when <code>kind</code> is <code>"stream"</code>.</td>
+                                    </tr>
+                                    <tr class="hover:bg-weaver-cream/30">
+                                        <td class="p-4 font-mono text-weaver-indigo font-bold">status</td>
+                                        <td class="p-4 font-mono text-weaver-faded">number</td>
+                                        <td class="p-4 text-weaver-indigo/80">Numeric exit code. Present when <code>kind</code> is <code>"exit"</code>.</td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <div class="bg-weaver-dark p-4 rounded-sm border border-weaver-indigo/20 overflow-x-auto">
+                            <div class="text-[10px] font-mono text-white/30 uppercase tracking-widest mb-2">EXAMPLE ENVELOPE</div>
+<pre class="font-mono text-xs text-gray-300 leading-relaxed">
+{"kind":"stream","stream":"stdout","data":"definition: file:///src/main.rs:42:17\n"}
+{"kind":"exit","status":0}
+</pre>
                         </div>
                     </section>
 
@@ -297,21 +332,21 @@ allow_network = <span class="text-weaver-vermilion">false</span>
                         <div class="relative pl-8 border-l-2 border-dashed border-weaver-indigo/30 space-y-12">
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-indigo text-white flex items-center justify-center text-xs font-bold">1</div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Initialization (Boot)</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-3">Daemon reads `weaver.toml`, establishes the socket, and initializes the in-memory graph database.</p>
-                                <code class="bg-weaver-indigo/5 px-2 py-1 rounded text-xs font-mono text-weaver-indigo">systemd: weaver.service</code>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Start</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon start</code> spawns <code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaverd</code>, which daemonises itself, creates lock/PID/health files, and binds the configured socket. Health snapshot transitions through <code>starting</code> &rarr; <code>ready</code>.</p>
+                                <code class="bg-weaver-indigo/5 px-2 py-1 rounded text-xs font-mono text-weaver-indigo">Auto-start: domain commands start the daemon automatically if it is not running.</code>
                             </div>
 
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-faded text-white flex items-center justify-center text-xs font-bold">2</div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Handshake</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-3">Client connects via `connect(2)`. Daemon verifies protocol version compatibility.</p>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Serve</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-3">The daemon accepts concurrent client connections and runs a JSONL request dispatch loop, routing <code>observe</code>, <code>act</code>, and <code>verify</code> commands to the appropriate domain handlers. Language servers are initialised lazily on first use.</p>
                             </div>
 
                             <div class="relative">
                                 <div class="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-weaver-vermilion text-white flex items-center justify-center text-xs font-bold">3</div>
-                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Indexing Loop</h3>
-                                <p class="text-sm text-weaver-indigo/70 mb-3">Background threads watch filesystem events (inotify/FSEvents) and trigger incremental Tree-sitter re-parsing.</p>
+                                <h3 class="font-serif text-xl text-weaver-indigo mb-2">Stop</h3>
+                                <p class="text-sm text-weaver-indigo/70 mb-3"><code class="font-mono text-xs bg-weaver-indigo/10 px-1">weaver daemon stop</code> sends SIGTERM and waits for graceful shutdown (10&nbsp;s budget). Running language servers receive <code>shutdown</code> + <code>exit</code>. Runtime artefacts and socket are cleaned up.</p>
                             </div>
                         </div>
                     </section>
