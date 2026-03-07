@@ -507,7 +507,7 @@
                             <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion font-bold">Observe Integration</p>
                         </div>
                         <p class="text-sm text-weaver-indigo/80 leading-relaxed">
-                            Sempai sits alongside <code>get-definition</code>, <code>find-references</code>, <code>call-hierarchy</code>, and <code>grep</code> in the <code>observe</code> command family. Where the other operations ask the language server "what is this symbol?", Sempai asks the syntax tree "where does this pattern appear?". The JSONL response schema is shared: all observe operations stream structured objects to stdout, and all carry <code>uri</code> and <code>span</code> fields that downstream <code>act</code> commands can consume directly.
+                            Sempai sits alongside <code>get-definition</code>, <code>find-references</code>, <code>call-hierarchy</code>, and <code>grep</code> in the <code>observe</code> command family. Where the other operations ask the language server "what is this symbol?", Sempai asks the syntax tree "where does this pattern appear?". The transport envelope is shared across observe operations, but the <code>uri</code> and <code>span</code> handoff described on this page is specific to Sempai match payloads and other payloads that expose those fields explicitly.
                         </p>
                     </div>
 

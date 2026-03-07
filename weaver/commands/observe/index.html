@@ -182,6 +182,7 @@
                                         <tr class="bg-weaver-indigo text-weaver-cream font-mono text-xs uppercase tracking-wider">
                                             <th class="p-3 border-r border-weaver-cream/20 w-40">Operation</th>
                                             <th class="p-3 border-r border-weaver-cream/20 w-24">Source</th>
+                                            <th class="p-3 border-r border-weaver-cream/20 w-28">Status</th>
                                             <th class="p-3">Description</th>
                                         </tr>
                                     </thead>
@@ -189,31 +190,37 @@
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">get-definition</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo border-r border-weaver-indigo/10">Current</td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">Jump to definition. Requires <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--uri</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--position</span>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">find-references</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo border-r border-weaver-indigo/10">Current</td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">Find all usages of a symbol. Same flags as <code>get-definition</code>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">call-hierarchy</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">LSP</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo border-r border-weaver-indigo/10">Current</td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">Incoming/outgoing call graph. Returns nodes and edges.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
                                             <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">grep</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Tree-sitter</td>
+                                            <td class="p-3 font-mono text-xs text-weaver-indigo border-r border-weaver-indigo/10">Current</td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">AST-aware structural search via <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--pattern</span> and <span class="font-mono text-xs bg-weaver-indigo/10 px-1">--path</span>.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">get-card <span class="status-pill status-pill-planned ml-1">Planned</span></td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">get-card</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Jacquard</td>
+                                            <td class="p-3 font-mono text-xs border-r border-weaver-indigo/10"><span class="status-pill status-pill-planned">Planned</span></td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">Structured symbol card (signature, docstring, locals). Progressive detail levels.</td>
                                         </tr>
                                         <tr class="hover:bg-weaver-indigo/5 transition-colors">
-                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">graph-slice <span class="status-pill status-pill-planned ml-1">Planned</span></td>
+                                            <td class="p-3 font-mono text-xs font-bold text-weaver-vermilion border-r border-weaver-indigo/10">graph-slice</td>
                                             <td class="p-3 font-mono text-xs text-weaver-indigo/60 border-r border-weaver-indigo/10">Jacquard</td>
+                                            <td class="p-3 font-mono text-xs border-r border-weaver-indigo/10"><span class="status-pill status-pill-planned">Planned</span></td>
                                             <td class="p-3 text-sm text-weaver-indigo/80">Budgeted subgraph rooted at a symbol, with typed edges.</td>
                                         </tr>
                                     </tbody>
@@ -334,9 +341,7 @@
                     <!-- Diagram Container -->
                     <div class="bg-white border-2 border-weaver-indigo p-8 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)] figure-fullbleed">
                         <!-- Technical Labels -->
-                        <div class="absolute top-4 left-4 border border-weaver-indigo px-2 py-1 bg-white z-20 figure-fullbleed-label">
-                            <span class="font-mono text-[10px] text-weaver-indigo">FIG. 3.1 - DATA FUSION</span>
-                        </div>
+                        <div class="absolute top-2 left-2 text-[10px] font-mono text-weaver-indigo border border-weaver-indigo px-1 bg-weaver-cream/90 figure-fullbleed-label">FIG 3.1: DATA FUSION</div>
 
                         <div class="relative figure-fullbleed-img">
                             <img

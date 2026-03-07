@@ -80,21 +80,21 @@ Assessment labels used below:
   direction into a stronger product claim.
 
 - Claim: The site docs page shows the current configuration contract.
-  Site evidence: `weaver/docs/index.html:214-241`.
+  Site evidence: `weaver/docs/index.html:264-476`.
   Benchmark: `users-guide.md:8-65`, `weaver-design.md:923-968`.
-  Verdict: `Contradicted`.
-  Notes: The site invents a nested `[daemon]` and `[lsp]` schema with
-  `socket_type`, `socket_path`, and `max_memory_mb`, while the user's guide
-  documents top-level `daemon_socket`, `log_filter`, `log_format`, and repeated
-  `[[capability_overrides]]`.
+  Verdict: `Aligned`.
+  Notes: The docs hub now shows the real top-level TOML keys, precedence rules,
+  fail-fast loading behaviour, environment variables, and repeated
+  `[[capability_overrides]]` entries. It also makes the `compact` TOML example
+  an explicit override of the `json` default.
 
 - Claim: The site docs page shows the current JSONL protocol schema.
-  Site evidence: `weaver/docs/index.html:249-287`.
+  Site evidence: `weaver/docs/index.html:483-534`.
   Benchmark: `users-guide.md:245-275`, `weaver-design.md:376-408`.
-  Verdict: `Contradicted`.
-  Notes: The site presents `event_id`, `timestamp`, and `payload.type` frames.
-  The user's guide documents a `kind`-based envelope with `stream`, `data`, and
-  terminal `exit` messages.
+  Verdict: `Aligned`.
+  Notes: The docs hub now documents the `kind`-based envelope directly, with
+  `stream` and `data` fields for payload messages plus terminal `exit` messages
+  carrying `status`.
 
 ## Safety Model
 
@@ -107,27 +107,26 @@ Assessment labels used below:
   `users-guide.md:155-166`.
   Verdict: `Aligned`.
 
-- Claim: "Double-Lock" means Birdcage sandbox plus policy verification.
-  Site evidence: `weaver/safety/index.html:137-139`,
-  `weaver/safety/index.html:157-160`,
-  `weaver/safety/index.html:217-223`.
+- Claim: "Double-Lock" means syntactic plus semantic validation, while
+  Birdcage is a separate sandbox boundary.
+  Site evidence: `weaver/safety/index.html:137-224`,
+  `weaver/why-weaver/index.html:224-237`.
   Benchmark: `weaver-design.md:1387-1459`, `users-guide.md:857-924`.
-  Verdict: `Contradicted`.
-  Notes: The design docs define Double-Lock as syntactic lock plus semantic lock
-  around in-memory edits. Sandboxing is a separate zero-trust execution layer,
-  not one of the two locks.
+  Verdict: `Aligned`.
+  Notes: The safety copy now matches the design docs: syntactic lock plus
+  semantic lock around in-memory edits, with Birdcage isolated as the external
+  execution boundary.
 
-- Claim: Every action is proposed, analyzed, and requires approval or policy
-  match before execution.
-  Site evidence: `weaver/why-weaver/index.html:237-243`,
-  `weaver/commands/act/index.html:167-210`,
-  `weaver/commands/act/index.html:275-360`.
+- Claim: Current write operations are lock-guarded and transactional, while
+  human approval only appears as a planned interactive mode.
+  Site evidence: `weaver/commands/act/index.html:145-180`,
+  `weaver/roadmap/index.html:360-367`,
+  `weaver/why-weaver/index.html:224-242`.
   Benchmark: `weaver-design.md:1555-1853`, `users-guide.md:494-567`,
   `roadmap.md:757-763`, `weaver-design.md:2260-2263`.
-  Verdict: `Overstated`.
-  Notes: Human approval appears only as a planned hybrid interactive mode.
-  Current documented actuation is lock-guarded, transactional, and plugin- or
-  patch-driven; it is not a proposal-review-apply workflow.
+  Verdict: `Aligned`.
+  Notes: The current site no longer teaches a proposal-review-apply loop for
+  shipped `act` commands. Approval is now described as a future roadmap path.
 
 - Claim: Rollback is a first-class behaviour.
   Site evidence: `weaver/why-weaver/index.html:241-243`.
@@ -144,43 +143,41 @@ Assessment labels used below:
   `verify`.
   Site evidence: `weaver/commands/index.html:125-127`.
   Benchmark: `users-guide.md:220-243`, `users-guide.md:322-341`.
-  Verdict: `Partially aligned`.
-  Notes: The high-level domain split is correct, but the documented CLI contract
-  is `weaver <domain> <operation> [ARG ...]`, not the simpler path-oriented
-  syntax shown by the site.
+  Verdict: `Aligned`.
+  Notes: The command hub now leads with the documented
+  `weaver <domain> <operation> [ARG ...]` shape and names the three domains as
+  the operator-facing split.
 
-- Claim: `observe` reads files or directories directly and streams structured
-  context to stdout.
-  Site evidence: `weaver/commands/observe/index.html:159-173`,
-  `weaver/commands/observe/index.html:232-323`.
+- Claim: `observe` exposes operation-level queries such as
+  `get-definition`, `find-references`, `call-hierarchy`, and `grep`, with
+  planned Jacquard extensions called out separately.
+  Site evidence: `weaver/commands/observe/index.html:159-228`,
+  `weaver/commands/index.html:147-160`.
   Benchmark: `users-guide.md:343-468`, `weaver-design.md:1144-1169`.
-  Verdict: `Overstated`.
-  Notes: The supplied references describe `observe get-definition`,
-  `find-references`, `call-hierarchy`, and `grep`, plus planned `query`,
-  `get-card`, `graph-slice`, and `graph-history`. The site presents a more
-  monolithic `observe <path>` interface than the docs support.
+  Verdict: `Aligned`.
+  Notes: The site now teaches the real operation-level surface instead of a
+  monolithic `observe <path>` metaphor, and it visibly marks Jacquard entries
+  as planned.
 
-- Claim: `act` exposes proposal-cycle subcommands such as `propose` and
-  `apply`.
-  Site evidence: `weaver/commands/act/index.html:174-223`,
-  `weaver/commands/act/index.html:275-360`.
+- Claim: `act` is centered on `apply-patch`, `apply-rewrite`, `refactor`, and a
+  planned `extricate` surface.
+  Site evidence: `weaver/commands/act/index.html:166-219`,
+  `weaver/commands/index.html:163-176`.
   Benchmark: `users-guide.md:494-567`,
   `adr-001-plugin-capability-model-and-act-extricate.md:47-63`,
   `rust-extricate-actuator-plugin-technical-design.md:99-122`.
-  Verdict: `Contradicted`.
-  Notes: The source documents describe `act apply-patch`, `act apply-rewrite`,
-  `act refactor`, and `act extricate` as the meaningful command surfaces. The
-  proposal-cycle UI is a site invention.
+  Verdict: `Aligned`.
+  Notes: The site now uses the documented write operations rather than an
+  invented proposal/apply cycle, and it marks `extricate` as planned.
 
-- Claim: `verify` runs tests, linters, policy checks, and provenance validation.
-  Site evidence: `weaver/commands/index.html:185-193`,
-  `weaver/commands/verify/index.html:145-170`,
-  `weaver/commands/verify/index.html:233-303`.
+- Claim: `verify` currently exposes `diagnostics`, with broader policy and test
+  orchestration shown as planned.
+  Site evidence: `weaver/commands/verify/index.html:145-215`,
+  `weaver/commands/index.html:179-192`.
   Benchmark: `users-guide.md:470-492`, `users-guide.md:857-924`.
-  Verdict: `Overstated`.
-  Notes: The current user's guide documents `verify diagnostics`. The design
-  direction absolutely cares about validation, but the site presents a richer,
-  more CI-like command surface than the current operator docs do.
+  Verdict: `Aligned`.
+  Notes: The site now distinguishes the shipped `diagnostics` operation from
+  the broader validation layers still on the roadmap.
 
 - Claim: `act apply-patch`-style behaviour is central to the write path.
   Site evidence: `weaver/commands/index.html:230-238`,
@@ -188,8 +185,8 @@ Assessment labels used below:
   Benchmark: `users-guide.md:494-518`, `weaver-design.md:1555-1853`,
   `roadmap.md:713-740`.
   Verdict: `Aligned`.
-  Notes: The site gets the importance of patch application right, even though it
-  documents the wrong command shape.
+  Notes: The site gets the importance of patch application right and now places
+  it inside the documented domain-and-operation command shape.
 
 ## Sempai
 
@@ -200,17 +197,19 @@ Assessment labels used below:
   `weaver/sempai/index.html:176-182`,
   `weaver/sempai/index.html:337-345`,
   `weaver/sempai/index.html:375-389`.
-  Benchmark: `adr-002...md:99-105`, `adr-003...md:100-133`,
-  `sempai-query-language-design.md:17-30`,
-  `sempai-query-language-design.md:103-178`,
-  `sempai-query-language-design.md:859-951`.
+  Benchmark:
+  `../weaver/docs/adr-002-query-language-for-feature-extraction-in-weaver.md:99-105`,
+  `../weaver/docs/adr-003-sempai-semgrep-compatible-query-engine.md:100-133`,
+  `../weaver/docs/sempai-query-language-design.md:17-30`,
+  `../weaver/docs/sempai-query-language-design.md:103-178`,
+  `../weaver/docs/sempai-query-language-design.md:859-951`.
   Verdict: `Aligned`.
 
 - Claim: The Sempai CLI surface is `weaver observe query` with rule-file, inline
   rule, or DSL options.
   Site evidence: `weaver/sempai/index.html:335-345`.
-  Benchmark: `sempai-query-language-design.md:861-875`,
-  `sempai-query-language-design.md:1146-1153`.
+  Benchmark: `../weaver/docs/sempai-query-language-design.md:861-875`,
+  `../weaver/docs/sempai-query-language-design.md:1146-1153`.
   Verdict: `Aligned`.
 
 ## Jacquard
@@ -246,11 +245,16 @@ Assessment labels used below:
 
 - Claim: The docs hub accurately fronts the available design material.
   Site evidence: `weaver/docs/index.html:176-205`.
-  Benchmark: the supplied docs list itself.
+  Benchmark: `../weaver/docs/weaver-design.md`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/sempai-query-language-design.md`,
+  `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
+  `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`.
   Verdict: `Partially aligned`.
-  Notes: The categories are directionally reasonable, but the design-doc cards
-  are placeholders (`href="#"`) and use invented RFC names rather than linking
-  to the actual ADRs and design docs under `../weaver/docs/`.
+  Notes: The docs hub now names the real source artefacts directly and links the
+  `weaver-design.md`, `adr-001`, and `users-guide.md` cards to exact source
+  documents. The Sempai, Jacquard, and Roadmap entries still route to site
+  summary pages rather than the raw source files named on the cards.
 
 - Claim: The site roadmap reflects the product roadmap.
   Site evidence: `weaver/roadmap/index.html:139-349`.
@@ -268,9 +272,9 @@ daemon, JSONL transport, Tree-sitter plus LSP fusion, sandboxing with
 `seccomp-bpf`, Semgrep-compatible Sempai, and Jacquard's cards/slices/history
 model all have real support in the supplied references.
 
-The weakest areas are the command surface and the meaning of "Double-Lock". The
-site repeatedly turns planned, abstract, or speculative behaviour into a
-current-looking user interface: proposal-cycle `act` commands, generic
-path-oriented `observe`, build-and-test `verify`, policy-engine-as-second-lock,
-and a configuration/protocol schema that does not match the user's guide. Those
-areas should be treated as documentation debt, not just copy drift.
+The biggest remaining gaps are narrower now. The command surface, config
+contract, JSONL envelope, and Double-Lock definition are substantially aligned
+with the source material on this branch. The remaining debt sits in deeper
+operator detail: plugin discoverability, specialist `extricate` semantics,
+summary-page versus source-doc linking in the docs hub, and roadmap framing
+that still compresses or stylizes parts of the official phased plan.

@@ -264,9 +264,9 @@
                         <div class="bg-weaver-dark rounded-sm p-4 shadow-lg border border-weaver-indigo/20 max-w-2xl code-container group">
                             <div class="flex justify-between items-start">
                                 <code class="font-mono text-sm text-gray-300">
-                                    <span class="text-green-400">weaver</span> observe get-definition --uri file:///src/main.rs --position 1:1
+                                    <span class="text-green-400">weaver</span> observe get-definition --uri file:///path/to/project/src/main.rs --position 1:1
                                 </code>
-                                <button class="copy-btn text-xs text-gray-400 hover:text-white bg-white/10 px-2 py-1 rounded" onclick="navigator.clipboard.writeText('weaver observe get-definition --uri file:///src/main.rs --position 1:1')">
+                                <button class="copy-btn text-xs text-gray-400 hover:text-white bg-white/10 px-2 py-1 rounded" onclick="navigator.clipboard.writeText('weaver observe get-definition --uri file:///path/to/project/src/main.rs --position 1:1')">
                                     <i class="fa-regular fa-copy mr-1"></i> Copy
                                 </button>
                             </div>
@@ -307,7 +307,7 @@
                             <p class="text-xs text-weaver-cream/60 mb-4 h-10">Jump to a symbol definition to understand the code before editing.</p>
                             <div class="bg-black/30 p-3 rounded font-mono text-xs text-green-400 border border-white/5">
                                 $ weaver observe get-definition \<br>
-                                &nbsp;&nbsp;--uri file:///src/main.rs \<br>
+                                &nbsp;&nbsp;--uri file:///path/to/project/src/main.rs \<br>
                                 &nbsp;&nbsp;--position 10:5
                             </div>
                         </div>
@@ -333,7 +333,7 @@
                             <p class="text-xs text-weaver-cream/60 mb-4 h-10">Pull diagnostics to confirm no regressions.</p>
                             <div class="bg-black/30 p-3 rounded font-mono text-xs text-green-400 border border-white/5">
                                 $ weaver verify diagnostics \<br>
-                                &nbsp;&nbsp;--uri file:///src/main.rs
+                                &nbsp;&nbsp;--uri file:///path/to/project/src/main.rs
                             </div>
                         </div>
                     </div>

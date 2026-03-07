@@ -13,52 +13,42 @@ prominent in the source references.
 
 ## High-Priority Gaps in Current and Near-Term Operator Features
 
-- `weaver --capabilities` is effectively absent from the site.
-  Source evidence: `users-guide.md:276-296`, `weaver-design.md:410-414`,
-  `weaver-design.md:2086-2109`, `adr-001...md:47-63`.
+- `weaver --capabilities` is present, but still under-explained.
+  Source evidence: `../weaver/docs/users-guide.md:276-296`,
+  `../weaver/docs/weaver-design.md:410-414`,
+  `../weaver/docs/weaver-design.md:2086-2109`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:47-63`.
   Why this matters: capability discovery and graceful degradation are central to
   the documented agent-planning model, especially for LSP variability and
-  provider routing. The site talks about open interfaces and composability but
-  never teaches the main introspection tool.
+  provider routing. The site now mentions the probe, but it still does not show
+  representative output or explain how operators should use capability data to
+  interpret refusals and provider limits.
 
-- Configuration layering, precedence, and fail-fast behaviour are missing.
-  Source evidence: `users-guide.md:8-84`, `weaver-design.md:923-968`,
-  `rust-extricate-actuator-plugin-technical-design.md:66-85`.
-  Why this matters: the shared config contract is one of the most concrete,
-  operator-facing parts of the current system. The site shows a made-up config
-  snippet instead of documenting the actual precedence rules, environment
-  variables, and fatal parse behaviour.
-
-- Runtime artefacts and daemon lifecycle semantics are under-covered.
-  Source evidence: `users-guide.md:104-217`, `weaver-design.md:416-449`,
-  `weaver-design.md:972-1012`.
-  Why this matters: the official docs emphasize `weaverd.lock`, `weaverd.pid`,
-  `weaverd.health`, duplicate-start handling, foreground mode, and auto-start
-  on first domain command. The site reduces lifecycle to "start the daemon" and
-  a status check.
-
-- Operation-level command surfaces are largely absent.
+- Operation-level command surfaces are present, but deeper discoverability is
+  still thin.
   Source evidence: `users-guide.md:322-567`.
-  Missing from the site:
-  `observe get-definition`, `observe find-references`,
-  `observe call-hierarchy`, `observe grep`, `verify diagnostics`,
-  `act apply-patch`, `act apply-rewrite`, and `act refactor` as the actual
-  documented domain-and-operation interface.
+  Still under-covered on the site:
+  command-specific help flows, startup/routing failure examples, and the richer
+  capability-conditioned guidance described in the user's guide and roadmap.
   Why this matters: the site presents the product as easy to use, but it does
-  not expose the actual CLI shape an operator needs.
+  not yet teach enough of the discovery and troubleshooting surface an operator
+  needs after the first happy-path command.
 
-- Human-readable output and JSON/human dual-mode rendering are missing.
+- Human-readable output and JSON/human dual-mode rendering are now introduced,
+  but their operator contract is still under-documented.
   Source evidence: `users-guide.md:245-275`, `roadmap.md:108-115`.
   Why this matters: the official references care about both machine-readable
-  JSONL and line-numbered human context output. The site mostly displays mock
-  terminal frames and invented payloads instead of documenting the actual output
-  contract.
+  JSONL and line-numbered human context output. The site now documents the
+  `kind` envelope and `--output` flag, but it still does not show enough
+  concrete human-mode examples or operation-specific output shapes.
 
 ## Plugin and Capability Platform Gaps
 
 - The plugin system is materially under-documented on the site.
-  Source evidence: `users-guide.md:658-813`, `weaver-design.md:1255-1384`,
-  `roadmap.md:488-707`, `adr-001...md:47-68`.
+  Source evidence: `../weaver/docs/users-guide.md:658-813`,
+  `../weaver/docs/weaver-design.md:1255-1384`,
+  `../weaver/docs/roadmap.md:488-707`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:47-68`.
   Missing from the site:
   sensor vs actuator plugin categories, plugin manifests, JSONL-over-stdio
   plugin IPC, in-band file payloads, plugin registry lookups, and capability
@@ -67,7 +57,9 @@ prominent in the source references.
   pillar, not an edge feature.
 
 - Capability IDs and routing rules are absent.
-  Source evidence: `adr-001...md:56-65`, `users-guide.md:727-804`.
+  Source evidence:
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:56-65`,
+  `../weaver/docs/users-guide.md:727-804`.
   Missing from the site:
   `rename-symbol`, `extricate-symbol`, `extract-method`, `replace-body`,
   `extract-predicate`, contract versioning, and refusal reason codes.
@@ -84,12 +76,15 @@ prominent in the source references.
 
 ## `act extricate` and Specialist Refactoring Gaps
 
-- `act extricate` is missing from the site.
-  Source evidence: `adr-001...md:23-27`, `adr-001...md:104-131`,
-  `rust-extricate-actuator-plugin-technical-design.md:95-122`.
+- `act extricate` is visible on the site, but only as a planned surface.
+  Source evidence:
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:23-27`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:104-131`,
+  `../weaver/docs/rust-extricate-actuator-plugin-technical-design.md:95-122`.
   Why this matters: ADR 001 elevates `act extricate` into the capability model,
-  and the Rust technical design specifies a detailed contract. The site never
-  mentions it, despite it being a flagship capability-first example.
+  and the Rust technical design specifies a detailed contract. The public site
+  now mentions the command, but it still under-documents provider boundaries,
+  execution stages, and language-specific limits.
 
 - The Rust extrication execution model is missing.
   Source evidence: `rust-extricate-actuator-plugin-technical-design.md:161-336`,
@@ -126,14 +121,6 @@ prominent in the source references.
   Why this matters: the design treats Sempai as a real query engine contract,
   not just a white-paper idea.
 
-- The site also does not explain how Sempai fits the broader `observe` command
-  family alongside classic operations like `get-definition` and `grep`.
-  Source evidence: `users-guide.md:333-468`,
-  `sempai-query-language-design.md:861-875`.
-  Why this matters: without that connection, the site makes Sempai look like a
-  standalone conceptual product rather than an addition to Weaver's `observe`
-  surface.
-
 ## Jacquard Coverage Gaps
 
 - Jacquard's white-paper page is closer to the source than most of the site, but
@@ -151,24 +138,30 @@ prominent in the source references.
   Why this matters: the core Jacquard promise is not just cards and slices, but
   honest representation of partiality, ambiguity, and fallback quality.
 
-- The official roadmap status for Jacquard is missing.
+- The official roadmap status for Jacquard is now signaled on the site, but the
+  linkage back to the source roadmap remains indirect.
   Source evidence: `roadmap.md:782-963`.
-  Why this matters: the roadmap shows Jacquard as a substantial future phase,
-  while the public site makes it easy to read as a currently available operator
-  surface.
+  Why this matters: the roadmap shows Jacquard as a substantial future phase.
+  The site now marks Jacquard as planned, but it still does not connect that
+  future status back to the raw roadmap/source document named in the docs hub.
 
 ## Advanced Agent Workflow Gaps
 
-- `onboard-project` and `PROJECT.dna` are absent.
+- `weaver project onboard` and `PROJECT.dna` are now mentioned on the roadmap,
+  but the command contract is still skeletal.
   Source evidence: `weaver-design.md:2113-2159`, `roadmap.md:742-763`.
   Why this matters: the design treats onboarding and RAG-style summarization as
-  a major agent-support feature. The site never mentions it.
+  a major agent-support feature. The site now names the future command and
+  artefact, but it does not explain inputs, determinism constraints, or how the
+  generated summary fits the wider operator model.
 
-- Hybrid interactive mode (`--interactive`) is absent.
+- Hybrid interactive mode (`--interactive`) is now present on the roadmap, but
+  still lacks source-level detail on the public site.
   Source evidence: `weaver-design.md:2260-2263`, `roadmap.md:757-763`.
   Why this matters: this is the actual source-backed place where human approval
-  enters the system, yet the site instead documents a different proposal-cycle
-  model.
+  enters the system. The site now acknowledges it as planned, but it does not
+  explain its failure modes, timeout behaviour, or relationship to the current
+  lock-guarded default.
 
 - Dynamic analysis ingestion is absent.
   Source evidence: `weaver-design.md:2265`, `roadmap.md:765-771`.
@@ -181,19 +174,24 @@ prominent in the source references.
 - The site does not cover the roadmap's command discoverability work.
   Source evidence: `roadmap.md:142-237`, `roadmap.md:278-334`.
   Missing from the site:
-  top-level help improvements, operation-level help, visible global config
-  flags, `weaver help <topic>`, and actionable startup/routing errors.
+  top-level help improvements, operation-level help,
+  `weaver help <topic>`, and actionable startup/routing errors.
   Why this matters: the roadmap treats these as explicit UX deliverables for the
   CLI, but the site mostly bypasses the issue with stylized examples.
 
 ## Documentation and Site-Level Gaps
 
-- The site does not actually expose the supplied design docs as navigable
-  primary sources.
-  Source evidence: the supplied `../weaver/docs/*` files themselves,
+- The site does not yet expose every supplied design doc as a navigable primary
+  source.
+  Source evidence: `../weaver/docs/weaver-design.md`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/sempai-query-language-design.md`,
+  `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
+  `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`,
   compared with `weaver/docs/index.html:176-205`.
-  Why this matters: the docs hub advertises "Design Documents" but does not link
-  to the real ADRs, roadmap, technical design, or user's guide.
+  Why this matters: the docs hub now links some cards directly to raw source
+  files, but other cards still route to site summaries while presenting
+  filename-level labels for the underlying source artefacts.
 
 - The site omits several strong operator details already present in the user's
   guide:
@@ -205,13 +203,13 @@ prominent in the source references.
 
 ## Priority Recommendations
 
-1. Replace invented command narratives with the real domain-and-operation
-   surfaces from `users-guide.md`, then layer white-paper language on top.
-2. Add first-class pages or sections for `--capabilities`, configuration
-   layering, plugin capabilities, and daemon lifecycle artefacts.
+1. Keep the real domain-and-operation surfaces, then add the missing discovery
+   and troubleshooting detail from `users-guide.md` on top.
+2. Deepen the `--capabilities` story with real output, routing examples, and
+   failure interpretation instead of mentioning the probe only in passing.
 3. Surface `act extricate`, plugin routing, and current provider boundaries,
    because they are prominent in ADR 001 and the Rust technical design.
-4. Turn the docs hub into a real index of the actual source documents instead of
-   a placeholder marketing gateway.
+4. Turn the docs hub into a uniform index of actual source documents instead of
+   mixing raw source links with summary pages under source-doc filenames.
 5. Make planned status explicit when a page is primarily based on future design
    work, especially for Jacquard and advanced agent workflows.

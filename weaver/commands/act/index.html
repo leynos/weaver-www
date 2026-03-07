@@ -241,9 +241,7 @@
                     <!-- Sandbox Visualizer -->
                     <div class="bg-white border-2 border-weaver-indigo p-8 relative shadow-[8px_8px_0px_0px_rgba(25,60,110,0.1)] figure-fullbleed">
                         <!-- Technical Labels -->
-                        <div class="absolute top-4 left-4 border border-weaver-indigo px-2 py-1 bg-white z-20 figure-fullbleed-label">
-                            <span class="font-mono text-[10px] text-weaver-indigo">FIG. 4.2 - ISOLATION BOUNDARY</span>
-                        </div>
+                        <div class="absolute top-2 left-2 text-[10px] font-mono text-weaver-indigo border border-weaver-indigo px-1 bg-weaver-cream/90 figure-fullbleed-label">FIG 4.2: ISOLATION BOUNDARY</div>
 
                         <div class="relative py-8 figure-fullbleed-img">
                             <img
@@ -411,7 +409,7 @@
                         </div>
 
                         <p class="text-sm text-weaver-indigo/80 leading-relaxed mb-8 max-w-3xl">
-                            Move a selected symbol into a different module while preserving behaviour. Import paths, references, and associated <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">impl</code> blocks are rewritten automatically. The entire operation is transactional — if any verification check fails, the workspace is left unchanged.
+                            Move a selected symbol into a different module while preserving behaviour. The detailed execution model documented here is Rust-specific: it covers <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">impl</code> blocks, <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">use</code> tree rewrites, and refusal cases such as non-preservable <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">pub(in ...)</code>. Python remains a planned capability route, but its Rope-backed limits are not specified to the same depth yet.
                         </p>
 
                         <!-- Synopsis -->
@@ -440,6 +438,7 @@
                                             <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Language</th>
                                             <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Plugin</th>
                                             <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Backend</th>
+                                            <th class="text-left p-3 font-mono text-xs font-bold text-weaver-indigo border-b border-weaver-indigo/20">Notes</th>
                                         </tr>
                                     </thead>
                                     <tbody class="text-weaver-indigo/80">
@@ -447,11 +446,13 @@
                                             <td class="p-3 font-mono text-xs">Python</td>
                                             <td class="p-3 font-mono text-xs">rope</td>
                                             <td class="p-3 text-xs">Rope refactoring library</td>
+                                            <td class="p-3 text-xs">Planned capability route only. Current site docs do not define a Rope extrication contract beyond provider intent, so do not infer Rust-style module surgery for Python.</td>
                                         </tr>
                                         <tr>
                                             <td class="p-3 font-mono text-xs">Rust</td>
                                             <td class="p-3 font-mono text-xs">rust-analyzer</td>
                                             <td class="p-3 text-xs">RA LSP + overlay transaction engine</td>
+                                            <td class="p-3 text-xs">Detailed design exists. Handles definition and reference planning, <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">impl</code> moves, <code class="text-xs font-mono bg-weaver-indigo/5 px-1 py-0.5 rounded">use</code> rewrites, and Rust-specific refusal cases.</td>
                                         </tr>
                                     </tbody>
                                 </table>

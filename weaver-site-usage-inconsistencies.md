@@ -15,128 +15,44 @@ The focus is on inconsistencies in:
 
 ## 1. CLI Shape Mismatches
 
-- Site UI: `observe` is presented as `weaver observe [OPTIONS] <PATH>...`, with
-  examples such as `weaver observe src/lib.rs`, `weaver observe .`, and
-  `weaver observe . --symbol "connect_db"`.
-  Site evidence: `weaver/commands/observe/index.html:163-173`,
-  `weaver/commands/observe/index.html:248-323`,
-  `weaver/install/index.html:293-296`.
-  Source UI: the user's guide documents `weaver <domain> <operation> [ARG ...]`
-  with concrete `observe` operations such as `get-definition`,
-  `find-references`, `call-hierarchy`, and `grep`.
-  Source evidence: `users-guide.md:322-468`.
-  Impact: the site teaches a path-oriented monolithic `observe` command, while
-  the documented interface is an operation-oriented command family.
-
-- Site UI: `act` is presented as a proposal workflow with `propose`, `apply`,
-  `--id`, `--sandbox-level`, and `--timeout`.
-  Site evidence: `weaver/commands/act/index.html:174-223`,
-  `weaver/commands/act/index.html:275-360`.
-  Source UI: the supplied docs describe `act apply-patch`, `act apply-rewrite`,
-  `act refactor`, and the design surface `act extricate`.
-  Source evidence: `users-guide.md:494-567`,
-  `adr-001...md:108-131`,
-  `rust-extricate-actuator-plugin-technical-design.md:99-122`.
-  Impact: the site documents a command family that the supplied references do
-  not define.
-
-- Site UI: patch application examples use `weaver act --patch diff.patch` or
-  `weaver act --patch refactor.diff`.
-  Site evidence: `weaver/commands/index.html:231-235`,
-  `weaver/commands/index.html:335-348`.
-  Source UI: the user's guide and design docs specify
-  `weaver act apply-patch < patch.diff`.
-  Source evidence: `users-guide.md:494-518`,
-  `weaver-design.md:1557-1579`,
-  `roadmap.md:719-740`.
-  Impact: the site points users at the wrong syntax for one of the most
-  concrete write operations in the system.
-
-- Site UI: free-form actuation examples such as `weaver act "Fix typo in
-  lib.rs"` and `weaver act --dry-run "Refactor error handling"`.
-  Site evidence: `weaver/install/index.html:305-308`,
-  `weaver/index.html:279-288`.
-  Source UI: the references document explicit operations and arguments, not a
-  natural-language `act` command surface.
-  Source evidence: `users-guide.md:494-567`,
-  `rust-extricate-actuator-plugin-technical-design.md:102-121`.
-  Impact: the site makes Weaver look like a prompt-driven executor instead of a
-  structured domain/operation CLI.
-
-- Site UI: `verify` is presented as `weaver verify [OPTIONS] <TARGET>`, with
-  examples like `weaver verify --test unit` and `weaver verify --strict`.
-  Site evidence: `weaver/commands/verify/index.html:172-217`,
-  `weaver/commands/index.html:246-253`,
-  `weaver/install/index.html:317-320`.
-  Source UI: the current user's guide documents `weaver verify diagnostics
-  --uri <URI>`.
-  Source evidence: `users-guide.md:470-492`.
-  Impact: the site teaches a build/test/policy runner that is not the documented
-  current verify interface.
+- The major CLI-shape drift recorded in earlier revisions is largely resolved.
+  The command pages, install guide, and homepage preview now use the documented
+  `weaver <domain> <operation> [ARG ...]` model for current operations such as
+  `observe get-definition`, `act apply-patch`, and `verify diagnostics`.
+  Site evidence: `weaver/commands/observe/index.html:178-221`,
+  `weaver/commands/act/index.html:166-219`,
+  `weaver/commands/verify/index.html:167-215`,
+  `weaver/install/index.html:261-337`, `weaver/index.html:262-292`.
+  Source evidence: `../weaver/docs/users-guide.md:322-567`.
+  Impact: readers now see the correct domain-and-operation structure first. The
+  remaining command-shape risk is confined to directional roadmap copy and other
+  planned surfaces, not the current operator path.
 
 ## 2. Global Flags and Config UI Mismatches
 
-- Site UI: global flags are shown as `--json`, `--verbose`, `--config`, and
-  `--socket`.
-  Site evidence: `weaver/commands/index.html:393-413`.
-  Source UI: the user's guide documents `--output`, `--config-path`,
-  `--daemon-socket`, `--log-filter`, `--log-format`, and
-  `--capability-overrides`.
-  Source evidence: `users-guide.md:22-37`, `users-guide.md:254-259`.
-  Impact: operators reading the site will learn a different flag vocabulary from
-  the one documented in the source references.
-
-- Site UI: install flow tells users to run `weaver init --default`.
-  Site evidence: `weaver/install/index.html:225-239`.
-  Source UI: no such command is documented in the supplied user's guide or
-  design docs; configuration is described through file discovery, flags, env
-  vars, and explicit config files.
-  Source evidence: `users-guide.md:8-84`, `weaver-design.md:923-968`.
-  Impact: this is a concrete onboarding instruction with no support in the
-  supplied references.
-
-- Site UI: daemon start examples use `--detach` and `--background`.
-  Site evidence: `weaver/install/index.html:247-264`,
-  `weaver/how-it-works/index.html:293-295`.
-  Source UI: the user's guide documents `weaver daemon start`, with foreground
-  behaviour controlled by environment rather than advertised `--detach` or
-  `--background` flags.
-  Source evidence: `users-guide.md:168-217`,
-  `weaver-design.md:418-449`.
-  Impact: the site again teaches a command syntax that does not match the source
-  docs.
-
-- Site UI: the docs page shows a nested config file shape with `[daemon]`,
-  `[lsp]`, and `[sandbox]`.
-  Site evidence: `weaver/docs/index.html:214-241`.
-  Source UI: the user's guide documents top-level `daemon_socket`, `log_filter`,
-  `log_format`, and repeated `[[capability_overrides]]`.
-  Source evidence: `users-guide.md:50-65`.
-  Impact: the site's configuration UI is not just simplified; it is a different
-  schema.
+- The earlier flag and configuration drift is largely resolved.
+  Site evidence: `weaver/commands/index.html:388-430`,
+  `weaver/docs/index.html:264-476`, `weaver/install/index.html:225-272`.
+  Source evidence: `../weaver/docs/users-guide.md:8-84`,
+  `../weaver/docs/users-guide.md:168-217`,
+  `../weaver/docs/users-guide.md:245-259`,
+  `../weaver/docs/weaver-design.md:923-968`.
+  Impact: the site now teaches the same flag vocabulary, top-level TOML shape,
+  XDG discovery, and auto-start path described in the source references. The
+  remaining risk is maintenance drift if those shared config details are copied
+  back out onto other pages instead of staying centralized in the docs hub.
 
 ## 3. Protocol and Output UI Mismatches
 
-- Site UI: the docs page presents a JSONL protocol schema built around
-  `event_id`, `timestamp`, `payload.type`, and `provenance`.
-  Site evidence: `weaver/docs/index.html:249-287`.
-  Source UI: the user's guide documents daemon responses with `kind`, `stream`,
-  `data`, and terminal `exit` frames.
-  Source evidence: `users-guide.md:245-275`.
-  Impact: the site shows users and integrators the wrong wire-format model.
-
-- Site UI: `observe` examples stream ad hoc event types like `file`, `symbol`,
-  and `match`, while `verify` examples stream `start`, `check`, and `summary`.
-  Site evidence: `weaver/commands/observe/index.html:256-323`,
-  `weaver/commands/verify/index.html:393-404`.
-  Source UI: the supplied references describe domain operations and example
-  payloads differently, and do not standardize on the event types the site
-  invents.
-  Source evidence: `users-guide.md:266-271`, `users-guide.md:366-467`,
-  `sempai-query-language-design.md:897-929`,
-  `jacquard-card-first-symbol-graph-design.md:794-830`.
-  Impact: the site mock payloads imply a public output contract that is not the
-  documented one.
+- The public JSONL envelope is now aligned on `kind`, `stream`, `data`, and
+  terminal `exit` messages.
+  Site evidence: `weaver/docs/index.html:487-534`,
+  `weaver/commands/act/index.html:297-300`,
+  `weaver/commands/verify/index.html:385-396`.
+  Source evidence: `../weaver/docs/users-guide.md:245-275`.
+  Impact: the docs hub and command pages now teach the same outer transport
+  contract as the user's guide. Any nested payload examples should be read as
+  operation-specific data inside that envelope, not as a second public protocol.
 
 - Site UI: the client card says the CLI handles user authentication.
   Site evidence: `weaver/how-it-works/index.html:307-319`.
@@ -148,62 +64,48 @@ The focus is on inconsistencies in:
 
 ## 4. Safety and Approval Model Mismatches
 
-- Site UI: the safety page defines Double-Lock as Birdcage plus Policy
-  Verification.
-  Site evidence: `weaver/safety/index.html:137-139`,
-  `weaver/safety/index.html:157-223`.
-  Source UI: the user's guide and design docs define Double-Lock as Syntactic
-  Lock plus Semantic Lock, with the sandbox as a separate execution boundary.
-  Source evidence: `users-guide.md:857-924`,
-  `weaver-design.md:1387-1459`.
-  Impact: this is the biggest conceptual UI mismatch on the site because it
-  changes what the product claims to verify.
-
-- Site UI: actions are always staged, proposed, reviewed, and then applied.
-  Site evidence: `weaver/commands/act/index.html:167-210`,
-  `weaver/commands/act/index.html:275-360`,
-  `weaver/why-weaver/index.html:237-243`.
-  Source UI: the supplied references describe lock-guarded actuation and only
-  plan human approval as a future interactive mode.
-  Source evidence: `weaver-design.md:1725-1803`,
-  `weaver-design.md:2260-2263`, `roadmap.md:757-763`.
-  Impact: the site substitutes a proposal-review UI for the documented safety
-  harness.
-
-- Site UI: the verify page makes provenance validation a first-class verify
-  layer.
-  Site evidence: `weaver/commands/verify/index.html:233-303`.
-  Source UI: the current user's guide documents `verify diagnostics` and
-  Double-Lock verification. Provenance-heavy validation belongs more to design
-  direction and Jacquard history than to a current `verify` command contract.
-  Source evidence: `users-guide.md:470-492`,
-  `users-guide.md:857-924`,
-  `jacquard-card-first-symbol-graph-design.md:522-560`.
-  Impact: the site front-loads a richer verify UX than the documented interface
-  supports.
+- The largest safety-model mismatches are also resolved. The safety page now
+  defines Double-Lock as syntactic plus semantic validation, the sandbox as a
+  separate boundary, and the act page explicitly rejects a proposal-review gate
+  for current write operations.
+  Site evidence: `weaver/safety/index.html:137-224`,
+  `weaver/commands/act/index.html:145-180`,
+  `weaver/why-weaver/index.html:225-243`.
+  Source evidence: `../weaver/docs/users-guide.md:857-924`,
+  `../weaver/docs/weaver-design.md:1387-1459`,
+  `../weaver/docs/weaver-design.md:1725-1803`,
+  `../weaver/docs/roadmap.md:757-763`.
+  Impact: readers now get the right safety contract first. The remaining nuance
+  is scope: syntactic and semantic locks apply where Weaver has the relevant
+  parser and language-server path, while unsupported file types pass through the
+  transaction without full lock coverage.
 
 ## 5. Binary Names and Runtime Naming
 
-- Site UI: the daemon binary is labeled `weaver-d`.
-  Site evidence: `weaver/how-it-works/index.html:274-289`.
-  Source UI: the design docs and user's guide consistently use `weaverd`.
-  Source evidence: `weaver-design.md:335-360`,
-  `weaver-design.md:915-916`,
-  `users-guide.md:104-153`.
-  Impact: even small naming drift like this creates friction when readers move
-  from the site to the real docs or terminal.
+- No current binary-name drift was found in the public pages reviewed here.
+  Site evidence: `weaver/docs/index.html:549-652`,
+  `weaver/how-it-works/index.html:269-299`.
+  Source evidence: `../weaver/docs/weaver-design.md:335-360`,
+  `../weaver/docs/weaver-design.md:915-916`,
+  `../weaver/docs/users-guide.md:104-153`.
+  Impact: the older `weaver-d` mismatch no longer reproduces on this branch.
 
 ## 6. Docs Hub and Navigation Inconsistencies
 
-- Site UI: the docs hub advertises "RFC-001: Semantic Fusion" and
-  "RFC-004: Double-Lock Sandbox" cards as if they are browsable documents.
-  Site evidence: `weaver/docs/index.html:176-205`.
+- Site UI: the docs hub now mixes two behaviours under filename-level card
+  labels. Some cards link straight to the raw source docs, while others route to
+  summary pages inside the site.
+  Site evidence: `weaver/docs/index.html:193-259`.
   Source UI: the supplied references are ADRs, technical designs, the user's
-  guide, and the roadmap under `../weaver/docs/`; the site cards are placeholders
-  with `href="#"`.
-  Source evidence: the supplied doc list itself and `weaver/docs/index.html:183-194`.
-  Impact: the documentation UI implies navigable primary sources but does not
-  expose the actual ones.
+  guide, and the roadmap under `../weaver/docs/`.
+  Source evidence: `../weaver/docs/weaver-design.md`,
+  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/sempai-query-language-design.md`,
+  `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
+  `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`.
+  Impact: readers can now reach more of the real source material, but the docs
+  hub still blurs the difference between "raw source document" and "site summary
+  of that document."
 
 - Site UI: the docs hub includes a search field and TOC-like secondary nav.
   Site evidence: `weaver/docs/index.html:114-159`.
@@ -240,14 +142,13 @@ The focus is on inconsistencies in:
 
 ## Summary
 
-The site consistently documents a more cinematic, prompt-oriented, proposal-
-driven UI than the one described in the design sources. The official references
-describe a structured domain/operation CLI, capability-aware routing, explicit
-transport/config contracts, and a Double-Lock model built from syntactic plus
-semantic verification. The site instead presents a friendlier but materially
-different command grammar, safety story, config surface, and docs application.
+The biggest inconsistencies recorded in earlier revisions are no longer live on
+this branch. The public site now matches the source docs much more closely on
+CLI shape, config layering, JSONL transport, and the Double-Lock definition.
 
-If the site is meant to be authoritative, it needs to converge on the real
-command and protocol contracts. If it is meant to be aspirational, it needs much
-clearer "planned" labeling so readers do not mistake design fiction for the
-current operator interface.
+The remaining mismatches are narrower and more structural: some docs-hub cards
+still present summary pages under source-document filenames, the roadmap still
+uses a more cinematic planning surface than the official phased execution plan,
+and several advanced/plugin-heavy features are still easier to understand from
+the source docs than from the site. That is now a documentation-depth problem
+more than a fundamental contract mismatch.
