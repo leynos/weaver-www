@@ -143,7 +143,7 @@
                             Sempai is where <span class="text-weaver-vermilion italic font-light">Weaver stops guessing</span>.
                         </h1>
                         <p class="text-xl lg:text-2xl text-weaver-indigo/80 leading-relaxed max-w-4xl mb-8 font-light">
-                            String matching is cheap until it hits real code. Then it lies. The Sempai design fixes that by taking Semgrep-shaped queries, lowering them to a normalised formula model, executing them against Tree-sitter syntax trees, and returning precise spans, captures, and focus for actuation.
+                            String matching is cheap until it hits real code. Then it lies. The Sempai design fixes that by taking Semgrep-shaped queries, lowering them to a normalized formula model, executing them against Tree-sitter syntax trees, and returning precise spans, captures, and focus for actuation.
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                             <div class="bg-white/70 border border-weaver-indigo/10 p-5 rounded-sm paper-panel">
@@ -186,7 +186,7 @@
                                     <img src="/weaver/assets/sempai/sempai-whitepaper-pipeline.png" alt="Illustrated diagram of the Sempai pipeline from YAML and DSL input through formula normalization to AST execution and match output." class="w-full rounded-sm border border-weaver-indigo/10">
                                     <figcaption class="mt-4 text-sm text-weaver-indigo/75 leading-relaxed">
                                         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mr-2">Figure 1</span>
-                                        The design route is simple on purpose: ingest query input, normalise to a shared formula, validate semantics, compile, execute against Tree-sitter, emit matches.
+                                        The design route is simple on purpose: ingest query input, normalize to a shared formula, validate semantics, compile, execute against Tree-sitter, emit matches.
                                     </figcaption>
                                 </figure>
                             </div>
@@ -218,7 +218,7 @@
                                 <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-weaver-vermilion mb-3">Why Semgrep Syntax</p>
                                 <h3 class="font-serif text-3xl text-weaver-indigo mb-4">Because the query language should speak code, not ceremony.</h3>
                                 <p class="text-base text-weaver-indigo/80 leading-relaxed mb-4">
-                                    Regexps are blind to structure. Raw Tree-sitter queries are married to grammar internals. <code>ast-grep</code> is serious work, but it is still its own ecosystem with its own pattern habits. Semgrep syntax lands in the useful middle: structural, recognisable, portable, and already familiar to people who write code instead of node-kind tax returns.
+                                    Regexps are blind to structure. Raw Tree-sitter queries are married to grammar internals. <code>ast-grep</code> is serious work, but it is still its own ecosystem with its own pattern habits. Semgrep syntax lands in the useful middle: structural, recognizable, portable, and already familiar to people who write code instead of node-kind tax returns.
                                 </p>
                                 <p class="text-base text-weaver-indigo/75 leading-relaxed">
                                     That matters more in Weaver than it does in a standalone matcher. Sempai is not just finding text. It is selecting code objects for downstream action. The front door has to be expressive enough for structure, readable enough for humans, and stable enough for agents to generate without turning every query into a grammar seminar.
@@ -252,7 +252,7 @@
                                         <tr>
                                             <td class="px-4 py-4 font-mono">Tree-sitter queries</td>
                                             <td class="px-4 py-4">Precise, low-level capture of grammar nodes. Excellent as an escape hatch when you need exact parser internals.</td>
-                                            <td class="px-4 py-4">They are too close to the metal for the main authoring path. Users should not have to memorise node kinds and field names just to say “find decorated classes”. That is what the engine is for.</td>
+                                            <td class="px-4 py-4">They are too close to the metal for the main authoring path. Users should not have to memorize node kinds and field names just to say “find decorated classes”. That is what the engine is for.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -375,7 +375,7 @@
                                 <ul class="space-y-3 text-sm text-weaver-indigo/80 leading-relaxed">
                                     <li>Parsed modes are not silently “best-effort” executed.</li>
                                     <li><code>fix</code> is surfaced as metadata, not applied by wishful thinking.</li>
-                                    <li>Unsupported constraints return structured errors instead of undefined behavior with nicer branding.</li>
+                                    <li>Unsupported constraints return structured errors instead of undefined behaviour with nicer branding.</li>
                                     <li>Diagnostics are first-class: code, message, primary span, notes.</li>
                                 </ul>
                             </div>
