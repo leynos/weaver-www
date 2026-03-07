@@ -11,6 +11,9 @@
   var header = sidebar.querySelector("[data-mobile-nav-header]");
   if (!header) return;
 
+  /* Signal that JS is available so CSS can safely hide the nav */
+  document.documentElement.classList.add("has-mobile-nav");
+
   /* ---- hamburger button ---- */
   var btn = document.createElement("button");
   btn.id = "mobile-nav-toggle";

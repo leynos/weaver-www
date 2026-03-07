@@ -206,7 +206,7 @@ pre code {
         border-right: none;
     }
 
-    #sidebar nav {
+    .has-mobile-nav #sidebar nav {
         display: none;
     }
 
