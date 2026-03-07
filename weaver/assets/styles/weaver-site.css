@@ -109,6 +109,12 @@ body {
     .figure-fullbleed.figure-fullbleed-opaque {
         background: #fff !important;
     }
+
+    .panel-fullbleed {
+        margin-left: -2rem !important;
+        margin-right: -2rem !important;
+        border-radius: 0 !important;
+    }
 }
 
 .masthead-eyebrow {
