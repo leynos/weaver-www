@@ -1,4 +1,4 @@
-/* mobile-nav.js — hamburger toggle for sidebar navigation (<1024px) */
+/* mobile-nav.js — hamburger toggle for sidebar navigation (<1024px) */
 (function () {
   "use strict";
 

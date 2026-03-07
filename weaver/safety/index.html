@@ -135,7 +135,7 @@
                     </h1>
 
                     <p class="font-sans text-lg text-weaver-indigo/80 leading-relaxed max-w-2xl font-light">
-                        Weaver assumes that AI agents are fundamentally untrusted actors. Two independent safety layers protect the codebase: the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Double-Lock</span> validation harness (syntactic + semantic checks on every edit) and the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Birdcage</span> sandbox (kernel-level process isolation for all external tools). They operate independently&mdash;the Double-Lock guards code correctness; the sandbox guards system integrity.
+                        Weaver assumes that AI agents are fundamentally untrusted actors. Two independent safety layers protect the codebase: the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Double-Lock</span> validation harness (syntactic + semantic checks on every edit) and the <span class="font-mono text-sm bg-weaver-indigo/10 px-1 rounded font-bold">Birdcage</span> sandbox (kernel-level process isolation for all external tools). They operate independently — the Double-Lock guards code correctness; the sandbox guards system integrity.
                     </p>
                 </div>
                 
@@ -167,7 +167,7 @@
                             <div class="absolute -top-3 left-8 bg-white px-2 font-mono text-xs text-weaver-indigo font-bold border border-weaver-indigo">LOCK 1 &middot; SYNTACTIC</div>
                             <h3 class="font-serif text-2xl text-weaver-indigo mb-4 mt-2">Syntactic Lock</h3>
                             <p class="text-weaver-indigo/80 mb-6 leading-relaxed text-sm">
-                                Each modified file with a supported parser is checked with <strong>Tree-sitter</strong> to confirm a valid syntax tree. Structural errors&mdash;unbalanced braces, missing semicolons, malformed declarations&mdash;are caught here. Files that fail parsing are rejected immediately; the filesystem stays untouched.
+                                Each modified file with a supported parser is checked with <strong>Tree-sitter</strong> to confirm a valid syntax tree. Structural errors — unbalanced braces, missing semicolons, malformed declarations — are caught here. Files that fail parsing are rejected immediately; the filesystem stays untouched.
                             </p>
                             <ul class="space-y-3 font-mono text-xs text-weaver-indigo">
                                 <li class="flex items-center gap-3">
@@ -176,7 +176,7 @@
                                 </li>
                                 <li class="flex items-center gap-3">
                                     <div class="w-6 h-6 rounded-full border border-weaver-indigo flex items-center justify-center text-weaver-vermilion"><i class="fa-solid fa-bolt"></i></div>
-                                    <span>Fast, local &mdash; no language server needed</span>
+                                    <span>Fast, local — no language server needed</span>
                                 </li>
                                 <li class="flex items-center gap-3">
                                     <div class="w-6 h-6 rounded-full border border-weaver-indigo flex items-center justify-center text-weaver-vermilion"><i class="fa-solid fa-forward"></i></div>
