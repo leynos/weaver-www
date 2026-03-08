@@ -138,7 +138,7 @@ brand line if it adds texture without diluting the product stance.
 
 ## Tolerances (exception triggers)
 
-- Scope: if truthful rewrite of the homepage requires coordinated edits to
+- Scope: if a truthful rewrite of the homepage requires coordinated edits to
   more than four additional pages, stop after the homepage pass and ask
   whether to expand scope.
 - Structure: if the copy overhaul only works with major layout changes or new
