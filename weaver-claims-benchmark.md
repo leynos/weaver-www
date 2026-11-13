@@ -198,8 +198,8 @@ Assessment labels used below:
   `weaver/sempai/index.html:337-345`,
   `weaver/sempai/index.html:375-389`.
   Benchmark:
-  `../weaver/docs/adr-002-query-language-for-feature-extraction-in-weaver.md:99-105`,
-  `../weaver/docs/adr-003-sempai-semgrep-compatible-query-engine.md:100-133`,
+  `../weaver/docs/adrs/adr-0002-query-language-for-feature-extraction-in-weaver.md:99-105`,
+  `../weaver/docs/adrs/adr-0003-sempai-semgrep-compatible-query-engine.md:100-133`,
   `../weaver/docs/sempai-query-language-design.md:17-30`,
   `../weaver/docs/sempai-query-language-design.md:103-178`,
   `../weaver/docs/sempai-query-language-design.md:859-951`.
@@ -246,7 +246,7 @@ Assessment labels used below:
 - Claim: The docs hub accurately fronts the available design material.
   Site evidence: `weaver/docs/index.html:176-205`.
   Benchmark: `../weaver/docs/weaver-design.md`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md`,
   `../weaver/docs/sempai-query-language-design.md`,
   `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
   `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`.

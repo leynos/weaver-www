@@ -99,7 +99,7 @@ The focus is on inconsistencies in:
   Source UI: the supplied references are ADRs, technical designs, the user's
   guide, and the roadmap under `../weaver/docs/`.
   Source evidence: `../weaver/docs/weaver-design.md`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md`,
   `../weaver/docs/sempai-query-language-design.md`,
   `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
   `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`.
