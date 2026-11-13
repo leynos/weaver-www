@@ -17,7 +17,7 @@ prominent in the source references.
   Source evidence: `../weaver/docs/users-guide.md:276-296`,
   `../weaver/docs/weaver-design.md:410-414`,
   `../weaver/docs/weaver-design.md:2086-2109`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:47-63`.
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md:47-63`.
   Why this matters: capability discovery and graceful degradation are central to
   the documented agent-planning model, especially for LSP variability and
   provider routing. The site now mentions the probe, but it still does not show
@@ -48,7 +48,7 @@ prominent in the source references.
   Source evidence: `../weaver/docs/users-guide.md:658-813`,
   `../weaver/docs/weaver-design.md:1255-1384`,
   `../weaver/docs/roadmap.md:488-707`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:47-68`.
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md:47-68`.
   Missing from the site:
   sensor vs actuator plugin categories, plugin manifests, JSONL-over-stdio
   plugin IPC, in-band file payloads, plugin registry lookups, and capability
@@ -58,7 +58,7 @@ prominent in the source references.
 
 - Capability IDs and routing rules are absent.
   Source evidence:
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:56-65`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md:56-65`,
   `../weaver/docs/users-guide.md:727-804`.
   Missing from the site:
   `rename-symbol`, `extricate-symbol`, `extract-method`, `replace-body`,
@@ -78,8 +78,8 @@ prominent in the source references.
 
 - `act extricate` is visible on the site, but only as a planned surface.
   Source evidence:
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:23-27`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md:104-131`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md:23-27`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md:104-131`,
   `../weaver/docs/rust-extricate-actuator-plugin-technical-design.md:95-122`.
   Why this matters: ADR 001 elevates `act extricate` into the capability model,
   and the Rust technical design specifies a detailed contract. The public site
@@ -186,7 +186,7 @@ prominent in the source references.
 - The site does not yet expose every supplied design doc as a navigable primary
   source.
   Source evidence: `../weaver/docs/weaver-design.md`,
-  `../weaver/docs/adr-001-plugin-capability-model-and-act-extricate.md`,
+  `../weaver/docs/adrs/adr-0001-plugin-capability-model-and-act-extricate.md`,
   `../weaver/docs/sempai-query-language-design.md`,
   `../weaver/docs/jacquard-card-first-symbol-graph-design.md`,
   `../weaver/docs/users-guide.md`, `../weaver/docs/roadmap.md`,
